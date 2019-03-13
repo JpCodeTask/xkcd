@@ -9,7 +9,7 @@ import pl.jpcodetask.xkcdcomics.XkcdApplication;
 @Singleton
 @Component(
         modules = {
-
+                AppModule.class
         }
 )
 public interface AppComponent {
