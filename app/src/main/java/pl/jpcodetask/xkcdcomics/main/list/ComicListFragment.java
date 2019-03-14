@@ -1,4 +1,4 @@
-package pl.jpcodetask.xkcdcomics.main;
+package pl.jpcodetask.xkcdcomics.main.list;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -21,7 +21,7 @@ public class ComicListFragment extends Fragment {
         //empty
     }
 
-    static ComicListFragment newInstance(){
+    public static ComicListFragment newInstance(){
         return new ComicListFragment();
     }
 

@@ -14,6 +14,7 @@ import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
 import pl.jpcodetask.xkcdcomics.R;
 import pl.jpcodetask.xkcdcomics.databinding.ActivityMainBinding;
+import pl.jpcodetask.xkcdcomics.main.list.ComicListFragment;
 
 public class MainActivity extends AppCompatActivity implements HasSupportFragmentInjector {
 
