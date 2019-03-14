@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import dagger.android.support.AndroidSupportInjection;
 import pl.jpcodetask.xkcdcomics.R;
 
 public class ComicListFragment extends Fragment {
@@ -23,6 +24,7 @@ public class ComicListFragment extends Fragment {
 
     @Override
     public void onAttach(@NonNull Context context) {
+        AndroidSupportInjection.inject(this);
         super.onAttach(context);
     }
 
