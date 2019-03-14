@@ -4,14 +4,14 @@ import javax.inject.Singleton;
 
 import dagger.BindsInstance;
 import dagger.Component;
-import dagger.android.AndroidInjectionModule;
+import dagger.android.support.AndroidSupportInjectionModule;
 import pl.jpcodetask.xkcdcomics.XkcdApplication;
 
 @Singleton
 @Component(
         modules = {
                 AppModule.class,
-                AndroidInjectionModule.class,
+                AndroidSupportInjectionModule.class,
                 ActivityBuilderModule.class
         }
 )
