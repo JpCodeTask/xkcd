@@ -7,6 +7,7 @@ import pl.jpcodetask.xkcdcomics.main.MainActivity;
 @Module
 abstract class ActivityBuilderModule {
 
+    @ActivityScope
     @ContributesAndroidInjector(
             modules = {FragmentBuilderModule.class}
     )
