@@ -1,4 +1,4 @@
-package pl.jpcodetask.xkcdcomics;
+package pl.jpcodetask.xkcdcomics.main;
 
 import android.os.Bundle;
 
@@ -10,6 +10,7 @@ import dagger.android.AndroidInjection;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
+import pl.jpcodetask.xkcdcomics.R;
 
 public class MainActivity extends AppCompatActivity implements HasSupportFragmentInjector {
 
