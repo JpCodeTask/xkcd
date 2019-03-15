@@ -6,10 +6,11 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import pl.jpcodetask.xkcdcomics.data.source.DataSource;
+import pl.jpcodetask.xkcdcomics.data.source.Repository;
 import pl.jpcodetask.xkcdcomics.data.source.local.LocalDataSourceImpl;
 
 @Module
-public class DataModule {
+class DataModule {
 
     @Singleton
     @Provides
@@ -17,4 +18,13 @@ public class DataModule {
     DataSource provideLocalDataSource(){
         return new LocalDataSourceImpl();
     }
+
+    @Singleton
+    @Provides
+    @Named("repository")
+    DataSource provideRepository(@Named("local_data_source") DataSource localDataSource){
+        return new Repository(localDataSource);
+    }
+
+
 }

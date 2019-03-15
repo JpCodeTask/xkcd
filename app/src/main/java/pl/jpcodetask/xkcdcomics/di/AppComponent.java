@@ -1,11 +1,13 @@
 package pl.jpcodetask.xkcdcomics.di;
 
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 import dagger.BindsInstance;
 import dagger.Component;
 import dagger.android.support.AndroidSupportInjectionModule;
 import pl.jpcodetask.xkcdcomics.XkcdApplication;
+import pl.jpcodetask.xkcdcomics.data.source.DataSource;
 
 @Singleton
 @Component(
@@ -28,4 +30,7 @@ public interface AppComponent {
     }
 
     void inject(XkcdApplication application);
+
+    @Named("repository")
+    DataSource getRepository();
 }

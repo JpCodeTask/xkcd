@@ -13,18 +13,18 @@ import pl.jpcodetask.xkcdcomics.ui.list.ComicListViewModel;
 @Singleton
 public class XkcdViewModelFactory implements ViewModelProvider.Factory {
 
-    private final DataSource mLocalDataSource;
+    private final DataSource mRepository;
 
     @Inject
-    public XkcdViewModelFactory(@Named("local_data_source") DataSource localDataSource){
-        mLocalDataSource = localDataSource;
+    public XkcdViewModelFactory(@Named("repository") DataSource repository){
+        mRepository = repository;
     }
 
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if (modelClass.isAssignableFrom(ComicListViewModel.class)){
-            return (T) new ComicListViewModel(mLocalDataSource);
+            return (T) new ComicListViewModel(mRepository);
         }
 
         throw new IllegalArgumentException("Model class is not assignable");
