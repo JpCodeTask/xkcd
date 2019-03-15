@@ -10,20 +10,26 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import dagger.android.support.AndroidSupportInjection;
 import pl.jpcodetask.xkcdcomics.R;
 import pl.jpcodetask.xkcdcomics.databinding.FragmentComicListBinding;
-import pl.jpcodetask.xkcdcomics.utils.TestUtils;
+import pl.jpcodetask.xkcdcomics.viewmodel.XkcdViewModelFactory;
 
 public class ComicListFragment extends Fragment {
 
     private ComicsAdapter mComicsAdapter;
+
+    @Inject
+    XkcdViewModelFactory mXkcdViewModelFactory;
 
     public ComicListFragment(){
         //empty
@@ -42,7 +48,11 @@ public class ComicListFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mComicsAdapter = new ComicsAdapter(TestUtils.getData());
+        mComicsAdapter = new ComicsAdapter(null);
+        ComicListViewModel viewModel = ViewModelProviders.of(this, mXkcdViewModelFactory).get(ComicListViewModel.class);
+        viewModel.getTitleList().observe(this, strings -> {
+            mComicsAdapter.setData(strings);
+        });
     }
 
     @Nullable
@@ -79,6 +89,11 @@ public class ComicListFragment extends Fragment {
         @Override
         public int getItemCount() {
             return mData != null ? mData.size() : 0;
+        }
+
+        public void setData(List<String> data){
+            mData = data;
+            notifyDataSetChanged();
         }
 
         private static class ComicViewHolder extends RecyclerView.ViewHolder{
