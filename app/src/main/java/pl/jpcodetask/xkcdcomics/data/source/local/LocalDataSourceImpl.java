@@ -3,21 +3,22 @@ package pl.jpcodetask.xkcdcomics.data.source.local;
 import java.util.ArrayList;
 import java.util.List;
 
+import pl.jpcodetask.xkcdcomics.data.model.Comic;
 import pl.jpcodetask.xkcdcomics.data.source.DataSource;
 
 public class LocalDataSourceImpl implements DataSource {
     @Override
-    public List<String> getData() {
-        List<String> data = new ArrayList<>();
-        data.add("Lorem ipsum 1");
-        data.add("Lorem ipsum 2");
-        data.add("Lorem ipsum 3");
-        data.add("Lorem ipsum 4");
-        data.add("Lorem ipsum 5");
-        data.add("Lorem ipsum 6");
-        data.add("Lorem ipsum 7");
-        data.add("Lorem ipsum 8");
+    public List<Comic> getData() {
+        List<Comic> data = new ArrayList<>();
+        for(int i = 0; i < 10; i++){
+            Comic comic = new Comic();
+            comic.setTitle("Lorem ipsum " + i);
+            comic.setDay(i);
+            comic.setMonth(i + 2);
+            comic.setYear(10 * i + 1000);
 
+            data.add(comic);
+        }
         return data;
     }
 }

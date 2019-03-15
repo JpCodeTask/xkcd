@@ -4,7 +4,7 @@
     <data>
         <variable
             name="item"
-            type="String" />
+            type="pl.jpcodetask.xkcdcomics.data.model.Comic" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -32,7 +32,7 @@
                 app:layout_constraintVertical_chainStyle="packed" />
 
             <TextView
-                android:text="@{item}"
+                android:text="@{item.title + ' ' + item.day + '.' + item.month + '.' + item.year}"
                 android:id="@+id/supporting_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

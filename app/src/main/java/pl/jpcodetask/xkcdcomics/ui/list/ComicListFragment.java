@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import dagger.android.support.AndroidSupportInjection;
 import pl.jpcodetask.xkcdcomics.R;
+import pl.jpcodetask.xkcdcomics.data.model.Comic;
 import pl.jpcodetask.xkcdcomics.databinding.ComicListItemBinding;
 import pl.jpcodetask.xkcdcomics.databinding.FragmentComicListBinding;
 import pl.jpcodetask.xkcdcomics.viewmodel.XkcdViewModelFactory;
@@ -49,8 +50,8 @@ public class ComicListFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mComicsAdapter = new ComicsAdapter(null);
         ComicListViewModel viewModel = ViewModelProviders.of(this, mXkcdViewModelFactory).get(ComicListViewModel.class);
-        viewModel.getTitleList().observe(this, strings -> {
-            mComicsAdapter.setData(strings);
+        viewModel.getTitleList().observe(this, comics -> {
+            mComicsAdapter.setData(comics);
         });
     }
 
@@ -67,9 +68,9 @@ public class ComicListFragment extends Fragment {
 
     private static class ComicsAdapter extends RecyclerView.Adapter<ComicsAdapter.ComicViewHolder>{
 
-        private List<String> mData;
+        private List<Comic> mData;
 
-        ComicsAdapter(List<String> data){
+        ComicsAdapter(List<Comic> data){
             mData = data;
         }
 
@@ -91,7 +92,7 @@ public class ComicListFragment extends Fragment {
             return mData != null ? mData.size() : 0;
         }
 
-        public void setData(List<String> data){
+        public void setData(List<Comic> data){
             mData = data;
             notifyDataSetChanged();
         }
@@ -105,9 +106,9 @@ public class ComicListFragment extends Fragment {
                 mItemBinding = itemBinding;
             }
 
-            void bind(String text){
+            void bind(Comic comicItem){
                 mItemBinding.mediaImage.setImageResource(R.drawable.ic_launcher_background);
-                mItemBinding.setItem(text);
+                mItemBinding.setItem(comicItem);
                 mItemBinding.executePendingBindings();
             }
         }

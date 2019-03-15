@@ -6,6 +6,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
+import pl.jpcodetask.xkcdcomics.data.model.Comic;
+
 @Singleton
 public class Repository implements DataSource {
 
@@ -19,7 +21,7 @@ public class Repository implements DataSource {
     }
 
     @Override
-    public List<String> getData() {
+    public List<Comic> getData() {
         return mLocalDataSource.getData();
     }
 }
