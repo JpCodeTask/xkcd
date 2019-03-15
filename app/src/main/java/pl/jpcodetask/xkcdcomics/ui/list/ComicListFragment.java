@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import java.util.List;
 
@@ -21,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import dagger.android.support.AndroidSupportInjection;
 import pl.jpcodetask.xkcdcomics.R;
+import pl.jpcodetask.xkcdcomics.databinding.ComicListItemBinding;
 import pl.jpcodetask.xkcdcomics.databinding.FragmentComicListBinding;
 import pl.jpcodetask.xkcdcomics.viewmodel.XkcdViewModelFactory;
 
@@ -77,8 +76,9 @@ public class ComicListFragment extends Fragment {
         @NonNull
         @Override
         public ComicViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View root = LayoutInflater.from(parent.getContext()).inflate(R.layout.comic_list_item, parent, false);
-            return new ComicViewHolder(root);
+            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+            ComicListItemBinding binding = ComicListItemBinding.inflate(inflater, parent, false);
+            return new ComicViewHolder(binding);
         }
 
         @Override
@@ -98,18 +98,17 @@ public class ComicListFragment extends Fragment {
 
         private static class ComicViewHolder extends RecyclerView.ViewHolder{
 
-            private ImageView mImageView;
-            private TextView mTextView;
+            private final ComicListItemBinding mItemBinding;
 
-            public ComicViewHolder(@NonNull View itemView) {
-                super(itemView);
-                mImageView = itemView.findViewById(R.id.media_image);
-                mTextView = itemView.findViewById(R.id.supporting_text);
+            ComicViewHolder(@NonNull ComicListItemBinding itemBinding) {
+                super(itemBinding.getRoot());
+                mItemBinding = itemBinding;
             }
 
-            public void bind(String text){
-                mImageView.setImageResource(R.drawable.ic_launcher_background);
-                mTextView.setText(text);
+            void bind(String text){
+                mItemBinding.mediaImage.setImageResource(R.drawable.ic_launcher_background);
+                mItemBinding.setItem(text);
+                mItemBinding.executePendingBindings();
             }
         }
     }
