@@ -1,4 +1,4 @@
-package pl.jpcodetask.xkcdcomics.main.list;
+package pl.jpcodetask.xkcdcomics.ui.list;
 
 import android.content.Context;
 import android.os.Bundle;
