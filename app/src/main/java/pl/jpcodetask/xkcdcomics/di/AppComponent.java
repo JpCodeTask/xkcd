@@ -13,7 +13,7 @@ import pl.jpcodetask.xkcdcomics.XkcdApplication;
                 AppModule.class,
                 AndroidSupportInjectionModule.class,
                 ActivityBuilderModule.class,
-                LocalDataModule.class
+                DataModule.class
         }
 )
 public interface AppComponent {

@@ -9,7 +9,7 @@ import pl.jpcodetask.xkcdcomics.data.source.DataSource;
 import pl.jpcodetask.xkcdcomics.data.source.local.LocalDataSourceImpl;
 
 @Module
-public class LocalDataModule {
+public class DataModule {
 
     @Singleton
     @Provides
