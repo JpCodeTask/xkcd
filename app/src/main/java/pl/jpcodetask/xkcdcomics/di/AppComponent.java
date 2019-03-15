@@ -12,7 +12,8 @@ import pl.jpcodetask.xkcdcomics.XkcdApplication;
         modules = {
                 AppModule.class,
                 AndroidSupportInjectionModule.class,
-                ActivityBuilderModule.class
+                ActivityBuilderModule.class,
+                LocalDataModule.class
         }
 )
 public interface AppComponent {
