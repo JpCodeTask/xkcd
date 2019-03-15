@@ -1,4 +1,4 @@
-package pl.jpcodetask.xkcdcomics.data;
+package pl.jpcodetask.xkcdcomics.data.source;
 
 import java.util.List;
 

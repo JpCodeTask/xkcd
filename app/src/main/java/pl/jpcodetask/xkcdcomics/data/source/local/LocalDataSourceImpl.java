@@ -1,9 +1,9 @@
-package pl.jpcodetask.xkcdcomics.data.local;
+package pl.jpcodetask.xkcdcomics.data.source.local;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import pl.jpcodetask.xkcdcomics.data.DataSource;
+import pl.jpcodetask.xkcdcomics.data.source.DataSource;
 
 public class LocalDataSourceImpl implements DataSource {
     @Override

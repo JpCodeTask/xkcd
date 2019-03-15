@@ -5,8 +5,8 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import pl.jpcodetask.xkcdcomics.data.DataSource;
-import pl.jpcodetask.xkcdcomics.data.local.LocalDataSourceImpl;
+import pl.jpcodetask.xkcdcomics.data.source.DataSource;
+import pl.jpcodetask.xkcdcomics.data.source.local.LocalDataSourceImpl;
 
 @Module
 public class LocalDataModule {

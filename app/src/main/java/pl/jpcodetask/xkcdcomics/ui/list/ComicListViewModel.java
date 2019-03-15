@@ -5,7 +5,7 @@ import java.util.List;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import pl.jpcodetask.xkcdcomics.data.DataSource;
+import pl.jpcodetask.xkcdcomics.data.source.DataSource;
 
 public class ComicListViewModel extends ViewModel {
 

@@ -7,7 +7,7 @@ import javax.inject.Singleton;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
-import pl.jpcodetask.xkcdcomics.data.DataSource;
+import pl.jpcodetask.xkcdcomics.data.source.DataSource;
 import pl.jpcodetask.xkcdcomics.ui.list.ComicListViewModel;
 
 @Singleton
