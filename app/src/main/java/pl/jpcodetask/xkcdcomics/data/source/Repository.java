@@ -10,10 +10,12 @@ import javax.inject.Singleton;
 public class Repository implements DataSource {
 
     private final DataSource mLocalDataSource;
+    private final DataSource mRemoteDataSource;
 
     @Inject
-    public Repository(@Named("local_data_source") DataSource localDataSource){
+    public Repository(@Named("local_data_source") DataSource localDataSource, @Named("remote_data_source") DataSource remoteDataSource){
         mLocalDataSource = localDataSource;
+        mRemoteDataSource = remoteDataSource;
     }
 
     @Override

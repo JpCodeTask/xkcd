@@ -8,9 +8,17 @@ import dagger.Provides;
 import pl.jpcodetask.xkcdcomics.data.source.DataSource;
 import pl.jpcodetask.xkcdcomics.data.source.Repository;
 import pl.jpcodetask.xkcdcomics.data.source.local.LocalDataSourceImpl;
+import pl.jpcodetask.xkcdcomics.data.source.remote.RemoteDataSourceImpl;
 
 @Module
 class DataModule {
+
+    @Singleton
+    @Provides
+    @Named("remote_data_source")
+    DataSource provideRemoteDataSource(){
+        return new RemoteDataSourceImpl();
+    }
 
     @Singleton
     @Provides
@@ -22,8 +30,8 @@ class DataModule {
     @Singleton
     @Provides
     @Named("repository")
-    DataSource provideRepository(@Named("local_data_source") DataSource localDataSource){
-        return new Repository(localDataSource);
+    DataSource provideRepository(@Named("local_data_source") DataSource localDataSource, @Named("remote_data_source") DataSource remoteDataSource){
+        return new Repository(localDataSource, remoteDataSource);
     }
 
 
