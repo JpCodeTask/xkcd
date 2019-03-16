@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -48,7 +49,9 @@ public class ComicListFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mComicsAdapter = new ComicsAdapter(null);
+        mComicsAdapter = new ComicsAdapter(null, item -> {
+            Toast.makeText(getContext(), "Item " + item.getTitle(), Toast.LENGTH_SHORT).show();
+        });
         ComicListViewModel viewModel = ViewModelProviders.of(this, mXkcdViewModelFactory).get(ComicListViewModel.class);
         viewModel.getTitleList().observe(this, comics -> {
             mComicsAdapter.setData(comics);
@@ -66,12 +69,17 @@ public class ComicListFragment extends Fragment {
         return binding.getRoot();
     }
 
+
+
+
     private static class ComicsAdapter extends RecyclerView.Adapter<ComicsAdapter.ComicViewHolder>{
 
+        private ComicItemListener mComicItemListener;
         private List<Comic> mData;
 
-        ComicsAdapter(List<Comic> data){
+        ComicsAdapter(List<Comic> data, @NonNull ComicItemListener listener){
             mData = data;
+            mComicItemListener = listener;
         }
 
         @NonNull
@@ -84,7 +92,7 @@ public class ComicListFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull ComicViewHolder holder, int position) {
-            holder.bind(mData.get(position));
+            holder.bind(mData.get(position), mComicItemListener);
         }
 
         @Override
@@ -106,9 +114,10 @@ public class ComicListFragment extends Fragment {
                 mItemBinding = itemBinding;
             }
 
-            void bind(Comic comicItem){
+            void bind(Comic comicItem, @NonNull ComicItemListener comicItemListener){
                 mItemBinding.mediaImage.setImageResource(R.drawable.ic_launcher_background);
                 mItemBinding.setItem(comicItem);
+                mItemBinding.setListener(comicItemListener);
                 mItemBinding.executePendingBindings();
             }
         }

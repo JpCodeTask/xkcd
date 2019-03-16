@@ -5,10 +5,15 @@
         <variable
             name="item"
             type="pl.jpcodetask.xkcdcomics.data.model.Comic" />
+
+        <variable
+            name="listener"
+            type="pl.jpcodetask.xkcdcomics.ui.list.ComicItemListener" />
     </data>
 
     <androidx.cardview.widget.CardView
         style="@style/CardView.Light"
+        android:onClick="@{()-> listener.onItemClicked(item)}"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
