@@ -49,9 +49,18 @@ public class ComicListFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mComicsAdapter = new ComicsAdapter(null, item -> {
-            Toast.makeText(getContext(), "Item " + item.getTitle(), Toast.LENGTH_SHORT).show();
+        mComicsAdapter = new ComicsAdapter(null, new ComicItemListener() {
+            @Override
+            public void onItemClicked(View view, Comic item) {
+                Toast.makeText(getContext(), "Item " + item.getTitle(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFavoriteClicked(View view, Comic item) {
+                Toast.makeText(getContext(), "Item favorite " + item.getTitle(), Toast.LENGTH_SHORT).show();
+            }
         });
+
         ComicListViewModel viewModel = ViewModelProviders.of(this, mXkcdViewModelFactory).get(ComicListViewModel.class);
         viewModel.getTitleList().observe(this, comics -> {
             mComicsAdapter.setData(comics);
