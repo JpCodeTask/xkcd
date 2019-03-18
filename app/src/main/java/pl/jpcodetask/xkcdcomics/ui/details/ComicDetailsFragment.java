@@ -7,15 +7,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import javax.inject.Inject;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import dagger.android.support.AndroidSupportInjection;
 import pl.jpcodetask.xkcdcomics.R;
+import pl.jpcodetask.xkcdcomics.viewmodel.XkcdViewModelFactory;
 
 public class ComicDetailsFragment extends Fragment {
 
     private static final String ARG_COMIC_NUMBER = "arg_comic_number";
+
+    @Inject
+    XkcdViewModelFactory mXkcdViewModelFactory;
 
     public ComicDetailsFragment(){
         //empty
