@@ -11,4 +11,9 @@ public class RemoteDataSourceImpl implements DataSource {
     public List<Comic> getData() {
         return null;
     }
+
+    @Override
+    public Comic getComic(int comicNumber) {
+        return null;
+    }
 }

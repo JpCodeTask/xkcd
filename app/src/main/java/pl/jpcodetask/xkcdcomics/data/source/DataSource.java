@@ -6,4 +6,5 @@ import pl.jpcodetask.xkcdcomics.data.model.Comic;
 
 public interface DataSource {
     List<Comic> getData();
+    Comic getComic(int comicNumber);
 }

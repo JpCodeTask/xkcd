@@ -24,4 +24,9 @@ public class Repository implements DataSource {
     public List<Comic> getData() {
         return mLocalDataSource.getData();
     }
+
+    @Override
+    public Comic getComic(int comicNumber) {
+        return mLocalDataSource.getComic(comicNumber);
+    }
 }

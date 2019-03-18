@@ -12,6 +12,7 @@ import javax.inject.Inject;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 import dagger.android.support.AndroidSupportInjection;
 import pl.jpcodetask.xkcdcomics.R;
 import pl.jpcodetask.xkcdcomics.viewmodel.XkcdViewModelFactory;
@@ -47,7 +48,14 @@ public class ComicDetailsFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
-        Toast.makeText(getContext(), " " + args.getInt(ARG_COMIC_NUMBER), Toast.LENGTH_SHORT).show();
+
+        ComicDetailsViewModel viewModel = ViewModelProviders.of(this, mXkcdViewModelFactory).get(ComicDetailsViewModel.class);
+
+        viewModel.getComicLiveData().observe(this, comic -> {
+            Toast.makeText(getContext(), " " + comic.getTitle(), Toast.LENGTH_SHORT).show();
+        });
+
+        viewModel.loadComic(args.getInt(ARG_COMIC_NUMBER));
     }
 
     @Nullable
