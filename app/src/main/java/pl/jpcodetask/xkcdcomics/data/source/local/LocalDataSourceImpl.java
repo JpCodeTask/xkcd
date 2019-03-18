@@ -12,6 +12,7 @@ public class LocalDataSourceImpl implements DataSource {
         List<Comic> data = new ArrayList<>();
         for(int i = 0; i < 10; i++){
             Comic comic = new Comic();
+            comic.setNum(i);
             comic.setTitle("Lorem ipsum " + i);
             comic.setDay(i);
             comic.setMonth(i + 2);

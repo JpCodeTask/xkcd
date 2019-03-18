@@ -23,6 +23,7 @@ import pl.jpcodetask.xkcdcomics.R;
 import pl.jpcodetask.xkcdcomics.data.model.Comic;
 import pl.jpcodetask.xkcdcomics.databinding.ComicListItemBinding;
 import pl.jpcodetask.xkcdcomics.databinding.FragmentComicListBinding;
+import pl.jpcodetask.xkcdcomics.ui.details.ComicDetailsFragment;
 import pl.jpcodetask.xkcdcomics.viewmodel.XkcdViewModelFactory;
 
 public class ComicListFragment extends Fragment {
@@ -49,10 +50,29 @@ public class ComicListFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        final ComicListViewModel viewModel = ViewModelProviders.of(this, mXkcdViewModelFactory).get(ComicListViewModel.class);
+        viewModel.getTitleList().observe(this, comics -> {
+            mComicsAdapter.setData(comics);
+        });
+        viewModel.getEvenComicDetails().observe(this, comicDetailsEvent ->{
+            Integer comicNumber = comicDetailsEvent.getEventContentIfNotHandled();
+
+            if (comicNumber != null){
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, ComicDetailsFragment.newInstance(comicNumber))
+                        .addToBackStack(null)
+                        .commit();
+            }
+
+        });
+
+
         mComicsAdapter = new ComicsAdapter(null, new ComicItemListener() {
             @Override
             public void onItemClicked(View view, Comic item) {
-                Toast.makeText(getContext(), "Item " + item.getTitle(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), "Item " + item.getTitle(), Toast.LENGTH_SHORT).show();
+                viewModel.openComicDetails(item.getNum());
             }
 
             @Override
@@ -61,10 +81,7 @@ public class ComicListFragment extends Fragment {
             }
         });
 
-        ComicListViewModel viewModel = ViewModelProviders.of(this, mXkcdViewModelFactory).get(ComicListViewModel.class);
-        viewModel.getTitleList().observe(this, comics -> {
-            mComicsAdapter.setData(comics);
-        });
+
     }
 
     @Nullable
