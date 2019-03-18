@@ -28,9 +28,12 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
         ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .add(binding.fragmentContainer.getId(), ComicListFragment.newInstance())
-                .commit();
+        Fragment fragment = fragmentManager.findFragmentById(R.id.fragment_container);
+        if(fragment == null){
+            fragmentManager.beginTransaction()
+                    .add(binding.fragmentContainer.getId(), ComicListFragment.newInstance())
+                    .commit();
+        }
     }
 
     @Override
