@@ -28,7 +28,7 @@ public class XkcdViewModelFactory implements ViewModelProvider.Factory {
             return (T) new ComicListViewModel(mRepository);
         }
 
-        if (modelClass.isAssignableFrom(ComicListViewModel.class)){
+        if (modelClass.isAssignableFrom(ComicDetailsViewModel.class)){
             return (T) new ComicDetailsViewModel(mRepository);
         }
 
