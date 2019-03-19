@@ -13,9 +13,9 @@ import pl.jpcodetask.xkcdcomics.data.source.DataSource;
 @Component(
         modules = {
                 AppModule.class,
+                DataModule.class,
                 AndroidSupportInjectionModule.class,
                 ActivityBuilderModule.class,
-                DataModule.class
         }
 )
 public interface AppComponent {

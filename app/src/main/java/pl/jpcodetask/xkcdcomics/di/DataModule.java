@@ -13,6 +13,18 @@ import pl.jpcodetask.xkcdcomics.data.source.remote.RemoteDataSourceImpl;
 @Module
 class DataModule {
 
+   /* @Singleton
+    @Provides
+    ComicDatabase provideDatabase(@Named("application_context") Context context){
+        return Room.databaseBuilder(context, ComicDatabase.class, "database").build();
+    }
+
+    @Singleton
+    @Provides
+    ComicDao provideComicDao(ComicDatabase comicDatabase){
+        return comicDatabase.getComicDao();
+    }*/
+
     @Singleton
     @Provides
     @Named("remote_data_source")
