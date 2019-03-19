@@ -1,5 +1,7 @@
 package pl.jpcodetask.xkcdcomics.di;
 
+import android.app.Application;
+
 import javax.inject.Named;
 import javax.inject.Singleton;
 
@@ -24,7 +26,7 @@ public interface AppComponent {
     interface Builder{
 
         @BindsInstance
-        Builder application(XkcdApplication application);
+        Builder application(Application application);
 
         AppComponent build();
     }

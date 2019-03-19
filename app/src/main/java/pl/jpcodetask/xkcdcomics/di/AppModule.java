@@ -10,7 +10,7 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module
-class AppModule {
+public class AppModule {
 
     @Singleton
     @Provides

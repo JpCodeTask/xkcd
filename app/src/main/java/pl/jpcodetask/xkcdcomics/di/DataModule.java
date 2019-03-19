@@ -11,9 +11,9 @@ import pl.jpcodetask.xkcdcomics.data.source.local.LocalDataSourceImpl;
 import pl.jpcodetask.xkcdcomics.data.source.remote.RemoteDataSourceImpl;
 
 @Module
-class DataModule {
+public class DataModule {
 
-   /* @Singleton
+    /*@Singleton
     @Provides
     ComicDatabase provideDatabase(@Named("application_context") Context context){
         return Room.databaseBuilder(context, ComicDatabase.class, "database").build();
@@ -45,6 +45,5 @@ class DataModule {
     DataSource provideRepository(@Named("local_data_source") DataSource localDataSource, @Named("remote_data_source") DataSource remoteDataSource){
         return new Repository(localDataSource, remoteDataSource);
     }
-
 
 }
