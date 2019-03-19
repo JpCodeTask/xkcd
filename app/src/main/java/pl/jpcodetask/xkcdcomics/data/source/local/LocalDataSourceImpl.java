@@ -9,9 +9,11 @@ import pl.jpcodetask.xkcdcomics.data.source.DataSource;
 public class LocalDataSourceImpl implements DataSource {
 
 
+    private final ComicDao mComicDao;
     private final List<Comic> mData;
 
-    public LocalDataSourceImpl(){
+    public LocalDataSourceImpl(ComicDao comicDao){
+        mComicDao = comicDao;
         mData = new ArrayList<>();
         for(int i = 0; i < 10; i++){
             Comic comic = new Comic();
