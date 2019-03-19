@@ -16,7 +16,6 @@ public class Comic {
 
     @Expose
     @SerializedName("num")
-    @PrimaryKey
     @ColumnInfo(name = "num")
     private int mNum;
 
