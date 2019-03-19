@@ -11,16 +11,26 @@ public class ComicDetailsViewModel extends ViewModel {
     private final DataSource mDataSource;
 
     private MutableLiveData<Comic> mComicMutableLiveData = new MutableLiveData<>();
+    private MutableLiveData<Boolean> mDataLoading = new MutableLiveData<>();
 
     public ComicDetailsViewModel(DataSource dataSource){
         mDataSource = dataSource;
     }
 
-    public void loadComic(int comicNumber){
-        mComicMutableLiveData.setValue(mDataSource.getComic(comicNumber));
+    void loadComic(Integer comicNumber){
+        if (comicNumber != null){
+            mDataLoading.setValue(true);
+            mComicMutableLiveData.setValue(mDataSource.getComic(comicNumber));
+        }
     }
 
-    public LiveData<Comic> getComicLiveData(){
+
+
+    LiveData<Comic> getComicLiveData(){
         return mComicMutableLiveData;
+    }
+
+    LiveData<Boolean> getDataLoading() {
+        return mDataLoading;
     }
 }
