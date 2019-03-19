@@ -32,6 +32,7 @@ public class ComicListFragment extends Fragment {
 
     @Inject
     XkcdViewModelFactory mXkcdViewModelFactory;
+    private ComicListViewModel mViewModel;
 
     public ComicListFragment(){
         //empty
@@ -51,11 +52,20 @@ public class ComicListFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        final ComicListViewModel viewModel = ViewModelProviders.of(this, mXkcdViewModelFactory).get(ComicListViewModel.class);
-        viewModel.getTitleList().observe(this, comics -> {
+        setupBindedViewModel();
+        setupAdapter();
+
+        mViewModel.start();
+    }
+
+    private void setupBindedViewModel(){
+        mViewModel = ViewModelProviders.of(this, mXkcdViewModelFactory).get(ComicListViewModel.class);
+
+        mViewModel.getTitleList().observe(this, comics -> {
             mComicsAdapter.setData(comics);
         });
-        viewModel.getEvenComicDetails().observe(this, comicDetailsEvent ->{
+
+        mViewModel.getEvenComicDetails().observe(this, comicDetailsEvent ->{
             Integer comicNumber = comicDetailsEvent.getEventContentIfNotHandled();
 
             if (comicNumber != null){
@@ -67,12 +77,14 @@ public class ComicListFragment extends Fragment {
 
         });
 
+    }
 
+    private void setupAdapter(){
         mComicsAdapter = new ComicsAdapter(null, new ComicItemListener() {
             @Override
             public void onItemClicked(View view, Comic item) {
                 //Toast.makeText(getContext(), "Item " + item.getTitle(), Toast.LENGTH_SHORT).show();
-                viewModel.openComicDetails(item.getNum());
+                mViewModel.openComicDetails(item.getNum());
             }
 
             @Override
@@ -80,9 +92,9 @@ public class ComicListFragment extends Fragment {
                 Toast.makeText(getContext(), "Item favorite " + item.getTitle(), Toast.LENGTH_SHORT).show();
             }
         });
-
-
     }
+
+
 
     @Nullable
     @Override
@@ -94,7 +106,6 @@ public class ComicListFragment extends Fragment {
 
         return binding.getRoot();
     }
-
 
 
 

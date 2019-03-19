@@ -18,7 +18,6 @@ public class ComicListViewModel extends ViewModel {
 
     public ComicListViewModel(DataSource dataSource){
         mDataSource = dataSource;
-        mMutableTitleListLiveData.setValue(mDataSource.getData());
     }
 
     LiveData<List<Comic>> getTitleList(){
@@ -31,5 +30,9 @@ public class ComicListViewModel extends ViewModel {
 
     void openComicDetails(int comicNumber){
         mEventComicDetailsMutableLiveData.setValue(new Event<>(comicNumber));
+    }
+
+    void start() {
+        mMutableTitleListLiveData.setValue(mDataSource.getData());
     }
 }
