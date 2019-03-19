@@ -26,7 +26,7 @@ import pl.jpcodetask.xkcdcomics.databinding.FragmentComicListBinding;
 import pl.jpcodetask.xkcdcomics.ui.details.ComicDetailsFragment;
 import pl.jpcodetask.xkcdcomics.viewmodel.XkcdViewModelFactory;
 
-public class ComicListFragment extends Fragment {
+public class ComicListFragment extends Fragment implements ComicListNavigator{
 
     private ComicsAdapter mComicsAdapter;
 
@@ -69,10 +69,7 @@ public class ComicListFragment extends Fragment {
             Integer comicNumber = comicDetailsEvent.getEventContentIfNotHandled();
 
             if (comicNumber != null){
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, ComicDetailsFragment.newInstance(comicNumber))
-                        .addToBackStack(null)
-                        .commit();
+               openComicItem(comicNumber);
             }
 
         });
@@ -94,6 +91,13 @@ public class ComicListFragment extends Fragment {
         });
     }
 
+    @Override
+    public void openComicItem(Integer comicNumber) {
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, ComicDetailsFragment.newInstance(comicNumber))
+                .addToBackStack(null)
+                .commit();
+    }
 
 
     @Nullable
@@ -106,6 +110,7 @@ public class ComicListFragment extends Fragment {
 
         return binding.getRoot();
     }
+
 
 
 
