@@ -20,7 +20,7 @@ public class ComicDetailsViewModel extends ViewModel {
     void loadComic(Integer comicNumber){
         if (comicNumber != null){
             mDataLoading.setValue(true);
-            mComicMutableLiveData.setValue(mDataSource.getComic(comicNumber));
+            //mComicMutableLiveData.setValue(mDataSource.getComic(comicNumber));
         }
     }
 

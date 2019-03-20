@@ -6,6 +6,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
+import io.reactivex.Observable;
+import io.reactivex.Single;
 import pl.jpcodetask.xkcdcomics.data.model.Comic;
 
 @Singleton
@@ -21,12 +23,12 @@ public class Repository implements DataSource {
     }
 
     @Override
-    public List<Comic> getData() {
+    public Observable<List<Comic>> getData() {
         return mLocalDataSource.getData();
     }
 
     @Override
-    public Comic getComic(int comicNumber) {
+    public Single<Comic> getComic(int comicNumber) {
         return mLocalDataSource.getComic(comicNumber);
     }
 }

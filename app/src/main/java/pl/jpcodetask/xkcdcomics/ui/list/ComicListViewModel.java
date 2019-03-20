@@ -5,9 +5,12 @@ import java.util.List;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 import pl.jpcodetask.xkcdcomics.Event;
 import pl.jpcodetask.xkcdcomics.data.model.Comic;
 import pl.jpcodetask.xkcdcomics.data.source.DataSource;
+import pl.jpcodetask.xkcdcomics.utils.Schedulers;
 
 public class ComicListViewModel extends ViewModel {
 
@@ -33,6 +36,29 @@ public class ComicListViewModel extends ViewModel {
     }
 
     void start() {
-        mMutableTitleListLiveData.setValue(mDataSource.getData());
+        mDataSource.getData()
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.mainThread())
+                .subscribe(new Observer<List<Comic>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(List<Comic> comics) {
+                        mMutableTitleListLiveData.setValue(comics);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 }
