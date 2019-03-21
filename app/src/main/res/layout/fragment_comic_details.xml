@@ -2,13 +2,27 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
+        <variable
+            name="viewmodel"
+            type="pl.jpcodetask.xkcdcomics.ui.details.ComicDetailsViewModel" />
 
+        <variable
+            name="number"
+            type="String" />
     </data>
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/comic_title"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="@{viewmodel.comicLiveData.title}"
+            android:textSize="30sp" />
 
     </LinearLayout>
 </layout>

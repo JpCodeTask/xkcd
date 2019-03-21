@@ -15,9 +15,9 @@ public class ComicDetailsViewModel extends ViewModel {
 
     private final DataSource mDataSource;
 
-    private MutableLiveData<Comic> mComicMutableLiveData = new MutableLiveData<>();
-    private MutableLiveData<Boolean> mDataLoadingLiveData = new MutableLiveData<>();
-    private MutableLiveData<Event<Integer>> mErrorEvent = new MutableLiveData<>();
+    private final MutableLiveData<Comic> mComicLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> mDataLoadingLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Event<Integer>> mErrorEvent = new MutableLiveData<>();
 
     public ComicDetailsViewModel(DataSource dataSource){
         mDataSource = dataSource;
@@ -31,8 +31,8 @@ public class ComicDetailsViewModel extends ViewModel {
 
         mDataLoadingLiveData.setValue(true);
         mDataSource.getComic(comicNumber)
-                .observeOn(Schedulers.mainThread())
                 .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.mainThread())
                 .subscribe(new SingleObserver<Comic>() {
                     @Override
                     public void onSubscribe(Disposable d) {
@@ -42,7 +42,7 @@ public class ComicDetailsViewModel extends ViewModel {
                     @Override
                     public void onSuccess(Comic comic) {
                         mDataLoadingLiveData.setValue(false);
-                        mComicMutableLiveData.setValue(comic);
+                        mComicLiveData.setValue(comic);
                     }
 
                     @Override
@@ -55,11 +55,11 @@ public class ComicDetailsViewModel extends ViewModel {
 
 
 
-    LiveData<Comic> getComicLiveData(){
-        return mComicMutableLiveData;
+    public LiveData<Comic> getComicLiveData(){
+        return mComicLiveData;
     }
 
-    LiveData<Boolean> getDataLoadingLiveData() {
+    public LiveData<Boolean> getDataLoadingLiveData() {
         return mDataLoadingLiveData;
     }
 

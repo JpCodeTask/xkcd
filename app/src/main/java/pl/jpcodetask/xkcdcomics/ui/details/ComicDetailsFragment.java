@@ -14,7 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import dagger.android.support.AndroidSupportInjection;
-import pl.jpcodetask.xkcdcomics.R;
+import pl.jpcodetask.xkcdcomics.databinding.FragmentComicDetailsBinding;
 import pl.jpcodetask.xkcdcomics.viewmodel.XkcdViewModelFactory;
 
 public class ComicDetailsFragment extends Fragment {
@@ -67,6 +67,9 @@ public class ComicDetailsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_comic_details, container, false);
+        FragmentComicDetailsBinding binding  = FragmentComicDetailsBinding.inflate(inflater, container, false);
+        binding.setViewmodel(mViewModel);
+        binding.setLifecycleOwner(this);
+        return binding.getRoot();
     }
 }
