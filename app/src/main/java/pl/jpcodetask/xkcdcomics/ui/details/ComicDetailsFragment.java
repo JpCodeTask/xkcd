@@ -21,6 +21,8 @@ public class ComicDetailsFragment extends Fragment {
 
     private static final String ARG_COMIC_NUMBER = "arg_comic_number";
 
+    private ComicDetailsViewModel mViewModel;
+
     @Inject
     XkcdViewModelFactory mXkcdViewModelFactory;
 
@@ -49,13 +51,17 @@ public class ComicDetailsFragment extends Fragment {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
 
-        ComicDetailsViewModel viewModel = ViewModelProviders.of(this, mXkcdViewModelFactory).get(ComicDetailsViewModel.class);
+        setupBindedViewModel();
+        mViewModel.loadComic(args.getInt(ARG_COMIC_NUMBER));
+    }
 
-        viewModel.getComicLiveData().observe(this, comic -> {
+    private void setupBindedViewModel(){
+        mViewModel = ViewModelProviders.of(this, mXkcdViewModelFactory).get(ComicDetailsViewModel.class);
+
+        mViewModel.getComicLiveData().observe(this, comic -> {
             Toast.makeText(getContext(), " " + comic.getTitle(), Toast.LENGTH_SHORT).show();
         });
 
-        viewModel.loadComic(args.getInt(ARG_COMIC_NUMBER));
     }
 
     @Nullable

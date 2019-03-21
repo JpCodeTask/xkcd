@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">XKCD comics</string>
+    <string name="item_loading_error">Item not found</string>
 </resources>
