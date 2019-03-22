@@ -73,4 +73,10 @@ public class ComicDetailsFragment extends Fragment {
         super.onResume();
         mViewModel.loadComic(getArguments().getInt(ARG_COMIC_NUMBER));
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mViewModel.clean();
+    }
 }
