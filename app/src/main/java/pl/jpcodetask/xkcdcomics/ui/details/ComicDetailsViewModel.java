@@ -14,7 +14,7 @@ import pl.jpcodetask.xkcdcomics.utils.Schedulers;
 
 public class ComicDetailsViewModel extends ViewModel {
 
-    private CompositeDisposable mDisposable;
+    private CompositeDisposable mDisposable = new CompositeDisposable();
 
     private final DataSource mDataSource;
 
