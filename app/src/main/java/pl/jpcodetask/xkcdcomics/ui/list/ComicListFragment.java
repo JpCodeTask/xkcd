@@ -65,7 +65,7 @@ public class ComicListFragment extends Fragment implements ComicListNavigator{
             mComicsAdapter.setData(comics);
         });
 
-        mViewModel.getEvenComicDetails().observe(this, comicDetailsEvent ->{
+        mViewModel.getEventComicDetails().observe(this, comicDetailsEvent ->{
             Integer comicNumber = comicDetailsEvent.getEventContentIfNotHandled();
 
             if (comicNumber != null){

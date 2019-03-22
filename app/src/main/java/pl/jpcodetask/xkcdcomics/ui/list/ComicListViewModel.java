@@ -27,7 +27,7 @@ public class ComicListViewModel extends ViewModel {
         return mMutableTitleListLiveData;
     }
 
-    LiveData<Event<Integer>> getEvenComicDetails(){
+    LiveData<Event<Integer>> getEventComicDetails(){
         return mEventComicDetailsMutableLiveData;
     }
 
