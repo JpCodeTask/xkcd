@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import javax.inject.Inject;
 
@@ -46,20 +45,15 @@ public class ComicDetailsFragment extends Fragment {
         super.onAttach(context);
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Bundle args = getArguments();
-
-        setupBindedViewModel();
-        mViewModel.loadComic(args.getInt(ARG_COMIC_NUMBER));
-    }
-
-    private void setupBindedViewModel(){
+    private void setupBindedViewModel(final FragmentComicDetailsBinding binding){
         mViewModel = ViewModelProviders.of(this, mXkcdViewModelFactory).get(ComicDetailsViewModel.class);
 
-        mViewModel.getComicLiveData().observe(this, comic -> {
-            Toast.makeText(getContext(), " " + comic.getTitle(), Toast.LENGTH_SHORT).show();
+        mViewModel.getDataLoadingLiveData().observe(this, isLoading -> {
+            if (isLoading){
+                binding.progressBar.setVisibility(View.VISIBLE);
+            }else{
+                binding.progressBar.setVisibility(View.GONE);
+            }
         });
 
     }
@@ -68,8 +62,15 @@ public class ComicDetailsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         FragmentComicDetailsBinding binding  = FragmentComicDetailsBinding.inflate(inflater, container, false);
+        setupBindedViewModel(binding);
         binding.setViewmodel(mViewModel);
         binding.setLifecycleOwner(this);
         return binding.getRoot();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mViewModel.loadComic(getArguments().getInt(ARG_COMIC_NUMBER));
     }
 }
