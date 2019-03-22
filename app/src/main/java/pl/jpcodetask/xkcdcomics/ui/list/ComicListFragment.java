@@ -111,8 +111,11 @@ public class ComicListFragment extends Fragment implements ComicListNavigator{
         return binding.getRoot();
     }
 
-
-
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mViewModel.clean();
+    }
 
     private static class ComicsAdapter extends RecyclerView.Adapter<ComicsAdapter.ComicViewHolder>{
 

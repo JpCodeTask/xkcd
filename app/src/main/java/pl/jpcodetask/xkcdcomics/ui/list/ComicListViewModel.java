@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import io.reactivex.Observer;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import pl.jpcodetask.xkcdcomics.Event;
 import pl.jpcodetask.xkcdcomics.data.model.Comic;
@@ -13,6 +14,8 @@ import pl.jpcodetask.xkcdcomics.data.source.DataSource;
 import pl.jpcodetask.xkcdcomics.utils.Schedulers;
 
 public class ComicListViewModel extends ViewModel {
+
+    private CompositeDisposable mDisposable = new CompositeDisposable();
 
     private final DataSource mDataSource;
 
@@ -42,7 +45,7 @@ public class ComicListViewModel extends ViewModel {
                 .subscribe(new Observer<List<Comic>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
-
+                        mDisposable.add(d);
                     }
 
                     @Override
@@ -60,5 +63,10 @@ public class ComicListViewModel extends ViewModel {
 
                     }
                 });
+    }
+
+
+    void clean(){
+        mDisposable.clear();
     }
 }
