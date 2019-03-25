@@ -14,8 +14,11 @@ import pl.jpcodetask.xkcdcomics.data.source.local.ComicDao;
 import pl.jpcodetask.xkcdcomics.data.source.local.ComicDatabase;
 import pl.jpcodetask.xkcdcomics.data.source.local.LocalDataSourceImpl;
 import pl.jpcodetask.xkcdcomics.data.source.remote.RemoteDataSourceImpl;
+import pl.jpcodetask.xkcdcomics.data.source.remote.XkcdApi;
 
-@Module
+@Module(
+        includes = ApiModule.class
+)
 public class DataModule {
 
     @Singleton
@@ -33,8 +36,8 @@ public class DataModule {
     @Singleton
     @Provides
     @Named("remote_data_source")
-    DataSource provideRemoteDataSource(){
-        return new RemoteDataSourceImpl();
+    DataSource provideRemoteDataSource(XkcdApi api){
+        return new RemoteDataSourceImpl(api);
     }
 
     @Singleton

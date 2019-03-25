@@ -29,6 +29,6 @@ public class Repository implements DataSource {
 
     @Override
     public Single<Comic> getComic(int comicNumber) {
-        return mLocalDataSource.getComic(comicNumber);
+        return mRemoteDataSource.getComic(comicNumber);
     }
 }

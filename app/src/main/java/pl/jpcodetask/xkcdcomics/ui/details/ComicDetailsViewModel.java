@@ -1,5 +1,7 @@
 package pl.jpcodetask.xkcdcomics.ui.details;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -50,6 +52,7 @@ public class ComicDetailsViewModel extends ViewModel {
 
                     @Override
                     public void onError(Throwable e) {
+                        Log.e("#ERROR#", e.getMessage());
                         mErrorEvent.setValue(new Event<>(R.string.item_loading_error));
                     }
                 });

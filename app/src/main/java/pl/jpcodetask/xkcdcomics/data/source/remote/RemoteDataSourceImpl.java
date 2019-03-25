@@ -9,6 +9,12 @@ import pl.jpcodetask.xkcdcomics.data.source.DataSource;
 
 public class RemoteDataSourceImpl implements DataSource {
 
+    private final XkcdApi mApi;
+
+    public RemoteDataSourceImpl(XkcdApi api) {
+        mApi = api;
+    }
+
     @Override
     public Observable<List<Comic>> getData() {
         return null;
@@ -16,6 +22,6 @@ public class RemoteDataSourceImpl implements DataSource {
 
     @Override
     public Single<Comic> getComic(int comicNumber) {
-        return null;
+        return mApi.comicItem(comicNumber);
     }
 }

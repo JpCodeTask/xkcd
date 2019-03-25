@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import javax.inject.Inject;
 
@@ -56,6 +57,13 @@ public class ComicDetailsFragment extends Fragment {
             }
         });
 
+
+        mViewModel.getErrorEventLiveData().observe(this, integerEvent -> {
+            Integer resourceId = integerEvent.getEventContentIfNotHandled();
+            if (resourceId != null){
+                Toast.makeText(getContext(), getResources().getString(resourceId), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Nullable
