@@ -8,4 +8,7 @@ import retrofit2.http.Path;
 public interface XkcdApi {
     @GET("{comicNumber}/info.0.json")
     Single<Comic> comicItem(@Path("comicNumber") int comicNumber);
+
+    @GET("/info.0.json")
+    Single<Comic> latestComicItem();
 }
