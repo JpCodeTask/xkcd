@@ -24,4 +24,9 @@ public class RemoteDataSourceImpl implements DataSource {
     public Single<Comic> getComic(int comicNumber) {
         return mApi.comicItem(comicNumber);
     }
+
+    @Override
+    public Single<Comic> getLatestComic() {
+        return mApi.latestComicItem();
+    }
 }

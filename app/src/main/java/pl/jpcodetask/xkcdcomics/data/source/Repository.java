@@ -31,4 +31,9 @@ public class Repository implements DataSource {
     public Single<Comic> getComic(int comicNumber) {
         return mRemoteDataSource.getComic(comicNumber);
     }
+
+    @Override
+    public Single<Comic> getLatestComic() {
+        return mRemoteDataSource.getLatestComic();
+    }
 }

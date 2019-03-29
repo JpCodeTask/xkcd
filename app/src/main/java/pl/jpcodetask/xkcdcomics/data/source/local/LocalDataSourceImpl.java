@@ -61,4 +61,9 @@ public class LocalDataSourceImpl implements DataSource {
     public Single<Comic> getComic(int comicNumber) {
         return mComicDao.item(comicNumber);
     }
+
+    @Override
+    public Single<Comic> getLatestComic() {
+        return null;
+    }
 }
