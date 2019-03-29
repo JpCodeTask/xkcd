@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import androidx.annotation.Nullable;
+import dagger.android.AndroidInjection;
 
 public class XkcdService extends IntentService {
 
@@ -18,7 +19,11 @@ public class XkcdService extends IntentService {
         return new Intent(context, XkcdService.class);
     }
 
-
+    @Override
+    public void onCreate() {
+        AndroidInjection.inject(this);
+        super.onCreate();
+    }
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {

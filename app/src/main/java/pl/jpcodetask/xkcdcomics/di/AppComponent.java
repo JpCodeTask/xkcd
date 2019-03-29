@@ -10,6 +10,7 @@ import dagger.Component;
 import dagger.android.support.AndroidSupportInjectionModule;
 import pl.jpcodetask.xkcdcomics.XkcdApplication;
 import pl.jpcodetask.xkcdcomics.data.source.DataSource;
+import pl.jpcodetask.xkcdcomics.data.source.remote.XkcdApi;
 
 @Singleton
 @Component(
@@ -18,6 +19,7 @@ import pl.jpcodetask.xkcdcomics.data.source.DataSource;
                 DataModule.class,
                 AndroidSupportInjectionModule.class,
                 ActivityBuilderModule.class,
+                ServiceBuilderModule.class
         }
 )
 public interface AppComponent {
@@ -35,4 +37,6 @@ public interface AppComponent {
 
     @Named("repository")
     DataSource getRepository();
+
+    XkcdApi getApi();
 }
