@@ -1,6 +1,7 @@
 package pl.jpcodetask.xkcdcomics.ui.list;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import dagger.android.support.AndroidSupportInjection;
 import pl.jpcodetask.xkcdcomics.R;
@@ -105,7 +106,12 @@ public class ComicListFragment extends Fragment implements ComicListNavigator{
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         FragmentComicListBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_comic_list, container, false);
 
-        binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        if(getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
+            binding.recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
+        } else{
+            binding.recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        }
+
         binding.recyclerView.setAdapter(mComicsAdapter);
 
         return binding.getRoot();
