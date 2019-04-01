@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+
 import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
@@ -63,6 +65,10 @@ public class ComicDetailsFragment extends Fragment {
             if (resourceId != null){
                 Toast.makeText(getContext(), getResources().getString(resourceId), Toast.LENGTH_SHORT).show();
             }
+        });
+
+        mViewModel.getComicUrlLiveData().observe(this, url ->{
+            Glide.with(ComicDetailsFragment.this).load(url).into(binding.image);
         });
     }
 

@@ -22,6 +22,7 @@ public class ComicDetailsViewModel extends ViewModel {
 
     private final MutableLiveData<Comic> mComicLiveData = new MutableLiveData<>();
     private final MutableLiveData<Boolean> mDataLoadingLiveData = new MutableLiveData<>();
+    private final MutableLiveData<String> mComicUrlLiveData = new MutableLiveData<>();
     private final MutableLiveData<Event<Integer>> mErrorEvent = new MutableLiveData<>();
 
     public ComicDetailsViewModel(DataSource dataSource){
@@ -48,6 +49,7 @@ public class ComicDetailsViewModel extends ViewModel {
                     public void onSuccess(Comic comic) {
                         mDataLoadingLiveData.setValue(false);
                         mComicLiveData.setValue(comic);
+                        mComicUrlLiveData.setValue(comic.getImgUrl());
                     }
 
                     @Override
@@ -75,5 +77,9 @@ public class ComicDetailsViewModel extends ViewModel {
 
     LiveData<Event<Integer>> getErrorEventLiveData() {
         return mErrorEvent;
+    }
+
+    LiveData<String> getComicUrlLiveData() {
+        return mComicUrlLiveData;
     }
 }
