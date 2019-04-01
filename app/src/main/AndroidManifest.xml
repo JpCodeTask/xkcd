@@ -20,7 +20,5 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".utils.XkcdService" />
-
     </application>
 </manifest>
