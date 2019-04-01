@@ -61,7 +61,7 @@ public class ComicListFragment extends Fragment implements ComicListNavigator{
     private void setupBindedViewModel(){
         mViewModel = ViewModelProviders.of(this, mXkcdViewModelFactory).get(ComicListViewModel.class);
 
-        mViewModel.getTitleList().observe(this, comics -> {
+        mViewModel.getComicList().observe(this, comics -> {
             mComicsAdapter.setData(comics);
         });
 

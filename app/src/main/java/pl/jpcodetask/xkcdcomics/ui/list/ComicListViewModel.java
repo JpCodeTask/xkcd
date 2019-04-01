@@ -19,15 +19,15 @@ public class ComicListViewModel extends ViewModel {
 
     private final DataSource mDataSource;
 
-    private MutableLiveData<List<Comic>> mMutableTitleListLiveData = new MutableLiveData<>();
+    private MutableLiveData<List<Comic>> mMutableComicListLiveData = new MutableLiveData<>();
     private MutableLiveData<Event<Integer>> mEventComicDetailsMutableLiveData = new MutableLiveData<>();
 
     public ComicListViewModel(DataSource dataSource){
         mDataSource = dataSource;
     }
 
-    LiveData<List<Comic>> getTitleList(){
-        return mMutableTitleListLiveData;
+    LiveData<List<Comic>> getComicList(){
+        return mMutableComicListLiveData;
     }
 
     LiveData<Event<Integer>> getEventComicDetails(){
@@ -50,7 +50,7 @@ public class ComicListViewModel extends ViewModel {
 
                     @Override
                     public void onNext(List<Comic> comics) {
-                        mMutableTitleListLiveData.setValue(comics);
+                        mMutableComicListLiveData.setValue(comics);
                     }
 
                     @Override
