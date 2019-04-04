@@ -7,14 +7,12 @@ import javax.inject.Inject;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import dagger.android.AndroidInjection;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
 import pl.jpcodetask.xkcdcomics.R;
 import pl.jpcodetask.xkcdcomics.databinding.ActivityMainBinding;
-import pl.jpcodetask.xkcdcomics.ui.list.ComicListFragment;
 
 public class MainActivity extends AppCompatActivity implements HasSupportFragmentInjector {
 
@@ -27,13 +25,13 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
         super.onCreate(savedInstanceState);
         ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
+        /*FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment fragment = fragmentManager.findFragmentById(R.id.fragment_container);
         if(fragment == null){
             fragmentManager.beginTransaction()
-                    .add(binding.fragmentContainer.getId(), ComicListFragment.newInstance())
+                    .add(binding.fragmentContainer.getId(), ComicDetailsFragment.newInstance())
                     .commit();
-        }
+        }*/
     }
 
     @Override
