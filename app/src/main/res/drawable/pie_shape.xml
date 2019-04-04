@@ -10,8 +10,8 @@
         android:topRightRadius="100dp" />
 
     <size
-        android:height="60dp"
-        android:width="60dp" />
+        android:height="40dp"
+        android:width="40dp" />
 
     <padding
         android:left="0dp"
