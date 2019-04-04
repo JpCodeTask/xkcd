@@ -12,7 +12,8 @@
         android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.Toolbar
-            app:navigationIcon="@android:drawable/ic_menu_sort_by_size"
+            android:id="@+id/toolbar"
+            app:navigationIcon="@drawable/baseline_menu_black_18dp"
             app:elevation="0dp"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize">
@@ -36,19 +37,16 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         app:fabSize="normal"
-        android:src="@drawable/outline_360_black_24dp"
+        android:src="@drawable/baseline_toys_white_24dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
     <ImageButton
-        android:paddingTop="10dp"
-        android:paddingEnd="10dp"
-        android:cropToPadding="true"
-        android:src="@drawable/outline_call_made_white_18dp"
-        android:layout_alignParentStart="true"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="@drawable/pie_shape"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:src="@drawable/baseline_expand_less_white_24"/>
 
 </RelativeLayout>
