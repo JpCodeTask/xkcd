@@ -1,12 +1,9 @@
 package pl.jpcodetask.xkcdcomics.data.source;
 
-import java.util.List;
-
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import io.reactivex.Observable;
 import io.reactivex.Single;
 import pl.jpcodetask.xkcdcomics.data.model.Comic;
 
@@ -20,11 +17,6 @@ public class Repository implements DataSource {
     public Repository(@Named("local_data_source") DataSource localDataSource, @Named("remote_data_source") DataSource remoteDataSource){
         mLocalDataSource = localDataSource;
         mRemoteDataSource = remoteDataSource;
-    }
-
-    @Override
-    public Observable<List<Comic>> getData() {
-        return mLocalDataSource.getData();
     }
 
     @Override
