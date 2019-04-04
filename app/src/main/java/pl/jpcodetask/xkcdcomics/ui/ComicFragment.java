@@ -50,6 +50,8 @@ public class ComicFragment extends Fragment {
             }
 
         });
+
+        mViewModel.loadComic();
     }
 
     @Nullable
