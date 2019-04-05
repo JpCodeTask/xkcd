@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.google.android.material.appbar.AppBarLayout
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:elevation="0dp"
         android:id="@+id/app_bar_layout"
         android:background="@android:color/transparent"
@@ -16,38 +19,84 @@
             app:navigationIcon="@drawable/baseline_menu_black_18dp"
             app:elevation="0dp"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize">
-
-        </androidx.appcompat.widget.Toolbar>
+            android:layout_height="?attr/actionBarSize" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
 
     <ImageView
-        android:layout_alignBottom="@id/app_bar_layout"
-        android:layout_alignTop="@id/more_btn"
+        android:id="@+id/imageView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_alignBottom="@id/app_bar_layout"
+        app:layout_constraintBottom_toBottomOf="@id/app_bar_layout" />
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        app:elevation="5dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        app:fabSize="normal"
         android:src="@drawable/baseline_toys_white_24dp"
+        app:elevation="5dp"
+        app:fabSize="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/prev_btn" />
+
+    <ImageButton
+        android:src="@drawable/baseline_keyboard_arrow_left_black_18dp"
+        android:id="@+id/next_btn"
+        android:cropToPadding="true"
+        android:background="@android:color/transparent"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/comic_number_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="2010"
+        android:padding="2dp"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/more_btn"
+        app:layout_constraintStart_toEndOf="@id/next_btn" />
+
 
     <ImageButton
         android:id="@+id/more_btn"
-        android:layout_centerInParent="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:layout_marginEnd="8dp"
         android:background="@drawable/pie_shape"
-        android:src="@drawable/baseline_expand_less_white_24"/>
+        android:src="@drawable/baseline_expand_less_white_18dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="parent" />
 
-</RelativeLayout>
+    <ImageButton
+        android:cropToPadding="true"
+        android:background="@android:color/transparent"
+        android:src="@drawable/baseline_keyboard_arrow_right_black_18dp"
+        android:id="@+id/prev_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.25"
+        app:layout_constraintStart_toEndOf="@id/more_btn" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
