@@ -17,7 +17,7 @@
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
-            app:navigationIcon="@drawable/baseline_menu_black_18dp"
+            app:navigationIcon="@drawable/baseline_menu_black_24"
             app:elevation="0dp"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize" />
@@ -46,7 +46,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:src="@drawable/baseline_toys_white_24dp"
+        android:src="@drawable/baseline_autorenew_white_24"
         app:elevation="5dp"
         app:fabSize="normal"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -55,7 +55,7 @@
         app:layout_constraintStart_toEndOf="@+id/prev_btn" />
 
     <ImageButton
-        android:src="@drawable/baseline_keyboard_arrow_left_black_18dp"
+        android:src="@drawable/baseline_chevron_left_black_36"
         android:id="@+id/next_btn"
         android:cropToPadding="true"
         android:background="@android:color/transparent"
@@ -88,7 +88,7 @@
         android:layout_centerInParent="true"
         android:paddingBottom="4dp"
         android:background="@drawable/pie_shape"
-        android:src="@drawable/baseline_expand_less_white_18dp"
+        android:src="@drawable/baseline_expand_less_white_36"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="parent"
         app:layout_constraintStart_toEndOf="parent" />
@@ -96,7 +96,7 @@
     <ImageButton
         android:cropToPadding="true"
         android:background="@android:color/transparent"
-        android:src="@drawable/baseline_keyboard_arrow_right_black_18dp"
+        android:src="@drawable/baseline_chevron_right_black_36"
         android:id="@+id/prev_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -6,12 +6,12 @@
         android:title="@string/menu_item_share"
         android:id="@+id/action_share"
         app:showAsAction="ifRoom"
-        android:icon="@drawable/baseline_share_black_24dp" />
+        android:icon="@drawable/baseline_share_black_24" />
 
     <item
         android:title="@string/menu_item_favorite"
         android:id="@+id/action_favorite"
         app:showAsAction="ifRoom"
-        android:icon="@drawable/outline_star_border_black_24dp" />
+        android:icon="@drawable/baseline_favorite_border_black_24" />
 
 </menu>
