@@ -12,6 +12,8 @@
         xmlns:tools="http://schemas.android.com/tools">
 
         <ProgressBar
+            android:indeterminateOnly="true"
+            android:id="@+id/progress_bar"
             android:layout_marginStart="32dp"
             android:layout_marginTop="@dimen/margin_8"
             android:layout_marginEnd="@dimen/margin_32"
@@ -27,8 +29,8 @@
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:layout_marginStart="@dimen/margin_8"
             android:layout_marginTop="@dimen/margin_8"
             android:layout_marginEnd="@dimen/margin_8"
@@ -73,7 +75,6 @@
             android:layout_marginStart="@dimen/margin_8"
             android:layout_marginEnd="@dimen/margin_8"
             android:layout_marginBottom="@dimen/margin_8"
-            android:text="2010"
             android:padding="2dp"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
             app:layout_constraintBottom_toBottomOf="parent"
