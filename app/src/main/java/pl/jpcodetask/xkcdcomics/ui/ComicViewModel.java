@@ -36,6 +36,15 @@ public class ComicViewModel extends ViewModel {
                 .subscribe();
     }
 
+    void setComicFavorite(boolean isFavorite){
+        if(isFavorite){
+            mMessageEventLiveData.setValue(new Event<>("Add to favorites"));
+        }else{
+            mMessageEventLiveData.setValue(new Event<>("Remove from favorites"));
+        }
+
+    }
+
 
 
 

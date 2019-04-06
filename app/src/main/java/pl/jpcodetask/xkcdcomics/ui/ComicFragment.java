@@ -7,20 +7,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import javax.inject.Inject;
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
 import dagger.android.support.AndroidSupportInjection;
 import pl.jpcodetask.xkcdcomics.databinding.FragmentComicBinding;
-import pl.jpcodetask.xkcdcomics.viewmodel.XkcdViewModelFactory;
+import pl.jpcodetask.xkcdcomics.utils.ViewModelProvider;
 
 public class ComicFragment extends Fragment {
 
-    @Inject
-    XkcdViewModelFactory mViewModelFactory;
     private ComicViewModel mViewModel;
 
     public ComicFragment(){
@@ -41,7 +38,7 @@ public class ComicFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this, mViewModelFactory).get(ComicViewModel.class);
+        mViewModel = ((ViewModelProvider<ComicViewModel>) Objects.requireNonNull(getActivity())).obtainViewModel(getActivity());
         mViewModel.getComicLiveData().observe(this, comic -> Toast.makeText(getContext(), "" + comic.getNum(), Toast.LENGTH_SHORT).show());
         mViewModel.getMessageEventLiveData().observe(this, eventString -> {
             String message = eventString.getEventContentIfNotHandled();
@@ -58,7 +55,6 @@ public class ComicFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         FragmentComicBinding binding = FragmentComicBinding.inflate(inflater, container, false);
-
         return binding.getRoot();
     }
 }
