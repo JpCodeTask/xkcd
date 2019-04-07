@@ -19,7 +19,7 @@ import dagger.android.support.AndroidSupportInjection;
 import pl.jpcodetask.xkcdcomics.databinding.FragmentComicBinding;
 import pl.jpcodetask.xkcdcomics.utils.ViewModelProvider;
 
-public class ComicFragment extends Fragment {
+public class ComicFragment extends Fragment implements ComicNavigator{
 
     private ComicViewModel mViewModel;
 
@@ -79,5 +79,30 @@ public class ComicFragment extends Fragment {
         mViewModel.loadComic();
 
         return binding.getRoot();
+    }
+
+    @Override
+    public void onNext(int currentComicNumber) {
+
+    }
+
+    @Override
+    public void onPrev(int currentComicNumber) {
+
+    }
+
+    @Override
+    public void onGoTo(int currentComicNumber) {
+
+    }
+
+    @Override
+    public void showDetails() {
+
+    }
+
+    @Override
+    public void hideDetails() {
+
     }
 }
