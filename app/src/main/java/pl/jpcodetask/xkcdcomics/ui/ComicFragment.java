@@ -45,6 +45,7 @@ public class ComicFragment extends Fragment {
         FragmentComicBinding binding = FragmentComicBinding.inflate(inflater, container, false);
 
         mViewModel = ((ViewModelProvider<ComicViewModel>) Objects.requireNonNull(getActivity())).obtainViewModel(getActivity());
+
         mViewModel.getIsDataLoading().observe(this, isDataLoading ->{
             if(isDataLoading){
                 binding.progressBar.setVisibility(View.VISIBLE);
@@ -52,6 +53,7 @@ public class ComicFragment extends Fragment {
                 binding.progressBar.setVisibility(View.GONE);
             }
         });
+
         mViewModel.getComicLiveData().observe(this, comic -> {
             binding.comicNumberTextView.setText(String.valueOf(comic.getNum()));
             ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(comic.getTitle());
@@ -64,6 +66,14 @@ public class ComicFragment extends Fragment {
                 Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
             }
 
+        });
+
+        mViewModel.getIsLatest().observe(this, isLatest ->{
+            if (isLatest){
+                binding.nextBtn.setEnabled(false);
+            }else{
+                binding.nextBtn.setEnabled(true);
+            }
         });
 
         mViewModel.loadComic();

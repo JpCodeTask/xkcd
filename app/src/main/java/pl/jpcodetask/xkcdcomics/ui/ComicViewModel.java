@@ -15,6 +15,7 @@ public class ComicViewModel extends ViewModel {
     private MutableLiveData<Comic> mComicLiveData = new MutableLiveData<>();
     private MutableLiveData<Event<String>> mMessageEventLiveData = new MutableLiveData<>();
     private MutableLiveData<Boolean> mIsDataLoading = new MutableLiveData<>();
+    private MutableLiveData<Boolean> mIsLatest = new MutableLiveData<>();
 
     public ComicViewModel(DataSource dataSource) {
         mDataSource = dataSource;
@@ -37,12 +38,17 @@ public class ComicViewModel extends ViewModel {
     }
 
     void setComicFavorite(boolean isFavorite){
+        //TODO add missing implementation
         if(isFavorite){
             mMessageEventLiveData.setValue(new Event<>("Add to favorites"));
         }else{
             mMessageEventLiveData.setValue(new Event<>("Remove from favorites"));
         }
 
+    }
+
+    void goToComic(int comicNumber){
+        //TODO implement
     }
 
 
@@ -59,4 +65,6 @@ public class ComicViewModel extends ViewModel {
     LiveData<Boolean> getIsDataLoading() {
         return mIsDataLoading;
     }
+
+    LiveData<Boolean> getIsLatest() { return mIsLatest; }
 }
