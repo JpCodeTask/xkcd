@@ -7,8 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-
 import java.util.Objects;
 
 import androidx.annotation.NonNull;
@@ -17,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import dagger.android.support.AndroidSupportInjection;
 import pl.jpcodetask.xkcdcomics.databinding.FragmentComicBinding;
+import pl.jpcodetask.xkcdcomics.utils.GlideApp;
 import pl.jpcodetask.xkcdcomics.utils.ViewModelProvider;
 
 public class ComicFragment extends Fragment implements ComicNavigator{
@@ -48,7 +47,7 @@ public class ComicFragment extends Fragment implements ComicNavigator{
 
         mViewModel.getComic().observe(this, comic -> {
             ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(comic.getTitle());
-            Glide.with(this).load(comic.getImgUrl()).into(binding.imageView);
+            GlideApp.with(this).load(comic.getImgUrl()).into(binding.imageView);
         });
 
         mViewModel.getMessageEvent().observe(this, eventString -> {
