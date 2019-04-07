@@ -114,12 +114,12 @@ public class ComicFragment extends Fragment implements ComicNavigator{
     }
 
     @Override
-    public void onNext(int currentComicNumber) {
+    public void onNext() {
 
     }
 
     @Override
-    public void onPrev(int currentComicNumber) {
+    public void onPrev() {
 
     }
 
