@@ -12,10 +12,10 @@ public class ComicViewModel extends ViewModel {
 
     private final DataSource mDataSource;
 
-    private MutableLiveData<Comic> mComicLiveData = new MutableLiveData<>();
-    private MutableLiveData<Event<String>> mMessageEventLiveData = new MutableLiveData<>();
-    private MutableLiveData<Boolean> mIsDataLoading = new MutableLiveData<>();
-    private MutableLiveData<Boolean> mIsLatest = new MutableLiveData<>();
+    private final MutableLiveData<Comic> mComicLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Event<String>> mMessageEventLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> mIsDataLoading = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> mIsLatest = new MutableLiveData<>();
 
     public ComicViewModel(DataSource dataSource) {
         mDataSource = dataSource;
@@ -54,17 +54,17 @@ public class ComicViewModel extends ViewModel {
 
 
 
-    LiveData<Comic> getComicLiveData(){
+    public LiveData<Comic> getComic(){
         return mComicLiveData;
     }
 
-    LiveData<Event<String>> getMessageEventLiveData(){
+    public LiveData<Event<String>> getMessageEvent(){
         return mMessageEventLiveData;
     }
 
-    LiveData<Boolean> getIsDataLoading() {
+    public LiveData<Boolean> getIsDataLoading() {
         return mIsDataLoading;
     }
 
-    LiveData<Boolean> getIsLatest() { return mIsLatest; }
+    public LiveData<Boolean> getIsLatest() { return mIsLatest; }
 }

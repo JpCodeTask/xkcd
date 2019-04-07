@@ -3,28 +3,38 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+        <import type="android.view.View" />
+
+        <variable
+            name="navigator"
+            type="pl.jpcodetask.xkcdcomics.ui.ComicNavigator" />
+
+        <variable
+            name="viewmodel"
+            type="pl.jpcodetask.xkcdcomics.ui.ComicViewModel" />
 
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        xmlns:tools="http://schemas.android.com/tools">
+        android:layout_height="match_parent">
 
         <ProgressBar
-            android:indeterminateOnly="true"
             android:id="@+id/progress_bar"
+            style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:layout_marginTop="@dimen/margin_8"
             android:layout_marginEnd="@dimen/margin_32"
             android:layout_marginBottom="@dimen/margin_8"
+            android:indeterminateOnly="true"
+            android:visibility="@{viewmodel.isDataLoading ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toTopOf="@id/more_btn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            app:layout_constraintTop_toTopOf="parent" />
 
 
         <ImageView
@@ -57,14 +67,14 @@
             app:layout_constraintStart_toEndOf="@+id/prev_btn" />
 
         <ImageButton
-            android:src="@drawable/baseline_chevron_left_black_36"
             android:id="@+id/next_btn"
-            android:cropToPadding="true"
-            android:background="@android:color/transparent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_8"
             android:layout_marginBottom="@dimen/margin_8"
+            android:background="@android:color/transparent"
+            android:cropToPadding="true"
+            android:src="@drawable/baseline_chevron_left_black_36"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -76,6 +86,7 @@
             android:layout_marginEnd="@dimen/margin_8"
             android:layout_marginBottom="@dimen/margin_8"
             android:padding="2dp"
+            android:text="@{`` + viewmodel.comic.num}"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/more_btn"
@@ -87,22 +98,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:paddingBottom="@dimen/padding_4"
             android:background="@drawable/pie_shape"
+            android:paddingBottom="@dimen/padding_4"
             android:src="@drawable/baseline_expand_less_white_36"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="parent"
             app:layout_constraintStart_toEndOf="parent" />
 
         <ImageButton
-            android:cropToPadding="true"
-            android:background="@android:color/transparent"
-            android:src="@drawable/baseline_chevron_right_black_36"
             android:id="@+id/prev_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin_8"
             android:layout_marginBottom="@dimen/margin_8"
+            android:background="@android:color/transparent"
+            android:cropToPadding="true"
+            android:src="@drawable/baseline_chevron_right_black_36"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.25"

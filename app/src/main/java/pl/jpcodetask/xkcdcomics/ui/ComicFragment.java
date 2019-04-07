@@ -46,21 +46,12 @@ public class ComicFragment extends Fragment implements ComicNavigator{
 
         mViewModel = ((ViewModelProvider<ComicViewModel>) Objects.requireNonNull(getActivity())).obtainViewModel(getActivity());
 
-        mViewModel.getIsDataLoading().observe(this, isDataLoading ->{
-            if(isDataLoading){
-                binding.progressBar.setVisibility(View.VISIBLE);
-            }else{
-                binding.progressBar.setVisibility(View.GONE);
-            }
-        });
-
-        mViewModel.getComicLiveData().observe(this, comic -> {
-            binding.comicNumberTextView.setText(String.valueOf(comic.getNum()));
+        mViewModel.getComic().observe(this, comic -> {
             ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(comic.getTitle());
             Glide.with(this).load(comic.getImgUrl()).into(binding.imageView);
         });
 
-        mViewModel.getMessageEventLiveData().observe(this, eventString -> {
+        mViewModel.getMessageEvent().observe(this, eventString -> {
             String message = eventString.getEventContentIfNotHandled();
             if (message != null){
                 Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
@@ -68,17 +59,15 @@ public class ComicFragment extends Fragment implements ComicNavigator{
 
         });
 
-        mViewModel.getIsLatest().observe(this, isLatest ->{
-            if (isLatest){
-                binding.nextBtn.setEnabled(false);
-            }else{
-                binding.nextBtn.setEnabled(true);
-            }
-        });
-
-        mViewModel.loadComic();
-
+        binding.setLifecycleOwner(getActivity());
+        binding.setViewmodel(mViewModel);
         return binding.getRoot();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mViewModel.loadComic();
     }
 
     @Override
@@ -92,7 +81,7 @@ public class ComicFragment extends Fragment implements ComicNavigator{
     }
 
     @Override
-    public void onGoTo(int currentComicNumber) {
+    public void onGoTo(int comicNumber) {
 
     }
 
