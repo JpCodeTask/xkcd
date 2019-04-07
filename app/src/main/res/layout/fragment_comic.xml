@@ -24,12 +24,12 @@
             android:id="@+id/progress_bar"
             style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="10dp"
             android:layout_marginStart="32dp"
             android:layout_marginTop="@dimen/margin_8"
             android:layout_marginEnd="@dimen/margin_32"
             android:layout_marginBottom="@dimen/margin_8"
-            android:indeterminateOnly="true"
+            android:indeterminate="true"
             android:visibility="@{viewmodel.isDataLoading ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toTopOf="@id/more_btn"
             app:layout_constraintEnd_toEndOf="parent"
@@ -72,7 +72,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_8"
             android:layout_marginBottom="@dimen/margin_8"
-            android:background="@android:color/transparent"
+            android:background="?android:selectableItemBackground"
             android:cropToPadding="true"
             android:src="@drawable/baseline_chevron_left_black_36"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -90,7 +90,8 @@
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/more_btn"
-            app:layout_constraintStart_toEndOf="@id/next_btn" />
+            app:layout_constraintStart_toEndOf="@id/next_btn"
+            tools:text="2100" />
 
 
         <ImageButton
@@ -111,7 +112,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin_8"
             android:layout_marginBottom="@dimen/margin_8"
-            android:background="@android:color/transparent"
+            android:background="?android:selectableItemBackground"
             android:cropToPadding="true"
             android:src="@drawable/baseline_chevron_right_black_36"
             app:layout_constraintBottom_toBottomOf="parent"
