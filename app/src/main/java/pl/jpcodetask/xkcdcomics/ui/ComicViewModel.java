@@ -16,12 +16,14 @@ public class ComicViewModel extends ViewModel {
     private final MutableLiveData<Event<String>> mMessageEventLiveData = new MutableLiveData<>();
     private final MutableLiveData<Boolean> mIsDataLoading = new MutableLiveData<>();
     private final MutableLiveData<Boolean> mIsLatest = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> mIsDetailsVisible = new MutableLiveData<>();
 
     public ComicViewModel(DataSource dataSource) {
         mDataSource = dataSource;
     }
 
     void loadComic(){
+        mIsDetailsVisible.setValue(true);
         mIsDataLoading.setValue(true);
         mDataSource.getLatestComic()
                 .subscribeOn(Schedulers.io())
@@ -51,7 +53,9 @@ public class ComicViewModel extends ViewModel {
         //TODO implement
     }
 
-
+    void comicDetails(){
+        mIsDetailsVisible.setValue(!mIsDetailsVisible.getValue());
+    }
 
 
     public LiveData<Comic> getComic(){
@@ -67,4 +71,6 @@ public class ComicViewModel extends ViewModel {
     }
 
     public LiveData<Boolean> getIsLatest() { return mIsLatest; }
+
+    public LiveData<Boolean> getIsDetailsVisible() { return mIsDetailsVisible; }
 }

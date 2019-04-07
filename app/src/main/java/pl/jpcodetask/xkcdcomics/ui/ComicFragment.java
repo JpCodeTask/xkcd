@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.TranslateAnimation;
 import android.widget.Toast;
 
 import java.util.Objects;
@@ -21,6 +22,7 @@ import pl.jpcodetask.xkcdcomics.utils.ViewModelProvider;
 public class ComicFragment extends Fragment implements ComicNavigator{
 
     private ComicViewModel mViewModel;
+    private FragmentComicBinding mBinding;
 
     public ComicFragment(){
         //empty
@@ -41,13 +43,23 @@ public class ComicFragment extends Fragment implements ComicNavigator{
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        FragmentComicBinding binding = FragmentComicBinding.inflate(inflater, container, false);
+        mBinding = FragmentComicBinding.inflate(inflater, container, false);
 
+        setupViewModel();
+
+        mBinding.setLifecycleOwner(getActivity());
+        mBinding.setViewmodel(mViewModel);
+        mBinding.setNavigator(this);
+        return mBinding.getRoot();
+    }
+
+
+    private void setupViewModel(){
         mViewModel = ((ViewModelProvider<ComicViewModel>) Objects.requireNonNull(getActivity())).obtainViewModel(getActivity());
 
         mViewModel.getComic().observe(this, comic -> {
             ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(comic.getTitle());
-            GlideApp.with(this).load(comic.getImgUrl()).into(binding.imageView);
+            GlideApp.with(this).load(comic.getImgUrl()).into(mBinding.imageView);
         });
 
         mViewModel.getMessageEvent().observe(this, eventString -> {
@@ -58,9 +70,41 @@ public class ComicFragment extends Fragment implements ComicNavigator{
 
         });
 
-        binding.setLifecycleOwner(getActivity());
-        binding.setViewmodel(mViewModel);
-        return binding.getRoot();
+        mViewModel.getIsDetailsVisible().observe(this, isDetailsVisible ->{
+            if(isDetailsVisible){
+                slideOut();
+            }else{
+                slideIn();
+            }
+        });
+    }
+
+    private void slideOut(){
+
+        mBinding.randomFloatingBtn.setVisibility(View.VISIBLE);
+       /* TranslateAnimation animate = new TranslateAnimation(
+                0,
+                0,
+                mBinding.comicDetailsView.getHeight(),
+                0);
+        animate.setDuration(500);
+        animate.setFillAfter(true);
+        mBinding.comicDetailsView.startAnimation(animate);*/
+        mBinding.comicDetailsView.setVisibility(View.GONE);
+    }
+
+    private void slideIn(){
+
+        mBinding.comicDetailsView.setVisibility(View.VISIBLE);
+       /* TranslateAnimation animate = new TranslateAnimation(
+                0,
+                0,
+                0,
+                mBinding.comicDetailsView.getHeight());
+        animate.setDuration(500);
+        animate.setFillAfter(true);
+        mBinding.comicDetailsView.startAnimation(animate);*/
+        mBinding.randomFloatingBtn.setVisibility(View.GONE);
     }
 
     @Override
@@ -85,12 +129,8 @@ public class ComicFragment extends Fragment implements ComicNavigator{
     }
 
     @Override
-    public void showDetails() {
-
+    public void onComicDetails() {
+        mViewModel.comicDetails();
     }
 
-    @Override
-    public void hideDetails() {
-
-    }
 }
