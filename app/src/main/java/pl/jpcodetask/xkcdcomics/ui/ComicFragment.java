@@ -133,4 +133,9 @@ public class ComicFragment extends Fragment implements ComicNavigator{
         mViewModel.comicDetails();
     }
 
+    @Override
+    public void onRandom() {
+
+    }
+
 }
