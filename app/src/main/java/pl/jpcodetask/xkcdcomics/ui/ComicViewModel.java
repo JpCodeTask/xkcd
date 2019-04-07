@@ -53,8 +53,20 @@ public class ComicViewModel extends ViewModel {
         //TODO implement
     }
 
+    void prevComic(){
+        //TODO implement
+    }
+
+    void nextComic(){
+        //TODO implement
+    }
+
     void comicDetails(){
-        mIsDetailsVisible.setValue(!mIsDetailsVisible.getValue());
+        if(mIsDetailsVisible.getValue() != null){
+            mIsDetailsVisible.setValue(!mIsDetailsVisible.getValue());
+        }else{
+            mIsDetailsVisible.setValue(true);
+        }
     }
 
 
