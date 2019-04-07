@@ -1,8 +1,8 @@
 package pl.jpcodetask.xkcdcomics.ui;
 
 public interface ComicNavigator {
-    void onNext(int currentComicNumber);
-    void onPrev(int currentComicNumber);
+    void onNext();
+    void onPrev();
     void onGoTo(int comicNumber);
     void onComicDetails();
 }
