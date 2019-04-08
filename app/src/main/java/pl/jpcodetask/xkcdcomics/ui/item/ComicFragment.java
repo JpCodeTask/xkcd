@@ -1,4 +1,4 @@
-package pl.jpcodetask.xkcdcomics.ui;
+package pl.jpcodetask.xkcdcomics.ui.item;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -36,7 +36,7 @@ public class ComicFragment extends Fragment implements ComicNavigator{
     }
 
 
-    static ComicFragment newInstance(){
+    public static ComicFragment newInstance(){
         return new ComicFragment();
     }
 

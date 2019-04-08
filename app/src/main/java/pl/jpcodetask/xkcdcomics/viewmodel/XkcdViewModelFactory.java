@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import pl.jpcodetask.xkcdcomics.data.source.DataSource;
-import pl.jpcodetask.xkcdcomics.ui.ComicViewModel;
+import pl.jpcodetask.xkcdcomics.ui.item.ComicViewModel;
 
 @Singleton
 public class XkcdViewModelFactory implements ViewModelProvider.Factory {

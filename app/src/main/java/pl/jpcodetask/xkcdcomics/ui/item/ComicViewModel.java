@@ -1,4 +1,4 @@
-package pl.jpcodetask.xkcdcomics.ui;
+package pl.jpcodetask.xkcdcomics.ui.item;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

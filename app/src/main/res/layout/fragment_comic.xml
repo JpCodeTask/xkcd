@@ -7,11 +7,11 @@
 
         <variable
             name="navigator"
-            type="pl.jpcodetask.xkcdcomics.ui.ComicNavigator" />
+            type="pl.jpcodetask.xkcdcomics.ui.item.ComicNavigator" />
 
         <variable
             name="viewmodel"
-            type="pl.jpcodetask.xkcdcomics.ui.ComicViewModel" />
+            type="pl.jpcodetask.xkcdcomics.ui.item.ComicViewModel" />
 
     </data>
 

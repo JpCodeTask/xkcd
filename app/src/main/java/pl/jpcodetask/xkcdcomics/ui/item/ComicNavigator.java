@@ -1,4 +1,4 @@
-package pl.jpcodetask.xkcdcomics.ui;
+package pl.jpcodetask.xkcdcomics.ui.item;
 
 public interface ComicNavigator {
     void onNext();
