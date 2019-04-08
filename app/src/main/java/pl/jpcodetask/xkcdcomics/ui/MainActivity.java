@@ -11,7 +11,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.ViewModelProviders;
 import dagger.android.AndroidInjection;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
@@ -19,17 +21,19 @@ import dagger.android.support.HasSupportFragmentInjector;
 import pl.jpcodetask.xkcdcomics.R;
 import pl.jpcodetask.xkcdcomics.databinding.ActivityMainBinding;
 import pl.jpcodetask.xkcdcomics.ui.item.ComicFragment;
-import pl.jpcodetask.xkcdcomics.ui.item.ComicViewModel;
+import pl.jpcodetask.xkcdcomics.utils.ViewModelProvider;
+import pl.jpcodetask.xkcdcomics.viewmodel.XkcdViewModelFactory;
 
 public class MainActivity extends AppCompatActivity implements HasSupportFragmentInjector {
 
     @Inject
     DispatchingAndroidInjector<Fragment> mFragmentDispatchingAndroidInjector;
 
-
+    @Inject
+    XkcdViewModelFactory mXkcdViewModelFactory;
 
     private ActivityMainBinding mBinding;
-    private ComicViewModel mComicViewModel;
+    private NavigationViewModel mNavigationViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,19 +41,29 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
+        setupViewModel();
         setupNavigationDrawer();
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment fragment = fragmentManager.findFragmentById(R.id.fragment_container);
         if(fragment == null){
+            ComicFragment comicFragment = ComicFragment.newInstance();
             fragmentManager.beginTransaction()
-                    .add(mBinding.fragmentContainer.getId(), ComicFragment.newInstance())
+                    .add(mBinding.fragmentContainer.getId(), comicFragment)
                     .commit();
+
+            mNavigationViewModel.navigateTo(comicFragment);
         }
     }
 
+    private void setupViewModel() {
+        mNavigationViewModel = ViewModelProviders.of(this, mXkcdViewModelFactory).get(NavigationViewModel.class);
+        mNavigationViewModel.getNavigationItem().observe(this, item -> {
+            mBinding.navView.getMenu().getItem(item.getNavigationItem()).setChecked(true);
+        });
+    }
+
     private void setupNavigationDrawer() {
-        mBinding.navView.getMenu().getItem(0).setChecked(true);
         mBinding.navView.setNavigationItemSelectedListener(menuItem ->{
             switch (menuItem.getItemId()){
                 case R.id.nav_action_explore:
@@ -62,7 +76,6 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
                 default:
                     break;
             }
-            menuItem.setChecked(true);
             mBinding.drawer.closeDrawers();
             return true;
         });

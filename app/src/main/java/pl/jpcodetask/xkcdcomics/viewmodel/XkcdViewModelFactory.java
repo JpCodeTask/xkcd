@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import pl.jpcodetask.xkcdcomics.data.source.DataSource;
+import pl.jpcodetask.xkcdcomics.ui.NavigationViewModel;
 import pl.jpcodetask.xkcdcomics.ui.item.ComicViewModel;
 
 @Singleton
@@ -25,6 +26,10 @@ public class XkcdViewModelFactory implements ViewModelProvider.Factory {
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if (modelClass.isAssignableFrom(ComicViewModel.class)){
             return (T) new ComicViewModel(mRepository);
+        }
+
+        if (modelClass.isAssignableFrom(NavigationViewModel.class)){
+            return (T) new NavigationViewModel();
         }
         throw new IllegalArgumentException("Model class is not assignable");
     }

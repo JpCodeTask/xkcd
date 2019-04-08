@@ -20,10 +20,13 @@ import androidx.lifecycle.ViewModelProviders;
 import dagger.android.support.AndroidSupportInjection;
 import pl.jpcodetask.xkcdcomics.R;
 import pl.jpcodetask.xkcdcomics.databinding.FragmentComicBinding;
+import pl.jpcodetask.xkcdcomics.ui.NavigationItem;
+import pl.jpcodetask.xkcdcomics.ui.NavigationViewModel;
 import pl.jpcodetask.xkcdcomics.utils.GlideApp;
+import pl.jpcodetask.xkcdcomics.utils.ViewModelProvider;
 import pl.jpcodetask.xkcdcomics.viewmodel.XkcdViewModelFactory;
 
-public class ComicFragment extends Fragment implements ComicNavigator{
+public class ComicFragment extends Fragment implements ComicNavigator, NavigationItem {
 
     @Inject
     XkcdViewModelFactory mViewModelFactory;
@@ -50,9 +53,7 @@ public class ComicFragment extends Fragment implements ComicNavigator{
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         mBinding = FragmentComicBinding.inflate(inflater, container, false);
-
 
         setupViewModel();
         setupToolbar();
@@ -181,4 +182,8 @@ public class ComicFragment extends Fragment implements ComicNavigator{
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public int getNavigationItem() {
+        return NAVIGATION_EXPLORE;
+    }
 }
