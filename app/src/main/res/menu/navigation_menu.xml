@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
 
-    <item
-        android:id="@+id/nav_action_favorites"
-        android:title="@string/nav_item_favorites"
-        app:showAsAction="always|withText"
-        android:icon="@drawable/baseline_favorite_black_24"/>
+        <item
+            android:id="@+id/nav_action_explore"
+            android:title="@string/nav_item_explore"
+            android:icon="@drawable/baseline_explore_black_24"/>
+
+
+        <item
+            android:id="@+id/nav_action_favorites"
+            android:title="@string/nav_item_favorites"
+            android:icon="@drawable/baseline_favorite_black_24"/>
+
+    </group>
 
 </menu>

@@ -3,6 +3,7 @@ package pl.jpcodetask.xkcdcomics.ui;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import javax.inject.Inject;
 
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
 
         setupViewModel();
         setupToolbar();
+        setupNavigationDrawer();
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment fragment = fragmentManager.findFragmentById(R.id.fragment_container);
@@ -52,12 +54,34 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
         }
     }
 
+
+
     private void setupViewModel() {
         mComicViewModel = obtainViewModel(this);
     }
 
     private void setupToolbar() {
         setSupportActionBar(mBinding.toolbar);
+    }
+
+    private void setupNavigationDrawer() {
+        mBinding.navView.getMenu().getItem(0).setChecked(true);
+        mBinding.navView.setNavigationItemSelectedListener(menuItem ->{
+            switch (menuItem.getItemId()){
+                case R.id.nav_action_explore:
+                    break;
+
+                case R.id.nav_action_favorites:
+                    Toast.makeText(this, "To implement", Toast.LENGTH_SHORT).show();
+                    break;
+
+                default:
+                    break;
+            }
+            menuItem.setChecked(true);
+            mBinding.drawer.closeDrawers();
+            return true;
+        });
     }
 
     @Override
