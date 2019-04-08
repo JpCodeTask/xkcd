@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">XKCD comics</string>
+    <string name="app_version">version 1.0</string>
     <string name="item_loading_error">Item not found</string>
+    <string name="menu_item_favorite">action favorite</string>
+    <string name="menu_item_share">action share</string>
+    <string name="menu_item_unfavorite">action_unfavorite</string>
 </resources>

@@ -2,15 +2,11 @@ package pl.jpcodetask.xkcdcomics.di;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
-import pl.jpcodetask.xkcdcomics.ui.details.ComicDetailsFragment;
-import pl.jpcodetask.xkcdcomics.ui.list.ComicListFragment;
+import pl.jpcodetask.xkcdcomics.ui.ComicFragment;
 
 @Module
 abstract class FragmentBuilderModule {
 
     @ContributesAndroidInjector
-    abstract ComicListFragment contributeComicListFragmentInjector();
-
-    @ContributesAndroidInjector
-    abstract ComicDetailsFragment contributeComicDetailsFragmentInjector();
+    abstract ComicFragment contributeComicFragmentInjector();
 }
