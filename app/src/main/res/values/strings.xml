@@ -5,4 +5,5 @@
     <string name="menu_item_favorite">action favorite</string>
     <string name="menu_item_share">action share</string>
     <string name="menu_item_unfavorite">action_unfavorite</string>
+    <string name="nav_item_favorites">Favorites</string>
 </resources>
