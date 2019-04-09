@@ -26,7 +26,7 @@ import pl.jpcodetask.xkcdcomics.utils.GlideApp;
 import pl.jpcodetask.xkcdcomics.utils.ViewModelProvider;
 import pl.jpcodetask.xkcdcomics.viewmodel.XkcdViewModelFactory;
 
-public class ComicFragment extends Fragment implements ComicNavigator, NavigationItem {
+public class ComicFragment extends Fragment implements ComicNavigator {
 
     @Inject
     XkcdViewModelFactory mViewModelFactory;
@@ -182,8 +182,4 @@ public class ComicFragment extends Fragment implements ComicNavigator, Navigatio
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public int getNavigationItem() {
-        return NAVIGATION_EXPLORE;
-    }
 }

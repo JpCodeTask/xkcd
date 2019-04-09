@@ -44,22 +44,31 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
         setupViewModel();
         setupNavigationDrawer();
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        Fragment fragment = fragmentManager.findFragmentById(R.id.fragment_container);
-        if(fragment == null){
-            ComicFragment comicFragment = ComicFragment.newInstance();
-            fragmentManager.beginTransaction()
-                    .add(mBinding.fragmentContainer.getId(), comicFragment)
-                    .commit();
+        mNavigationViewModel.navigateTo(NavigationItem.NAVIGATION_EXPLORE);
 
-            mNavigationViewModel.navigateTo(comicFragment);
-        }
     }
 
     private void setupViewModel() {
         mNavigationViewModel = ViewModelProviders.of(this, mXkcdViewModelFactory).get(NavigationViewModel.class);
         mNavigationViewModel.getNavigationItem().observe(this, item -> {
-            mBinding.navView.getMenu().getItem(item.getNavigationItem()).setChecked(true);
+            switch (item){
+                case NavigationItem.NAVIGATION_EXPLORE:
+
+                    FragmentManager fragmentManager = getSupportFragmentManager();
+                    Fragment fragment = fragmentManager.findFragmentById(R.id.fragment_container);
+                    if(fragment == null){
+                        ComicFragment comicFragment = ComicFragment.newInstance();
+                        fragmentManager.beginTransaction()
+                                .add(mBinding.fragmentContainer.getId(), comicFragment)
+                                .commit();
+                    }
+                    break;
+
+                default:
+                    Toast.makeText(this, "To implement", Toast.LENGTH_SHORT).show();
+            }
+
+            mBinding.navView.getMenu().getItem(item).setChecked(true);
         });
     }
 

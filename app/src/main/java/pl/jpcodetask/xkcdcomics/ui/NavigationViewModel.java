@@ -6,13 +6,13 @@ import androidx.lifecycle.ViewModel;
 
 public class NavigationViewModel extends ViewModel {
 
-    private final MutableLiveData<NavigationItem> mNavigationItem = new MutableLiveData<>();
+    private final MutableLiveData<Integer> mNavigationItem = new MutableLiveData<>();
 
-    public LiveData<NavigationItem> getNavigationItem(){
+    public LiveData<Integer> getNavigationItem(){
         return mNavigationItem;
     }
 
-    public void navigateTo(NavigationItem navigationItem){
+    public void navigateTo(Integer navigationItem){
         mNavigationItem.setValue(navigationItem);
     }
 
