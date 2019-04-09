@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
                     break;
 
                 case R.id.nav_action_favorites:
-                    Toast.makeText(this, "To implement", Toast.LENGTH_SHORT).show();
+                    mNavigationViewModel.navigateTo(NavigationItem.NAVIGATION_FAVORITES);
                     break;
 
                 default:
