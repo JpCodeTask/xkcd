@@ -1,6 +1,7 @@
 package pl.jpcodetask.xkcdcomics.di;
 
 import android.app.Application;
+import android.content.Context;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -37,6 +38,9 @@ public interface AppComponent {
 
     @Named("repository")
     DataSource getRepository();
+
+    @Named("application_context")
+    Context getAppContext();
 
     XkcdApi getApi();
 }

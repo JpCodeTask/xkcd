@@ -7,10 +7,12 @@ import pl.jpcodetask.xkcdcomics.Event;
 import pl.jpcodetask.xkcdcomics.data.model.Comic;
 import pl.jpcodetask.xkcdcomics.data.source.DataSource;
 import pl.jpcodetask.xkcdcomics.utils.Schedulers;
+import pl.jpcodetask.xkcdcomics.utils.SharedPreferenceProvider;
 
 public class ComicViewModel extends ViewModel {
 
     private final DataSource mDataSource;
+    private final SharedPreferenceProvider mPreferenceProvider;
 
     private final MutableLiveData<Comic> mComicLiveData = new MutableLiveData<>();
     private final MutableLiveData<Event<String>> mMessageEventLiveData = new MutableLiveData<>();
@@ -18,8 +20,10 @@ public class ComicViewModel extends ViewModel {
     private final MutableLiveData<Boolean> mIsLatest = new MutableLiveData<>();
     private final MutableLiveData<Boolean> mIsDetailsVisible = new MutableLiveData<>();
 
-    public ComicViewModel(DataSource dataSource) {
+
+    public ComicViewModel(DataSource dataSource, SharedPreferenceProvider sharedPreferenceProvider) {
         mDataSource = dataSource;
+        mPreferenceProvider = sharedPreferenceProvider;
     }
 
     void loadComic(){
@@ -31,6 +35,8 @@ public class ComicViewModel extends ViewModel {
                 .doOnSuccess(comic -> {
                     mIsDataLoading.setValue(false);
                     mComicLiveData.setValue(comic);
+                    mIsLatest.setValue(true);
+                    mPreferenceProvider.setLatestComicNumber(comic.getNum());
                 })
                 .doOnError(error ->{
                     mIsDataLoading.setValue(false);
