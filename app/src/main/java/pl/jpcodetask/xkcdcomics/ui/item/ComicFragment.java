@@ -20,10 +20,7 @@ import androidx.lifecycle.ViewModelProviders;
 import dagger.android.support.AndroidSupportInjection;
 import pl.jpcodetask.xkcdcomics.R;
 import pl.jpcodetask.xkcdcomics.databinding.FragmentComicBinding;
-import pl.jpcodetask.xkcdcomics.ui.NavigationItem;
-import pl.jpcodetask.xkcdcomics.ui.NavigationViewModel;
 import pl.jpcodetask.xkcdcomics.utils.GlideApp;
-import pl.jpcodetask.xkcdcomics.utils.ViewModelProvider;
 import pl.jpcodetask.xkcdcomics.viewmodel.XkcdViewModelFactory;
 
 public class ComicFragment extends Fragment implements ComicNavigator {
