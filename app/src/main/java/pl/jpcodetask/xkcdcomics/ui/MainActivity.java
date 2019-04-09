@@ -11,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 import dagger.android.AndroidInjection;
@@ -21,7 +20,6 @@ import dagger.android.support.HasSupportFragmentInjector;
 import pl.jpcodetask.xkcdcomics.R;
 import pl.jpcodetask.xkcdcomics.databinding.ActivityMainBinding;
 import pl.jpcodetask.xkcdcomics.ui.item.ComicFragment;
-import pl.jpcodetask.xkcdcomics.utils.ViewModelProvider;
 import pl.jpcodetask.xkcdcomics.viewmodel.XkcdViewModelFactory;
 
 public class MainActivity extends AppCompatActivity implements HasSupportFragmentInjector {
@@ -41,14 +39,14 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
-        setupViewModel();
+        setupNavigationViewModel();
         setupNavigationDrawer();
 
         mNavigationViewModel.navigateTo(NavigationItem.NAVIGATION_EXPLORE);
 
     }
 
-    private void setupViewModel() {
+    private void setupNavigationViewModel() {
         mNavigationViewModel = ViewModelProviders.of(this, mXkcdViewModelFactory).get(NavigationViewModel.class);
         mNavigationViewModel.getNavigationItem().observe(this, item -> {
             switch (item){
@@ -76,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
         mBinding.navView.setNavigationItemSelectedListener(menuItem ->{
             switch (menuItem.getItemId()){
                 case R.id.nav_action_explore:
+                    mNavigationViewModel.navigateTo(NavigationItem.NAVIGATION_EXPLORE);
                     break;
 
                 case R.id.nav_action_favorites:
