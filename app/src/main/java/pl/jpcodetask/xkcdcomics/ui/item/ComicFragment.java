@@ -99,6 +99,14 @@ public class ComicFragment extends Fragment implements ComicNavigator {
                 mBinding.nextBtn.setEnabled(true);
             }
         });
+
+        mViewModel.getIsFirst().observe(this, isLatest -> {
+            if (isLatest){
+                mBinding.prevBtn.setEnabled(false);
+            }else{
+                mBinding.prevBtn.setEnabled(true);
+            }
+        });
     }
 
     private void slideOut(){

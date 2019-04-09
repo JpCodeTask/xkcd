@@ -18,6 +18,7 @@ public class ComicViewModel extends ViewModel {
     private final MutableLiveData<Event<String>> mMessageEventLiveData = new MutableLiveData<>();
     private final MutableLiveData<Boolean> mIsDataLoading = new MutableLiveData<>();
     private final MutableLiveData<Boolean> mIsLatest = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> mIsFirst = new MutableLiveData<>();
     private final MutableLiveData<Boolean> mIsDetailsVisible = new MutableLiveData<>();
 
 
@@ -89,6 +90,8 @@ public class ComicViewModel extends ViewModel {
     }
 
     public LiveData<Boolean> getIsLatest() { return mIsLatest; }
+
+    public LiveData<Boolean> getIsFirst() { return mIsFirst; }
 
     public LiveData<Boolean> getIsDetailsVisible() { return mIsDetailsVisible; }
 }
