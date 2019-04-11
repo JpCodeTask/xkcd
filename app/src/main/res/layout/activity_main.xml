@@ -15,10 +15,31 @@
         android:fitsSystemWindows="true"
         tools:context=".ui.MainActivity">
 
-        <FrameLayout
-            android:id="@+id/fragment_container"
+        <LinearLayout
+            android:layout_height="match_parent"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/offline_message_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#9E4646"
+                android:gravity="center"
+                android:text="@string/offline_message"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                android:textColor="@color/white"
+                android:visibility="gone" />
+
+            <FrameLayout
+                android:id="@+id/fragment_container"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+
 
         <com.google.android.material.navigation.NavigationView
             android:id="@+id/nav_view"

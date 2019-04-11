@@ -2,6 +2,7 @@ package pl.jpcodetask.xkcdcomics.ui;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import javax.inject.Inject;
@@ -47,13 +48,13 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
         setupNavigationDrawer();
         mNetworkLiveData.observe(this, network -> {
             if (network.isConnected()){
-                Toast.makeText(this, "Network ON", Toast.LENGTH_SHORT).show();
+                mBinding.offlineMessageTextView.setVisibility(View.GONE);
             }else{
-                Toast.makeText(this, "Network OFF", Toast.LENGTH_SHORT).show();
+                mBinding.offlineMessageTextView.setVisibility(View.VISIBLE);
             }
         });
 
-        //mNavigationViewModel.navigateTo(NavigationItem.NAVIGATION_EXPLORE);
+        mNavigationViewModel.navigateTo(NavigationItem.NAVIGATION_EXPLORE);
 
     }
 
