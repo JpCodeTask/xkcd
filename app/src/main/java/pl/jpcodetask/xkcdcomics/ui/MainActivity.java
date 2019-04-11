@@ -2,6 +2,7 @@ package pl.jpcodetask.xkcdcomics.ui;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import javax.inject.Inject;
@@ -20,6 +21,7 @@ import dagger.android.support.HasSupportFragmentInjector;
 import pl.jpcodetask.xkcdcomics.R;
 import pl.jpcodetask.xkcdcomics.databinding.ActivityMainBinding;
 import pl.jpcodetask.xkcdcomics.ui.item.ComicFragment;
+import pl.jpcodetask.xkcdcomics.viewmodel.NetworkLiveData;
 import pl.jpcodetask.xkcdcomics.viewmodel.XkcdViewModelFactory;
 
 public class MainActivity extends AppCompatActivity implements HasSupportFragmentInjector {
@@ -30,6 +32,9 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
     @Inject
     XkcdViewModelFactory mXkcdViewModelFactory;
 
+    @Inject
+    NetworkLiveData mNetworkLiveData;
+
     private ActivityMainBinding mBinding;
     private NavigationViewModel mNavigationViewModel;
 
@@ -39,14 +44,21 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
-        setupNavigationViewModel();
+        setupViewModel();
         setupNavigationDrawer();
+        mNetworkLiveData.observe(this, network -> {
+            if (network.isConnected()){
+                mBinding.offlineMessageTextView.setVisibility(View.GONE);
+            }else{
+                mBinding.offlineMessageTextView.setVisibility(View.VISIBLE);
+            }
+        });
 
         mNavigationViewModel.navigateTo(NavigationItem.NAVIGATION_EXPLORE);
 
     }
 
-    private void setupNavigationViewModel() {
+    private void setupViewModel() {
         mNavigationViewModel = ViewModelProviders.of(this, mXkcdViewModelFactory).get(NavigationViewModel.class);
         mNavigationViewModel.getNavigationItem().observe(this, item -> {
             switch (item){
@@ -74,11 +86,10 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
         mBinding.navView.setNavigationItemSelectedListener(menuItem ->{
             switch (menuItem.getItemId()){
                 case R.id.nav_action_explore:
-                    mNavigationViewModel.navigateTo(NavigationItem.NAVIGATION_EXPLORE);
                     break;
 
                 case R.id.nav_action_favorites:
-                    mNavigationViewModel.navigateTo(NavigationItem.NAVIGATION_FAVORITES);
+                    Toast.makeText(this, "To implement", Toast.LENGTH_SHORT).show();
                     break;
 
                 default:
