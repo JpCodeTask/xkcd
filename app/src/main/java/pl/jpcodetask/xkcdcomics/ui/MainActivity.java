@@ -20,6 +20,7 @@ import dagger.android.support.HasSupportFragmentInjector;
 import pl.jpcodetask.xkcdcomics.R;
 import pl.jpcodetask.xkcdcomics.databinding.ActivityMainBinding;
 import pl.jpcodetask.xkcdcomics.ui.item.ComicFragment;
+import pl.jpcodetask.xkcdcomics.viewmodel.NetworkLiveData;
 import pl.jpcodetask.xkcdcomics.viewmodel.XkcdViewModelFactory;
 
 public class MainActivity extends AppCompatActivity implements HasSupportFragmentInjector {
@@ -29,6 +30,9 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
 
     @Inject
     XkcdViewModelFactory mXkcdViewModelFactory;
+
+    @Inject
+    NetworkLiveData mNetworkLiveData;
 
     private ActivityMainBinding mBinding;
     private NavigationViewModel mNavigationViewModel;
@@ -41,8 +45,15 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
 
         setupViewModel();
         setupNavigationDrawer();
+        mNetworkLiveData.observe(this, network -> {
+            if (network.isConnected()){
+                Toast.makeText(this, "Network ON", Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(this, "Network OFF", Toast.LENGTH_SHORT).show();
+            }
+        });
 
-        mNavigationViewModel.navigateTo(NavigationItem.NAVIGATION_EXPLORE);
+        //mNavigationViewModel.navigateTo(NavigationItem.NAVIGATION_EXPLORE);
 
     }
 
