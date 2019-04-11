@@ -5,6 +5,11 @@
 
     <data>
 
+        <import type="android.view.View" />
+
+        <variable
+            name="viewmodel"
+            type="pl.jpcodetask.xkcdcomics.ui.MainViewModel" />
     </data>
 
 
@@ -29,7 +34,7 @@
                 android:text="@string/offline_message"
                 android:textAppearance="@style/TextAppearance.AppCompat.Caption"
                 android:textColor="@color/white"
-                android:visibility="gone" />
+                android:visibility="@{viewmodel.network.isConnected() ? View.GONE : View.VISIBLE}" />
 
             <FrameLayout
                 android:id="@+id/fragment_container"

@@ -2,7 +2,6 @@ package pl.jpcodetask.xkcdcomics.ui;
 
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import javax.inject.Inject;
@@ -36,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
     NetworkLiveData mNetworkLiveData;
 
     private ActivityMainBinding mBinding;
-    private NavigationViewModel mNavigationViewModel;
+    private MainViewModel mMainViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,21 +45,14 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
 
         setupViewModel();
         setupNavigationDrawer();
-        mNetworkLiveData.observe(this, network -> {
-            if (network.isConnected()){
-                mBinding.offlineMessageTextView.setVisibility(View.GONE);
-            }else{
-                mBinding.offlineMessageTextView.setVisibility(View.VISIBLE);
-            }
-        });
 
-        mNavigationViewModel.navigateTo(NavigationItem.NAVIGATION_EXPLORE);
+        mMainViewModel.navigateTo(NavigationItem.NAVIGATION_EXPLORE);
 
     }
 
     private void setupViewModel() {
-        mNavigationViewModel = ViewModelProviders.of(this, mXkcdViewModelFactory).get(NavigationViewModel.class);
-        mNavigationViewModel.getNavigationItem().observe(this, item -> {
+        mMainViewModel = ViewModelProviders.of(this, mXkcdViewModelFactory).get(MainViewModel.class);
+        mMainViewModel.getNavigationItem().observe(this, item -> {
             switch (item){
                 case NavigationItem.NAVIGATION_EXPLORE:
 
@@ -80,6 +72,9 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
 
             mBinding.navView.getMenu().getItem(item).setChecked(true);
         });
+
+        mBinding.setViewmodel(mMainViewModel);
+        mBinding.setLifecycleOwner(this);
     }
 
     private void setupNavigationDrawer() {
