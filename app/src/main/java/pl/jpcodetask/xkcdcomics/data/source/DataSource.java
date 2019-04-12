@@ -1,9 +1,9 @@
 package pl.jpcodetask.xkcdcomics.data.source;
 
 import io.reactivex.Single;
-import pl.jpcodetask.xkcdcomics.data.model.Comic;
+import pl.jpcodetask.xkcdcomics.data.model.ComicWrapper;
 
 public interface DataSource {
-    Single<Comic> getComic(int comicNumber);
-    Single<Comic> getLatestComic();
+    Single<ComicWrapper> getComic(int comicNumber);
+    Single<ComicWrapper> getLatestComic();
 }

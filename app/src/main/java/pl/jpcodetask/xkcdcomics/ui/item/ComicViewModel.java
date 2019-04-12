@@ -33,17 +33,19 @@ public class ComicViewModel extends ViewModel {
         mDataSource.getLatestComic()
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.mainThread())
-                .doOnSuccess(comic -> {
-                    mIsDataLoading.setValue(false);
-                    mComicLiveData.setValue(comic);
-                    mIsLatest.setValue(true);
-                    mPreferenceProvider.setLatestComicNumber(comic.getNum());
-                })
-                .doOnError(error ->{
-                    mIsDataLoading.setValue(false);
-                    mMessageEventLiveData.setValue(new Event<>("Error occurred"));
-                })
-                .subscribe();
+                .doOnSuccess(comicWrapper -> {
+                    if(comicWrapper.isSuccess()){
+                        Comic comic = comicWrapper.getComic();
+
+                        mIsDataLoading.setValue(false);
+                        mComicLiveData.setValue(comic);
+                        mIsLatest.setValue(true);
+                        mPreferenceProvider.setLatestComicNumber(comic.getNum());
+                    }else{
+                        mIsDataLoading.setValue(false);
+                        mMessageEventLiveData.setValue(new Event<>("Error occurred"));
+                    }
+                }).subscribe();
     }
 
     void setComicFavorite(boolean isFavorite){

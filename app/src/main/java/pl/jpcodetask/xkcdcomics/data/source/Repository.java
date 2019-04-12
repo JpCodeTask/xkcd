@@ -5,7 +5,7 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 
 import io.reactivex.Single;
-import pl.jpcodetask.xkcdcomics.data.model.Comic;
+import pl.jpcodetask.xkcdcomics.data.model.ComicWrapper;
 
 @Singleton
 public class Repository implements DataSource {
@@ -20,12 +20,12 @@ public class Repository implements DataSource {
     }
 
     @Override
-    public Single<Comic> getComic(int comicNumber) {
+    public Single<ComicWrapper> getComic(int comicNumber) {
         return mRemoteDataSource.getComic(comicNumber);
     }
 
     @Override
-    public Single<Comic> getLatestComic() {
+    public Single<ComicWrapper> getLatestComic() {
         return mRemoteDataSource.getLatestComic();
     }
 }

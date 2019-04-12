@@ -1,7 +1,7 @@
 package pl.jpcodetask.xkcdcomics.data.source.local;
 
 import io.reactivex.Single;
-import pl.jpcodetask.xkcdcomics.data.model.Comic;
+import pl.jpcodetask.xkcdcomics.data.model.ComicWrapper;
 import pl.jpcodetask.xkcdcomics.data.source.DataSource;
 
 public class LocalDataSourceImpl implements DataSource {
@@ -14,12 +14,12 @@ public class LocalDataSourceImpl implements DataSource {
     }
 
     @Override
-    public Single<Comic> getComic(int comicNumber) {
-        return mComicDao.item(comicNumber);
+    public Single<ComicWrapper> getComic(int comicNumber) {
+        return null;//mComicDao.item(comicNumber);
     }
 
     @Override
-    public Single<Comic> getLatestComic() {
+    public Single<ComicWrapper> getLatestComic() {
         return null;
     }
 }
