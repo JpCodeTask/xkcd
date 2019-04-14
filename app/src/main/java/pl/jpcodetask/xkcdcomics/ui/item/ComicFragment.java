@@ -23,7 +23,7 @@ import pl.jpcodetask.xkcdcomics.databinding.FragmentComicBinding;
 import pl.jpcodetask.xkcdcomics.utils.GlideApp;
 import pl.jpcodetask.xkcdcomics.viewmodel.XkcdViewModelFactory;
 
-public class ComicFragment extends Fragment implements ComicNavigator {
+public class ComicFragment extends Fragment {
 
     @Inject
     XkcdViewModelFactory mViewModelFactory;
@@ -58,7 +58,7 @@ public class ComicFragment extends Fragment implements ComicNavigator {
 
         mBinding.setLifecycleOwner(getActivity());
         mBinding.setViewmodel(mViewModel);
-        mBinding.setNavigator(this);
+        mBinding.setNavigator(mViewModel);
 
 
         return mBinding.getRoot();
@@ -81,14 +81,6 @@ public class ComicFragment extends Fragment implements ComicNavigator {
 
         });
 
-        mViewModel.getIsDetailsVisible().observe(this, isDetailsVisible ->{
-            if(isDetailsVisible){
-                slideOut();
-            }else{
-                slideIn();
-            }
-        });
-
         mViewModel.getIsLatest().observe(this, isLatest -> {
             if (isLatest){
                 mBinding.nextBtn.setEnabled(false);
@@ -106,33 +98,6 @@ public class ComicFragment extends Fragment implements ComicNavigator {
         });
     }
 
-    private void slideOut(){
-
-        mBinding.randomFloatingBtn.setVisibility(View.VISIBLE);
-       /* TranslateAnimation animate = new TranslateAnimation(
-                0,
-                0,
-                mBinding.comicDetailsView.getHeight(),
-                0);
-        animate.setDuration(500);
-        animate.setFillAfter(true);
-        mBinding.comicDetailsView.startAnimation(animate);*/
-        mBinding.comicDetailsView.setVisibility(View.GONE);
-    }
-
-    private void slideIn(){
-
-        mBinding.comicDetailsView.setVisibility(View.VISIBLE);
-       /* TranslateAnimation animate = new TranslateAnimation(
-                0,
-                0,
-                0,
-                mBinding.comicDetailsView.getHeight());
-        animate.setDuration(500);
-        animate.setFillAfter(true);
-        mBinding.comicDetailsView.startAnimation(animate);*/
-        mBinding.randomFloatingBtn.setVisibility(View.GONE);
-    }
 
     private void setupToolbar(){
         ((AppCompatActivity) getActivity()).setSupportActionBar(mBinding.toolbar);
@@ -142,31 +107,6 @@ public class ComicFragment extends Fragment implements ComicNavigator {
     public void onResume() {
         super.onResume();
         mViewModel.loadComic();
-    }
-
-    @Override
-    public void onNext() {
-
-    }
-
-    @Override
-    public void onPrev() {
-
-    }
-
-    @Override
-    public void onGoTo(int comicNumber) {
-
-    }
-
-    @Override
-    public void onComicDetails() {
-        mViewModel.comicDetails();
-    }
-
-    @Override
-    public void onRandom() {
-
     }
 
     @Override

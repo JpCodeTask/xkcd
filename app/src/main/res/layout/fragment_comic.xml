@@ -55,6 +55,32 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/app_bar_layout" />
 
+        <LinearLayout
+            android:visibility="@{viewmodel.isError ? View.VISIBLE : View.GONE}"
+            android:orientation="vertical"
+            android:id="@+id/something_wrong_view"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/margin_8"
+            android:layout_marginTop="@dimen/margin_8"
+            android:layout_marginEnd="@dimen/margin_8"
+            android:layout_marginBottom="@dimen/margin_8"
+            app:layout_constraintBottom_toTopOf="@id/more_btn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/app_bar_layout" >
+
+            <TextView
+                android:layout_weight="1"
+                android:text="@string/something_went_wrong"
+                android:gravity="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                android:layout_width="match_parent"
+                android:layout_height="0dp" />
+
+
+        </LinearLayout>
+
 
         <ImageView
             android:id="@+id/imageView"
@@ -79,7 +105,7 @@
             android:layout_marginEnd="@dimen/margin_16"
             android:layout_marginBottom="@dimen/margin_16"
             android:src="@drawable/ic_dice_multiple_white_24dp"
-            app:elevation="5dp"
+            android:elevation="0dp"
             app:fabSize="normal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -144,13 +170,14 @@
             app:layout_constraintStart_toEndOf="parent" />
 
         <LinearLayout
+            android:elevation="6dp"
             android:id="@+id/comic_details_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:maxHeight="0dp"
             android:orientation="vertical"
-            android:visibility="gone"
+            android:visibility="@{viewmodel.isDetailsVisible ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

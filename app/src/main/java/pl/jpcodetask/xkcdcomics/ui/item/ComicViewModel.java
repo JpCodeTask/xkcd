@@ -9,17 +9,25 @@ import pl.jpcodetask.xkcdcomics.data.source.DataSource;
 import pl.jpcodetask.xkcdcomics.utils.Schedulers;
 import pl.jpcodetask.xkcdcomics.utils.SharedPreferenceProvider;
 
-public class ComicViewModel extends ViewModel {
+public class ComicViewModel extends ViewModel implements ComicNavigator{
 
     private final DataSource mDataSource;
     private final SharedPreferenceProvider mPreferenceProvider;
 
+
+    /** View state*/
+    private final MutableLiveData<Boolean> mIsDetailsVisible = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> mIsDataLoading = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> mIsError = new MutableLiveData<>();
+
+    /** Data*/
     private final MutableLiveData<Comic> mComicLiveData = new MutableLiveData<>();
     private final MutableLiveData<Event<String>> mMessageEventLiveData = new MutableLiveData<>();
-    private final MutableLiveData<Boolean> mIsDataLoading = new MutableLiveData<>();
+
+    /** Data state*/
     private final MutableLiveData<Boolean> mIsLatest = new MutableLiveData<>();
     private final MutableLiveData<Boolean> mIsFirst = new MutableLiveData<>();
-    private final MutableLiveData<Boolean> mIsDetailsVisible = new MutableLiveData<>();
+
 
 
     public ComicViewModel(DataSource dataSource, SharedPreferenceProvider sharedPreferenceProvider) {
@@ -28,7 +36,8 @@ public class ComicViewModel extends ViewModel {
     }
 
     void loadComic(){
-        mIsDetailsVisible.setValue(true);
+        mIsError.setValue(false);
+        mIsDetailsVisible.setValue(false);
         mIsDataLoading.setValue(true);
         mDataSource.getLatestComic()
                 .subscribeOn(Schedulers.io())
@@ -43,7 +52,7 @@ public class ComicViewModel extends ViewModel {
                         mPreferenceProvider.setLatestComicNumber(comic.getNum());
                     }else{
                         mIsDataLoading.setValue(false);
-                        mMessageEventLiveData.setValue(new Event<>("Error occurred"));
+                        mIsError.setValue(true);
                     }
                 }).subscribe();
     }
@@ -58,26 +67,33 @@ public class ComicViewModel extends ViewModel {
 
     }
 
-    void goToComic(int comicNumber){
-        //TODO implement
+
+    @Override
+    public void onNext() {
+
     }
 
-    void prevComic(){
-        //TODO implement
+    @Override
+    public void onPrev() {
+
     }
 
-    void nextComic(){
-        //TODO implement
+    @Override
+    public void onGoTo(int comicNumber) {
+
     }
 
-    void comicDetails(){
+    @Override
+    public void onComicDetails() {
         if(mIsDetailsVisible.getValue() != null){
             mIsDetailsVisible.setValue(!mIsDetailsVisible.getValue());
-        }else{
-            mIsDetailsVisible.setValue(true);
         }
     }
 
+    @Override
+    public void onRandom() {
+
+    }
 
     public LiveData<Comic> getComic(){
         return mComicLiveData;
@@ -96,4 +112,7 @@ public class ComicViewModel extends ViewModel {
     public LiveData<Boolean> getIsFirst() { return mIsFirst; }
 
     public LiveData<Boolean> getIsDetailsVisible() { return mIsDetailsVisible; }
+
+    public LiveData<Boolean> getIsError() { return mIsError; }
+
 }
