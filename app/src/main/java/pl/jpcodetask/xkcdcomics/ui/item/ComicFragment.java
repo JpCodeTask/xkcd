@@ -8,7 +8,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import javax.inject.Inject;
 
@@ -67,19 +68,31 @@ public class ComicFragment extends Fragment {
 
     private void setupViewModel(){
         mViewModel = ViewModelProviders.of(this, mViewModelFactory).get(ComicViewModel.class);
+        observeData();
+        observeViewState();
+        observeDataState();
+    }
 
+    private void observeData(){
         mViewModel.getComic().observe(this, comic -> {
             ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(comic.getTitle());
             GlideApp.with(this).load(comic.getImgUrl()).into(mBinding.imageView);
         });
 
-        mViewModel.getMessageEvent().observe(this, eventString -> {
+        mViewModel.getSnackBarMessage().observe(this, eventString -> {
             String message = eventString.getEventContentIfNotHandled();
             if (message != null){
-                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                Snackbar.make(mBinding.getRoot(), message, Snackbar.LENGTH_SHORT).show();
             }
 
         });
+    }
+
+    private void observeViewState(){
+
+    }
+
+    private void observeDataState(){
 
         mViewModel.getIsLatest().observe(this, isLatest -> {
             if (isLatest){

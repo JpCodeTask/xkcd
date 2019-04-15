@@ -55,31 +55,42 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/app_bar_layout" />
 
-        <LinearLayout
-            android:visibility="@{viewmodel.isError ? View.VISIBLE : View.GONE}"
-            android:orientation="vertical"
-            android:id="@+id/something_wrong_view"
+        <TextView
+            android:id="@+id/error_text_view"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_8"
             android:layout_marginTop="@dimen/margin_8"
             android:layout_marginEnd="@dimen/margin_8"
             android:layout_marginBottom="@dimen/margin_8"
+            android:gravity="center"
+            android:text="@string/something_went_wrong"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            android:visibility="@{viewmodel.isError ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toTopOf="@+id/more_btn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/app_bar_layout"
+            app:layout_constraintVertical_bias="0.42000002" />
+
+        <ImageButton
+            android:id="@+id/reload_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_8"
+            android:layout_marginTop="@dimen/margin_8"
+            android:layout_marginEnd="@dimen/margin_8"
+            android:layout_marginBottom="@dimen/margin_8"
+            android:background="?android:selectableItemBackground"
+            android:onClick="@{()->navigator.onReload()}"
+            android:src="@drawable/baseline_autorenew_black_48"
+            android:visibility="@{viewmodel.isError ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toTopOf="@id/more_btn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/app_bar_layout" >
+            app:layout_constraintTop_toBottomOf="@id/error_text_view"
+            app:layout_constraintVertical_bias="0.1" />
 
-            <TextView
-                android:layout_weight="1"
-                android:text="@string/something_went_wrong"
-                android:gravity="center"
-                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-                android:layout_width="match_parent"
-                android:layout_height="0dp" />
-
-
-        </LinearLayout>
 
 
         <ImageView

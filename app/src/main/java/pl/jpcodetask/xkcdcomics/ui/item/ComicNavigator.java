@@ -6,4 +6,5 @@ public interface ComicNavigator {
     void onGoTo(int comicNumber);
     void onComicDetails();
     void onRandom();
+    void onReload();
 }

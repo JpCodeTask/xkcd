@@ -8,5 +8,5 @@
     <string name="nav_item_favorites">Favorites</string>
     <string name="nav_item_explore">Explore</string>
     <string name="offline_message">You are offline</string>
-    <string name="something_went_wrong">Something went wrong</string>
+    <string name="something_went_wrong">Ups, something went wrong</string>
 </resources>

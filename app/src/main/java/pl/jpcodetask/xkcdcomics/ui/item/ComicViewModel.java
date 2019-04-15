@@ -22,7 +22,7 @@ public class ComicViewModel extends ViewModel implements ComicNavigator{
 
     /** Data*/
     private final MutableLiveData<Comic> mComicLiveData = new MutableLiveData<>();
-    private final MutableLiveData<Event<String>> mMessageEventLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Event<String>> mSnackBarMessage = new MutableLiveData<>();
 
     /** Data state*/
     private final MutableLiveData<Boolean> mIsLatest = new MutableLiveData<>();
@@ -60,9 +60,9 @@ public class ComicViewModel extends ViewModel implements ComicNavigator{
     void setComicFavorite(boolean isFavorite){
         //TODO add missing implementation
         if(isFavorite){
-            mMessageEventLiveData.setValue(new Event<>("Add to favorites"));
+            mSnackBarMessage.setValue(new Event<>("Add to favorites"));
         }else{
-            mMessageEventLiveData.setValue(new Event<>("Remove from favorites"));
+            mSnackBarMessage.setValue(new Event<>("Remove from favorites"));
         }
 
     }
@@ -70,17 +70,17 @@ public class ComicViewModel extends ViewModel implements ComicNavigator{
 
     @Override
     public void onNext() {
-
+        //TODO implement
     }
 
     @Override
     public void onPrev() {
-
+        //TODO implement
     }
 
     @Override
     public void onGoTo(int comicNumber) {
-
+        //TODO implement
     }
 
     @Override
@@ -95,12 +95,17 @@ public class ComicViewModel extends ViewModel implements ComicNavigator{
 
     }
 
+    @Override
+    public void onReload() {
+        //TODO implement
+    }
+
     public LiveData<Comic> getComic(){
         return mComicLiveData;
     }
 
-    public LiveData<Event<String>> getMessageEvent(){
-        return mMessageEventLiveData;
+    public LiveData<Event<String>> getSnackBarMessage(){
+        return mSnackBarMessage;
     }
 
     public LiveData<Boolean> getIsDataLoading() {
