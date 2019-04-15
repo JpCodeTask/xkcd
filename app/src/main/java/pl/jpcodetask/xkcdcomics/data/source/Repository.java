@@ -4,7 +4,10 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
+import androidx.annotation.NonNull;
+import io.reactivex.Completable;
 import io.reactivex.Single;
+import pl.jpcodetask.xkcdcomics.data.model.Comic;
 import pl.jpcodetask.xkcdcomics.data.model.ComicWrapper;
 
 @Singleton
@@ -27,5 +30,15 @@ public class Repository implements DataSource {
     @Override
     public Single<ComicWrapper> getLatestComic() {
         return mRemoteDataSource.getLatestComic();
+    }
+
+    @Override
+    public Completable saveComic(@NonNull Comic comic) {
+        return null;
+    }
+
+    @Override
+    public Completable updateComic(@NonNull Comic comic) {
+        return null;
     }
 }
