@@ -15,7 +15,9 @@ public class RemoteDataSourceImpl implements DataSource {
 
     @Override
     public Single<ComicWrapper> getComic(int comicNumber) {
-        return null;//mApi.comicItem(comicNumber);
+        return mApi.comicItem(comicNumber)
+                .map(ComicWrapper::from)
+                .onErrorResumeNext(throwable -> Single.just(ComicWrapper.from(throwable)));
     }
 
     @Override
