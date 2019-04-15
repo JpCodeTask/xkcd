@@ -97,7 +97,7 @@ public class ComicViewModel extends ViewModel implements ComicNavigator{
 
     @Override
     public void onReload() {
-        //TODO implement
+        loadComic();
     }
 
     public LiveData<Comic> getComic(){
