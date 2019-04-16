@@ -57,6 +57,8 @@ public class Comic {
     @ColumnInfo(name = "favorite")
     private boolean mFavorite;
 
+    @ColumnInfo(name = "read")
+    private boolean mRead;
 
 
     public int getId() {
@@ -137,6 +139,14 @@ public class Comic {
 
     public void setFavorite(boolean favorite) {
         mFavorite = favorite;
+    }
+
+    public boolean isRead() {
+        return mRead;
+    }
+
+    public void setRead(boolean read) {
+        mRead = read;
     }
 
 }

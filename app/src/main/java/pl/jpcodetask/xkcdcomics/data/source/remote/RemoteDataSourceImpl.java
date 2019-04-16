@@ -1,5 +1,7 @@
 package pl.jpcodetask.xkcdcomics.data.source.remote;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import io.reactivex.Completable;
 import io.reactivex.Maybe;
@@ -17,7 +19,10 @@ public class RemoteDataSourceImpl implements DataSource {
 
     @Override
     public Maybe<Comic> getComic(int comicNumber) {
-        return null;
+        return mApi.comicItem(comicNumber)
+                .doOnError(throwable -> {
+                    Log.wtf("Remote", throwable);
+                });
         /*return mApi.comicItem(comicNumber)
                 .map(ComicWrapper::from)
                 .onErrorResumeNext(throwable -> {

@@ -39,7 +39,7 @@ public class ComicViewModel extends ViewModel implements ComicNavigator{
         mIsError.setValue(false);
         mIsDetailsVisible.setValue(false);
         mIsDataLoading.setValue(true);
-        mRepository.getLatestComic()
+        mRepository.getComic(2017)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.mainThread())
                 .doOnSuccess(comicWrapper -> {

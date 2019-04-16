@@ -27,7 +27,7 @@ public class LocalDataSourceImpl implements DataSource {
 
     @Override
     public Completable saveComic(@NonNull Comic comic) {
-        return null;
+        return mComicDao.insert(comic);
     }
 
     @Override
