@@ -6,7 +6,7 @@ import javax.inject.Singleton;
 
 import androidx.annotation.NonNull;
 import io.reactivex.Completable;
-import io.reactivex.Single;
+import io.reactivex.Maybe;
 import pl.jpcodetask.xkcdcomics.data.model.Comic;
 import pl.jpcodetask.xkcdcomics.data.model.ComicWrapper;
 
@@ -23,12 +23,12 @@ public class Repository implements DataSource {
     }
 
     @Override
-    public Single<ComicWrapper> getComic(int comicNumber) {
+    public Maybe<ComicWrapper> getComic(int comicNumber) {
         return mRemoteDataSource.getComic(comicNumber);
     }
 
     @Override
-    public Single<ComicWrapper> getLatestComic() {
+    public Maybe<ComicWrapper> getLatestComic() {
         return mRemoteDataSource.getLatestComic();
     }
 
