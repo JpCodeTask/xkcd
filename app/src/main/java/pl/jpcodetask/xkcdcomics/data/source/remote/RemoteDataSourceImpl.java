@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import io.reactivex.Completable;
 import io.reactivex.Maybe;
 import pl.jpcodetask.xkcdcomics.data.model.Comic;
-import pl.jpcodetask.xkcdcomics.data.model.ComicWrapper;
 import pl.jpcodetask.xkcdcomics.data.source.DataSource;
 
 public class RemoteDataSourceImpl implements DataSource {
@@ -17,21 +16,23 @@ public class RemoteDataSourceImpl implements DataSource {
 
 
     @Override
-    public Maybe<ComicWrapper> getComic(int comicNumber) {
-        return mApi.comicItem(comicNumber)
+    public Maybe<Comic> getComic(int comicNumber) {
+        return null;
+        /*return mApi.comicItem(comicNumber)
                 .map(ComicWrapper::from)
                 .onErrorResumeNext(throwable -> {
                     return Maybe.just(ComicWrapper.from(throwable));
-                });
+                });*/
     }
 
     @Override
-    public Maybe<ComicWrapper> getLatestComic() {
-        return mApi.latestComicItem()
+    public Maybe<Comic> getLatestComic() {
+        return mApi.latestComicItem();
+        /*return mApi.latestComicItem()
                 .map(ComicWrapper::from)
                 .onErrorResumeNext(throwable -> {
                     return Maybe.just(ComicWrapper.from(throwable));
-                });
+                });*/
     }
 
     @Override

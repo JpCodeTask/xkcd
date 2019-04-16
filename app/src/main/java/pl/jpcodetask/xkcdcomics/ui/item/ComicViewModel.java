@@ -5,13 +5,13 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import pl.jpcodetask.xkcdcomics.Event;
 import pl.jpcodetask.xkcdcomics.data.model.Comic;
-import pl.jpcodetask.xkcdcomics.data.source.DataSource;
+import pl.jpcodetask.xkcdcomics.data.source.Repository;
 import pl.jpcodetask.xkcdcomics.utils.Schedulers;
 import pl.jpcodetask.xkcdcomics.utils.SharedPreferenceProvider;
 
 public class ComicViewModel extends ViewModel implements ComicNavigator{
 
-    private final DataSource mDataSource;
+    private final Repository mRepository;
     private final SharedPreferenceProvider mPreferenceProvider;
 
 
@@ -30,8 +30,8 @@ public class ComicViewModel extends ViewModel implements ComicNavigator{
 
 
 
-    public ComicViewModel(DataSource dataSource, SharedPreferenceProvider sharedPreferenceProvider) {
-        mDataSource = dataSource;
+    public ComicViewModel(Repository repository, SharedPreferenceProvider sharedPreferenceProvider) {
+        mRepository = repository;
         mPreferenceProvider = sharedPreferenceProvider;
     }
 
@@ -39,7 +39,7 @@ public class ComicViewModel extends ViewModel implements ComicNavigator{
         mIsError.setValue(false);
         mIsDetailsVisible.setValue(false);
         mIsDataLoading.setValue(true);
-        mDataSource.getLatestComic()
+        mRepository.getLatestComic()
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.mainThread())
                 .doOnSuccess(comicWrapper -> {

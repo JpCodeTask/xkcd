@@ -9,7 +9,7 @@ import javax.inject.Singleton;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
-import pl.jpcodetask.xkcdcomics.data.source.DataSource;
+import pl.jpcodetask.xkcdcomics.data.source.Repository;
 import pl.jpcodetask.xkcdcomics.ui.MainViewModel;
 import pl.jpcodetask.xkcdcomics.ui.item.ComicViewModel;
 import pl.jpcodetask.xkcdcomics.utils.SharedPreferenceProvider;
@@ -18,11 +18,11 @@ import pl.jpcodetask.xkcdcomics.utils.SharedPreferenceProvider;
 public class XkcdViewModelFactory implements ViewModelProvider.Factory {
 
     private final Context mContext;
-    private final DataSource mRepository;
+    private final Repository mRepository;
     private final SharedPreferenceProvider mSharedPreferenceProvider;
 
     @Inject
-    public XkcdViewModelFactory(@Named("application_context") Context context, @Named("repository") DataSource repository, SharedPreferenceProvider preferenceProvider){
+    public XkcdViewModelFactory(@Named("application_context") Context context, @Named("repository") Repository repository, SharedPreferenceProvider preferenceProvider){
         mContext = context;
         mRepository = repository;
         mSharedPreferenceProvider = preferenceProvider;
