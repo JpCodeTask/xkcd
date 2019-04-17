@@ -29,6 +29,9 @@ public interface ComicDao {
     @Query("SELECT * FROM comic WHERE num = :comicNumber")
     Maybe<Comic> item(int comicNumber);
 
+    @Query("SELECT * FROM comic ORDER BY num DESC LIMIT 1")
+    Maybe<Comic> latestItem();
+
     @Query("DELETE FROM comic")
     Completable removeAll();
 
