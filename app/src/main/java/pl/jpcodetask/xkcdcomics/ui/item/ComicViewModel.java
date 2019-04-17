@@ -5,14 +5,11 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import pl.jpcodetask.xkcdcomics.Event;
 import pl.jpcodetask.xkcdcomics.data.model.Comic;
-import pl.jpcodetask.xkcdcomics.data.source.DataSource;
-import pl.jpcodetask.xkcdcomics.utils.Schedulers;
-import pl.jpcodetask.xkcdcomics.utils.SharedPreferenceProvider;
+import pl.jpcodetask.xkcdcomics.usecase.ExploreUseCase;
 
 public class ComicViewModel extends ViewModel implements ComicNavigator{
 
-    private final DataSource mDataSource;
-    private final SharedPreferenceProvider mPreferenceProvider;
+    private final ExploreUseCase mExploreUseCase;
 
 
     /** View state*/
@@ -30,26 +27,21 @@ public class ComicViewModel extends ViewModel implements ComicNavigator{
 
 
 
-    public ComicViewModel(DataSource dataSource, SharedPreferenceProvider sharedPreferenceProvider) {
-        mDataSource = dataSource;
-        mPreferenceProvider = sharedPreferenceProvider;
+    public ComicViewModel(ExploreUseCase exploreUseCase) {
+       mExploreUseCase = exploreUseCase;
     }
 
     void loadComic(){
         mIsError.setValue(false);
         mIsDetailsVisible.setValue(false);
         mIsDataLoading.setValue(true);
-        mDataSource.getLatestComic()
-                .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.mainThread())
+        mExploreUseCase.loadComic()
                 .doOnSuccess(comicWrapper -> {
                     if(comicWrapper.isSuccess()){
                         Comic comic = comicWrapper.getComic();
-
                         mIsDataLoading.setValue(false);
                         mComicLiveData.setValue(comic);
                         mIsLatest.setValue(true);
-                        mPreferenceProvider.setLatestComicNumber(comic.getNum());
                     }else{
                         mIsDataLoading.setValue(false);
                         mIsError.setValue(true);
