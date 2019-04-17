@@ -57,6 +57,11 @@ public class ComicViewModel extends ViewModel implements ComicNavigator{
                 }).subscribe();
     }
 
+    void loadComic(int comicNumber){
+
+
+    }
+
     void setComicFavorite(boolean isFavorite){
         //TODO add missing implementation
         if(isFavorite){
