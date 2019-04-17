@@ -28,15 +28,6 @@ public class RepositoryImpl implements Repository {
 
     @Override
     public Maybe<ComicWrapper> getComic(int comicNumber) {
-        /*return mRemoteDataSource.getComic(comicNumber)
-                .map(ComicWrapper::from)
-                .onErrorResumeNext(new Function<Throwable, MaybeSource<? extends ComicWrapper>>() {
-                    @Override
-                    public MaybeSource<? extends ComicWrapper> apply(Throwable throwable) throws Exception {
-                        return Maybe.just(ComicWrapper.from(throwable));
-                    }
-                }
-    );*/
         return Maybe.concatArray(
                 getComicFromDb(comicNumber),
                 getComicFromApi(comicNumber))
@@ -81,11 +72,11 @@ public class RepositoryImpl implements Repository {
 
     @Override
     public Completable saveComic(@NonNull Comic comic) {
-        return null;
+        return mLocalDataSource.saveComic(comic);
     }
 
     @Override
     public Completable updateComic(@NonNull Comic comic) {
-        return null;
+        return mLocalDataSource.updateComic(comic);
     }
 }
