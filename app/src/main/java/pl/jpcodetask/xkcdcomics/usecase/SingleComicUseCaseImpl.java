@@ -12,6 +12,8 @@ import pl.jpcodetask.xkcdcomics.utils.SharedPreferenceProvider;
 
 public class SingleComicUseCaseImpl implements SingleComicUseCase {
 
+    private static final int NO_BOOKMARK = -1;
+
     private final Repository mDataSource;
     private final SharedPreferenceProvider mPreferenceProvider;
 
@@ -23,19 +25,34 @@ public class SingleComicUseCaseImpl implements SingleComicUseCase {
 
     @Override
     public Maybe<ComicWrapper> loadComic() {
-        return  mDataSource.getLatestComic()
+        if (mPreferenceProvider.isFirstLaunch() || mPreferenceProvider.getBookmarkComicNumber(NO_BOOKMARK) == NO_BOOKMARK){
+            return  mDataSource.getLatestComic()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(Schedulers.mainThread())
+                    .doOnSuccess(comicWrapper -> {
+                        if(comicWrapper.isSuccess()){
+                            Comic comic = comicWrapper.getComic();
+                            mPreferenceProvider.setLatestComicNumber(comic.getNum());
+                            mPreferenceProvider.setFirstLaunch();
+                            mPreferenceProvider.setBookmarkComicNumber(comic.getNum());
+                        }
+                    });
+        }else{
+            return loadComic(mPreferenceProvider.getBookmarkComicNumber(NO_BOOKMARK));
+        }
+
+    }
+
+    @Override
+    public Maybe<ComicWrapper> loadComic(int comicNumber) {
+        return  mDataSource.getComic(comicNumber)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.mainThread())
                 .doOnSuccess(comicWrapper -> {
                     if(comicWrapper.isSuccess()){
                         Comic comic = comicWrapper.getComic();
-                        mPreferenceProvider.setLatestComicNumber(comic.getNum());
+                        mPreferenceProvider.setBookmarkComicNumber(comic.getNum());
                     }
                 });
-    }
-
-    @Override
-    public Maybe<ComicWrapper> loadComic(int comicNumber) {
-        return null;
     }
 }
