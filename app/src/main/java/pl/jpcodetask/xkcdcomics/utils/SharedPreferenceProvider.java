@@ -13,6 +13,7 @@ public class SharedPreferenceProvider {
 
     private static final String KEY_LATEST_COMIC_NUMBER = "latest_comic_number";
     private static final String KEY_BOOKMARK_COMIC_NUMBER = "bookmark_comic_number";
+    private static final String KEY_FIRST_LAUNCH = "first_launch";
 
     private final SharedPreferences mSharedPreferences;
 
@@ -40,5 +41,15 @@ public class SharedPreferenceProvider {
 
     public int getBookmarkComicNumber(int defaultValue) {
         return mSharedPreferences.getInt(KEY_BOOKMARK_COMIC_NUMBER, defaultValue);
+    }
+
+    public boolean isFirstLaunch(){
+        return mSharedPreferences.getBoolean(KEY_FIRST_LAUNCH, true);
+    }
+
+    public void setFirstLaunch(){
+        mSharedPreferences.edit()
+                .putBoolean(KEY_FIRST_LAUNCH, false)
+                .apply();
     }
 }
