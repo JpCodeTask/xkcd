@@ -6,17 +6,17 @@ import javax.inject.Named;
 import io.reactivex.Maybe;
 import pl.jpcodetask.xkcdcomics.data.model.Comic;
 import pl.jpcodetask.xkcdcomics.data.model.ComicWrapper;
-import pl.jpcodetask.xkcdcomics.data.source.DataSource;
+import pl.jpcodetask.xkcdcomics.data.source.Repository;
 import pl.jpcodetask.xkcdcomics.utils.Schedulers;
 import pl.jpcodetask.xkcdcomics.utils.SharedPreferenceProvider;
 
 public class SingleComicUseCaseImpl implements SingleComicUseCase {
 
-    private final DataSource mDataSource;
+    private final Repository mDataSource;
     private final SharedPreferenceProvider mPreferenceProvider;
 
     @Inject
-    public SingleComicUseCaseImpl(@Named("repository") DataSource dataSource, SharedPreferenceProvider preferenceProvider) {
+    public SingleComicUseCaseImpl(@Named("repository") Repository dataSource, SharedPreferenceProvider preferenceProvider) {
         mDataSource = dataSource;
         mPreferenceProvider = preferenceProvider;
     }
@@ -31,7 +31,7 @@ public class SingleComicUseCaseImpl implements SingleComicUseCase {
                         Comic comic = comicWrapper.getComic();
                         mPreferenceProvider.setLatestComicNumber(comic.getNum());
                     }
-                }).toMaybe();
+                });
     }
 
     @Override
