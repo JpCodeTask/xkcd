@@ -11,26 +11,26 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import pl.jpcodetask.xkcdcomics.ui.MainViewModel;
 import pl.jpcodetask.xkcdcomics.ui.item.ComicViewModel;
-import pl.jpcodetask.xkcdcomics.usecase.ExploreUseCase;
-import pl.jpcodetask.xkcdcomics.usecase.ExploreUseCaseImpl;
+import pl.jpcodetask.xkcdcomics.usecase.SingleComicUseCase;
+import pl.jpcodetask.xkcdcomics.usecase.SingleComicUseCaseImpl;
 
 @Singleton
 public class XkcdViewModelFactory implements ViewModelProvider.Factory {
 
     private final Context mContext;
-    private final ExploreUseCase mExploreUseCase;
+    private final SingleComicUseCase mSingleComicUseCase;
 
     @Inject
-    public XkcdViewModelFactory(@Named("application_context") Context context, ExploreUseCaseImpl exploreUseCase){
+    public XkcdViewModelFactory(@Named("application_context") Context context, SingleComicUseCaseImpl exploreUseCase){
         mContext = context;
-        mExploreUseCase = exploreUseCase;
+        mSingleComicUseCase = exploreUseCase;
     }
 
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if (modelClass.isAssignableFrom(ComicViewModel.class)){
-            return (T) new ComicViewModel(mExploreUseCase);
+            return (T) new ComicViewModel(mSingleComicUseCase);
         }
 
         if (modelClass.isAssignableFrom(MainViewModel.class)){

@@ -5,11 +5,11 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import pl.jpcodetask.xkcdcomics.Event;
 import pl.jpcodetask.xkcdcomics.data.model.Comic;
-import pl.jpcodetask.xkcdcomics.usecase.ExploreUseCase;
+import pl.jpcodetask.xkcdcomics.usecase.SingleComicUseCase;
 
 public class ComicViewModel extends ViewModel implements ComicNavigator{
 
-    private final ExploreUseCase mExploreUseCase;
+    private final SingleComicUseCase mSingleComicUseCase;
 
 
     /** View state*/
@@ -27,15 +27,15 @@ public class ComicViewModel extends ViewModel implements ComicNavigator{
 
 
 
-    public ComicViewModel(ExploreUseCase exploreUseCase) {
-       mExploreUseCase = exploreUseCase;
+    public ComicViewModel(SingleComicUseCase singleComicUseCase) {
+       mSingleComicUseCase = singleComicUseCase;
     }
 
     void loadComic(){
         mIsError.setValue(false);
         mIsDetailsVisible.setValue(false);
         mIsDataLoading.setValue(true);
-        mExploreUseCase.loadComic()
+        mSingleComicUseCase.loadComic()
                 .doOnSuccess(comicWrapper -> {
                     if(comicWrapper.isSuccess()){
                         Comic comic = comicWrapper.getComic();

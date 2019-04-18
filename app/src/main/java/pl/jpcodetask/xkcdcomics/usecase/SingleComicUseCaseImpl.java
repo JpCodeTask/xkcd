@@ -10,13 +10,13 @@ import pl.jpcodetask.xkcdcomics.data.source.DataSource;
 import pl.jpcodetask.xkcdcomics.utils.Schedulers;
 import pl.jpcodetask.xkcdcomics.utils.SharedPreferenceProvider;
 
-public class ExploreUseCaseImpl implements ExploreUseCase {
+public class SingleComicUseCaseImpl implements SingleComicUseCase {
 
     private final DataSource mDataSource;
     private final SharedPreferenceProvider mPreferenceProvider;
 
     @Inject
-    public ExploreUseCaseImpl(@Named("repository") DataSource dataSource, SharedPreferenceProvider preferenceProvider) {
+    public SingleComicUseCaseImpl(@Named("repository") DataSource dataSource, SharedPreferenceProvider preferenceProvider) {
         mDataSource = dataSource;
         mPreferenceProvider = preferenceProvider;
     }
