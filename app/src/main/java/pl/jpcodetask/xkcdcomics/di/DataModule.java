@@ -10,6 +10,7 @@ import dagger.Module;
 import dagger.Provides;
 import pl.jpcodetask.xkcdcomics.data.source.DataSource;
 import pl.jpcodetask.xkcdcomics.data.source.Repository;
+import pl.jpcodetask.xkcdcomics.data.source.RepositoryImpl;
 import pl.jpcodetask.xkcdcomics.data.source.local.ComicDao;
 import pl.jpcodetask.xkcdcomics.data.source.local.ComicDatabase;
 import pl.jpcodetask.xkcdcomics.data.source.local.LocalDataSourceImpl;
@@ -50,8 +51,8 @@ public class DataModule {
     @Singleton
     @Provides
     @Named("repository")
-    DataSource provideRepository(@Named("local_data_source") DataSource localDataSource, @Named("remote_data_source") DataSource remoteDataSource){
-        return new Repository(localDataSource, remoteDataSource);
+    Repository provideRepository(@Named("local_data_source") DataSource localDataSource, @Named("remote_data_source") DataSource remoteDataSource){
+        return new RepositoryImpl(localDataSource, remoteDataSource);
     }
 
 }

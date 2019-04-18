@@ -10,7 +10,7 @@ import dagger.BindsInstance;
 import dagger.Component;
 import dagger.android.support.AndroidSupportInjectionModule;
 import pl.jpcodetask.xkcdcomics.XkcdApplication;
-import pl.jpcodetask.xkcdcomics.data.source.DataSource;
+import pl.jpcodetask.xkcdcomics.data.source.Repository;
 import pl.jpcodetask.xkcdcomics.data.source.remote.XkcdApi;
 
 @Singleton
@@ -37,7 +37,7 @@ public interface AppComponent {
     void inject(XkcdApplication application);
 
     @Named("repository")
-    DataSource getRepository();
+    Repository getRepository();
 
     @Named("application_context")
     Context getAppContext();
