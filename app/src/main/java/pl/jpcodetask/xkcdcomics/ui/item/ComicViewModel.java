@@ -41,7 +41,8 @@ public class ComicViewModel extends ViewModel implements ComicNavigator{
                         Comic comic = comicWrapper.getComic();
                         mIsDataLoading.setValue(false);
                         mComicLiveData.setValue(comic);
-                        mIsLatest.setValue(true);
+                        mIsLatest.setValue(comicWrapper.isLatest());
+                        mIsFirst.setValue(comicWrapper.isFirst());
                     }else{
                         mIsDataLoading.setValue(false);
                         mIsError.setValue(true);
