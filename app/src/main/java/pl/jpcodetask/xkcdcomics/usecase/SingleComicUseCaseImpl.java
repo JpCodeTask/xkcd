@@ -32,6 +32,7 @@ public class SingleComicUseCaseImpl implements SingleComicUseCase {
                     .doOnSuccess(comicWrapper -> {
                         if(comicWrapper.isSuccess()){
                             Comic comic = comicWrapper.getComic();
+                            comicWrapper.setLatest(true);
                             mPreferenceProvider.setLatestComicNumber(comic.getNum());
                             mPreferenceProvider.setFirstLaunch();
                             mPreferenceProvider.setBookmarkComicNumber(comic.getNum());
@@ -51,6 +52,9 @@ public class SingleComicUseCaseImpl implements SingleComicUseCase {
                 .doOnSuccess(comicWrapper -> {
                     if(comicWrapper.isSuccess()){
                         Comic comic = comicWrapper.getComic();
+                        if (comic.getNum() == 1){
+                            comicWrapper.setFirst(true);
+                        }
                         mPreferenceProvider.setBookmarkComicNumber(comic.getNum());
                     }
                 });
