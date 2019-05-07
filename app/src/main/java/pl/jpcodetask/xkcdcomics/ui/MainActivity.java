@@ -20,7 +20,6 @@ import dagger.android.support.HasSupportFragmentInjector;
 import pl.jpcodetask.xkcdcomics.R;
 import pl.jpcodetask.xkcdcomics.databinding.ActivityMainBinding;
 import pl.jpcodetask.xkcdcomics.ui.item.ComicFragment;
-import pl.jpcodetask.xkcdcomics.viewmodel.NetworkLiveData;
 import pl.jpcodetask.xkcdcomics.viewmodel.XkcdViewModelFactory;
 
 public class MainActivity extends AppCompatActivity implements HasSupportFragmentInjector {
@@ -30,9 +29,6 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
 
     @Inject
     XkcdViewModelFactory mXkcdViewModelFactory;
-
-    @Inject
-    NetworkLiveData mNetworkLiveData;
 
     private ActivityMainBinding mBinding;
     private MainViewModel mMainViewModel;
