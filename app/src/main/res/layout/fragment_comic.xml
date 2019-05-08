@@ -227,8 +227,7 @@
                 android:layout_height="wrap_content"
                 android:background="#000000"
                 android:orientation="vertical"
-                android:padding="@dimen/padding_8"
-                android:visibility="gone">
+                android:padding="@dimen/padding_8">
 
                 <TextView
                     android:id="@+id/comic_title_text_view"
