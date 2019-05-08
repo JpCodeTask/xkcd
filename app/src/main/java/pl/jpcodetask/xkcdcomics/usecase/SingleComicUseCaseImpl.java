@@ -13,6 +13,7 @@ import pl.jpcodetask.xkcdcomics.utils.SharedPreferenceProvider;
 public class SingleComicUseCaseImpl implements SingleComicUseCase {
 
     private static final int NO_BOOKMARK = -1;
+    private static final int DEFAULT_LATEST_COMIC_NUMBER = 1;
 
     private final Repository mDataSource;
     private final SharedPreferenceProvider mPreferenceProvider;
@@ -54,6 +55,8 @@ public class SingleComicUseCaseImpl implements SingleComicUseCase {
                         Comic comic = comicWrapper.getComic();
                         if (comic.getNum() == 1){
                             comicWrapper.setFirst(true);
+                        }else if(comic.getNum() == mPreferenceProvider.getLatestComicNumber(DEFAULT_LATEST_COMIC_NUMBER)){
+                            comicWrapper.setLatest(true);
                         }
                         mPreferenceProvider.setBookmarkComicNumber(comic.getNum());
                     }
