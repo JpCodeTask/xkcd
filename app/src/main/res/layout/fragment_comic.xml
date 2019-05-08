@@ -94,6 +94,7 @@
 
 
         <ImageView
+            android:visibility="@{(viewmodel.isError &amp;&amp; !viewmodel.isDataLoading) ? View.GONE : View.VISIBLE}"
             android:id="@+id/imageView"
             android:layout_width="0dp"
             android:layout_height="0dp"
