@@ -21,6 +21,7 @@ import androidx.lifecycle.ViewModelProviders;
 import dagger.android.support.AndroidSupportInjection;
 import pl.jpcodetask.xkcdcomics.R;
 import pl.jpcodetask.xkcdcomics.databinding.FragmentComicBinding;
+import pl.jpcodetask.xkcdcomics.ui.MainViewModel;
 import pl.jpcodetask.xkcdcomics.utils.GlideApp;
 import pl.jpcodetask.xkcdcomics.viewmodel.XkcdViewModelFactory;
 
@@ -30,6 +31,7 @@ public class ComicFragment extends Fragment {
     XkcdViewModelFactory mViewModelFactory;
 
     private ComicViewModel mViewModel;
+    private MainViewModel mActivityViewModel;
     private FragmentComicBinding mBinding;
 
     public ComicFragment(){
@@ -59,8 +61,8 @@ public class ComicFragment extends Fragment {
 
         mBinding.setLifecycleOwner(getActivity());
         mBinding.setViewmodel(mViewModel);
+        mBinding.setActivityviewmodel(mActivityViewModel);
         mBinding.setNavigator(mViewModel);
-
 
         return mBinding.getRoot();
     }
@@ -68,6 +70,7 @@ public class ComicFragment extends Fragment {
 
     private void setupViewModel(){
         mViewModel = ViewModelProviders.of(this, mViewModelFactory).get(ComicViewModel.class);
+        mActivityViewModel = ViewModelProviders.of(getActivity(), mViewModelFactory).get(MainViewModel.class);
         observeData();
         observeViewState();
         observeDataState();

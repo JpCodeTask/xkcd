@@ -14,6 +14,10 @@
             name="viewmodel"
             type="pl.jpcodetask.xkcdcomics.ui.item.ComicViewModel" />
 
+        <variable
+            name="activityviewmodel"
+            type="pl.jpcodetask.xkcdcomics.ui.MainViewModel" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
@@ -117,6 +121,7 @@
             android:layout_marginBottom="@dimen/margin_16"
             android:elevation="0dp"
             android:src="@drawable/ic_dice_multiple_white_24dp"
+            android:visibility="@{activityviewmodel.network.isConnected() ? View.VISIBLE : View.GONE}"
             app:fabSize="normal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -134,6 +139,7 @@
             android:onClick="@{()->viewmodel.onNext()}"
             android:src="@drawable/baseline_chevron_left_black_36"
             android:tint="@color/comic_navigation_arrow_btn_tint"
+            android:visibility="@{activityviewmodel.network.isConnected() ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -147,22 +153,23 @@
             android:padding="2dp"
             android:text="@{`` + viewmodel.comic.num}"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+            android:visibility="@{activityviewmodel.network.isConnected() ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/more_btn"
             app:layout_constraintStart_toEndOf="@id/next_btn"
             tools:text="2100" />
 
         <ImageButton
-            android:visibility="gone"
-            android:background="@drawable/round_btn_shape"
             android:id="@+id/archive_btn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_16"
             android:layout_marginEnd="@dimen/margin_16"
             android:layout_marginBottom="@dimen/margin_8"
-            android:src="@drawable/baseline_archive_black_36"
+            android:background="@drawable/round_btn_shape"
             android:padding="2dp"
+            android:src="@drawable/baseline_archive_black_36"
+            android:visibility="@{!activityviewmodel.network.isConnected() ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/more_btn"
             app:layout_constraintStart_toStartOf="parent" />
@@ -178,6 +185,7 @@
             android:onClick="@{()->viewmodel.onPrev()}"
             android:src="@drawable/baseline_chevron_right_black_36"
             android:tint="@color/comic_navigation_arrow_btn_tint"
+            android:visibility="@{activityviewmodel.network.isConnected() ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.25"
