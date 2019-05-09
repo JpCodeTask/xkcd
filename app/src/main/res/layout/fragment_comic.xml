@@ -5,6 +5,7 @@
     <data>
 
         <import type="android.view.View" />
+        <import type="pl.jpcodetask.xkcdcomics.ui.NavigationItem" />
 
         <variable
             name="navigator"
@@ -160,6 +161,7 @@
             tools:text="2100" />
 
         <ImageButton
+            android:onClick="@{()->activityviewmodel.navigateTo(NavigationItem.NAVIGATION_ARCHIVE)}"
             android:id="@+id/archive_btn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
