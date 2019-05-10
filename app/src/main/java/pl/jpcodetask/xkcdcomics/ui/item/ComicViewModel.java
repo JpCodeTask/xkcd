@@ -5,14 +5,11 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import pl.jpcodetask.xkcdcomics.Event;
 import pl.jpcodetask.xkcdcomics.data.model.Comic;
-import pl.jpcodetask.xkcdcomics.data.source.DataSource;
-import pl.jpcodetask.xkcdcomics.utils.Schedulers;
-import pl.jpcodetask.xkcdcomics.utils.SharedPreferenceProvider;
+import pl.jpcodetask.xkcdcomics.usecase.SingleComicUseCase;
 
 public class ComicViewModel extends ViewModel implements ComicNavigator{
 
-    private final DataSource mDataSource;
-    private final SharedPreferenceProvider mPreferenceProvider;
+    private final SingleComicUseCase mSingleComicUseCase;
 
 
     /** View state*/
@@ -30,26 +27,41 @@ public class ComicViewModel extends ViewModel implements ComicNavigator{
 
 
 
-    public ComicViewModel(DataSource dataSource, SharedPreferenceProvider sharedPreferenceProvider) {
-        mDataSource = dataSource;
-        mPreferenceProvider = sharedPreferenceProvider;
+    public ComicViewModel(SingleComicUseCase singleComicUseCase) {
+       mSingleComicUseCase = singleComicUseCase;
     }
 
     void loadComic(){
         mIsError.setValue(false);
         mIsDetailsVisible.setValue(false);
         mIsDataLoading.setValue(true);
-        mDataSource.getLatestComic()
-                .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.mainThread())
+        mSingleComicUseCase.loadComic()
                 .doOnSuccess(comicWrapper -> {
                     if(comicWrapper.isSuccess()){
                         Comic comic = comicWrapper.getComic();
-
                         mIsDataLoading.setValue(false);
                         mComicLiveData.setValue(comic);
-                        mIsLatest.setValue(true);
-                        mPreferenceProvider.setLatestComicNumber(comic.getNum());
+                        mIsLatest.setValue(comicWrapper.isLatest());
+                        mIsFirst.setValue(comicWrapper.isFirst());
+                    }else{
+                        mIsDataLoading.setValue(false);
+                        mIsError.setValue(true);
+                    }
+                }).subscribe();
+    }
+
+    void loadComic(int comicNumber){
+        mIsError.setValue(false);
+        mIsDetailsVisible.setValue(false);
+        mIsDataLoading.setValue(true);
+        mSingleComicUseCase.loadComic(comicNumber)
+                .doOnSuccess(comicWrapper -> {
+                    if(comicWrapper.isSuccess()){
+                        Comic comic = comicWrapper.getComic();
+                        mIsDataLoading.setValue(false);
+                        mComicLiveData.setValue(comic);
+                        mIsLatest.setValue(comicWrapper.isLatest());
+                        mIsFirst.setValue(comicWrapper.isFirst());
                     }else{
                         mIsDataLoading.setValue(false);
                         mIsError.setValue(true);
@@ -70,12 +82,12 @@ public class ComicViewModel extends ViewModel implements ComicNavigator{
 
     @Override
     public void onNext() {
-        //TODO implement
+        loadComic(mComicLiveData.getValue().getNum() + 1);
     }
 
     @Override
     public void onPrev() {
-        //TODO implement
+        loadComic(mComicLiveData.getValue().getNum() - 1);
     }
 
     @Override

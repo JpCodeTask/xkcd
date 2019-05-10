@@ -13,6 +13,11 @@
             android:title="@string/nav_item_favorites"
             android:icon="@drawable/baseline_favorite_black_24"/>
 
+
+        <item
+            android:id="@+id/nav_action_archive"
+            android:title="@string/nav_item_archive"
+            android:icon="@drawable/baseline_archive_black_24"/>
     </group>
 
 </menu>

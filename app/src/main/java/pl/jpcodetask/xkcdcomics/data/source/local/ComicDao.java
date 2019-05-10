@@ -8,8 +8,8 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 import io.reactivex.Completable;
+import io.reactivex.Maybe;
 import io.reactivex.Observable;
-import io.reactivex.Single;
 import pl.jpcodetask.xkcdcomics.data.model.Comic;
 
 @Dao
@@ -27,7 +27,10 @@ public interface ComicDao {
     Observable<List<Comic>> favorite();
 
     @Query("SELECT * FROM comic WHERE num = :comicNumber")
-    Single<Comic> item(int comicNumber);
+    Maybe<Comic> item(int comicNumber);
+
+    @Query("SELECT * FROM comic ORDER BY num DESC LIMIT 1")
+    Maybe<Comic> latestItem();
 
     @Query("DELETE FROM comic")
     Completable removeAll();

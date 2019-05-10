@@ -1,7 +1,9 @@
 package pl.jpcodetask.xkcdcomics.data.source.local;
 
-import io.reactivex.Single;
-import pl.jpcodetask.xkcdcomics.data.model.ComicWrapper;
+import androidx.annotation.NonNull;
+import io.reactivex.Completable;
+import io.reactivex.Maybe;
+import pl.jpcodetask.xkcdcomics.data.model.Comic;
 import pl.jpcodetask.xkcdcomics.data.source.DataSource;
 
 public class LocalDataSourceImpl implements DataSource {
@@ -14,12 +16,22 @@ public class LocalDataSourceImpl implements DataSource {
     }
 
     @Override
-    public Single<ComicWrapper> getComic(int comicNumber) {
-        return null;//mComicDao.item(comicNumber);
+    public Maybe<Comic> getComic(int comicNumber) {
+        return mComicDao.item(comicNumber);
     }
 
     @Override
-    public Single<ComicWrapper> getLatestComic() {
+    public Maybe<Comic> getLatestComic() {
+        return null;
+    }
+
+    @Override
+    public Completable saveComic(@NonNull Comic comic) {
+        return mComicDao.insert(comic);
+    }
+
+    @Override
+    public Completable updateComic(@NonNull Comic comic) {
         return null;
     }
 }
