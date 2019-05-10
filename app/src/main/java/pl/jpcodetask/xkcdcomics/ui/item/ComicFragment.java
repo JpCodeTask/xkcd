@@ -97,6 +97,11 @@ public class ComicFragment extends Fragment {
     }
 
     private void observeDataState(){
+        mActivityViewModel.getNetwork().observe(this, network -> {
+            if (network.isConnected() && mViewModel.getIsError().getValue()){
+                mViewModel.onReload();
+            }
+        });
 
         mViewModel.getIsLatest().observe(this, isLatest -> {
             if (isLatest){
