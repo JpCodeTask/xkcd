@@ -39,12 +39,12 @@ public class ComicWrapper {
         return mIsFirst;
     }
 
-    public boolean isLatest() {
-        return mIsLatest;
-    }
-
     public void setFirst(boolean first) {
         mIsFirst = first;
+    }
+
+    public boolean isLatest() {
+        return mIsLatest;
     }
 
     public void setLatest(boolean latest) {

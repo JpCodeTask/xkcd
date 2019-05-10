@@ -161,7 +161,6 @@
             tools:text="2100" />
 
         <ImageButton
-            android:onClick="@{()->activityviewmodel.navigateTo(NavigationItem.NAVIGATION_ARCHIVE)}"
             android:id="@+id/archive_btn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -169,6 +168,7 @@
             android:layout_marginEnd="@dimen/margin_16"
             android:layout_marginBottom="@dimen/margin_8"
             android:background="@drawable/round_btn_shape"
+            android:onClick="@{()->activityviewmodel.navigateTo(NavigationItem.NAVIGATION_ARCHIVE)}"
             android:padding="2dp"
             android:src="@drawable/baseline_archive_black_36"
             android:visibility="@{!activityviewmodel.network.isConnected() ? View.VISIBLE : View.GONE}"
