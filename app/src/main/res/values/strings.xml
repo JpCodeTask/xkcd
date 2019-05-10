@@ -10,4 +10,5 @@
     <string name="offline_message">You are offline</string>
     <string name="something_went_wrong">Ups, something went wrong</string>
     <string name="nav_item_archive">Archive</string>
+    <string name="browse_archive">browse archive</string>
 </resources>

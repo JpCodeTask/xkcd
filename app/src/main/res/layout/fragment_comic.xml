@@ -145,13 +145,15 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
+            android:layout_width="0dp"
             android:id="@+id/comic_number_text_view"
-            android:layout_width="wrap_content"
+            android:background="@drawable/round_btn_shape"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_8"
             android:layout_marginEnd="@dimen/margin_8"
             android:layout_marginBottom="@dimen/margin_8"
             android:padding="2dp"
+            android:gravity="center"
             android:text="@{`` + viewmodel.comic.num}"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
             android:visibility="@{activityviewmodel.network.isConnected() ? View.VISIBLE : View.GONE}"
@@ -160,17 +162,20 @@
             app:layout_constraintStart_toEndOf="@id/next_btn"
             tools:text="2100" />
 
-        <ImageButton
+        <Button
+            android:layout_height="@dimen/rounded_btn_height"
             android:id="@+id/archive_btn"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/baseline_archive_black_24"
             android:layout_marginStart="@dimen/margin_16"
             android:layout_marginEnd="@dimen/margin_16"
             android:layout_marginBottom="@dimen/margin_8"
             android:background="@drawable/round_btn_shape"
             android:onClick="@{()->activityviewmodel.navigateTo(NavigationItem.NAVIGATION_ARCHIVE)}"
             android:padding="2dp"
-            android:src="@drawable/baseline_archive_black_36"
+            android:paddingStart="@dimen/padding_16"
+            android:text="@string/browse_archive"
+            android:textSize="12sp"
             android:visibility="@{!activityviewmodel.network.isConnected() ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/more_btn"
