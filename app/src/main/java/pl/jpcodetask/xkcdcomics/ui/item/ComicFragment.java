@@ -78,7 +78,7 @@ public class ComicFragment extends Fragment {
         observeViewState();
         observeDataState();
 
-        ArrayAdapter<Integer> arrayAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<Integer> arrayAdapter = new ArrayAdapter(getContext(), R.layout.spinner_comic_number_item);
         arrayAdapter.addAll(mViewModel.getComicRange());
         mBinding.comicNumberSpinner.setAdapter(arrayAdapter);
         mBinding.comicNumberSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
