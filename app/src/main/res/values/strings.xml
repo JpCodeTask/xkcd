@@ -11,4 +11,5 @@
     <string name="something_went_wrong">Ups, something went wrong</string>
     <string name="nav_item_archive">Archive</string>
     <string name="browse_archive">browse archive</string>
+    <string name="comic_number">Comic number</string>
 </resources>

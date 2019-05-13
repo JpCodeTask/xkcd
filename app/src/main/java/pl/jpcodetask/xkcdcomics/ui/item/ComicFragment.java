@@ -8,6 +8,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 
 import com.google.android.material.snackbar.Snackbar;
 
@@ -75,6 +77,21 @@ public class ComicFragment extends Fragment {
         observeData();
         observeViewState();
         observeDataState();
+
+        ArrayAdapter<Integer> arrayAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_dropdown_item);
+        arrayAdapter.addAll(mViewModel.getComicRange());
+        mBinding.comicNumberSpinner.setAdapter(arrayAdapter);
+        mBinding.comicNumberSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                mViewModel.loadComic(arrayAdapter.getItem(position));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     private void observeData(){

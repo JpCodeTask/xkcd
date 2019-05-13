@@ -1,5 +1,8 @@
 package pl.jpcodetask.xkcdcomics.ui.item;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -77,6 +80,16 @@ public class ComicViewModel extends ViewModel implements ComicNavigator{
             mSnackBarMessage.setValue(new Event<>("Remove from favorites"));
         }
 
+    }
+
+
+    List<Integer> getComicRange(){
+        ArrayList<Integer> range =  new ArrayList<>();
+        for (int i = 2048; i > 0; i--){
+            range.add(i);
+        }
+
+        return range;
     }
 
 
