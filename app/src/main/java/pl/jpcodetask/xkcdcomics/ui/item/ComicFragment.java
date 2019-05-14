@@ -36,6 +36,8 @@ public class ComicFragment extends Fragment {
     private MainViewModel mActivityViewModel;
     private FragmentComicBinding mBinding;
 
+    private boolean mExecuteOnItemSelected = true;
+
     public ComicFragment(){
         //empty
     }
@@ -60,6 +62,7 @@ public class ComicFragment extends Fragment {
         setupViewModel();
         setupToolbar();
         setHasOptionsMenu(true);
+        setupSpinner();
 
         mBinding.setLifecycleOwner(getActivity());
         mBinding.setViewmodel(mViewModel);
@@ -69,7 +72,6 @@ public class ComicFragment extends Fragment {
         return mBinding.getRoot();
     }
 
-
     private void setupViewModel(){
         mViewModel = ViewModelProviders.of(this, mViewModelFactory).get(ComicViewModel.class);
         mActivityViewModel = ViewModelProviders.of(getActivity(), mViewModelFactory).get(MainViewModel.class);
@@ -77,26 +79,14 @@ public class ComicFragment extends Fragment {
         observeData();
         observeViewState();
         observeDataState();
-
-        ArrayAdapter<Integer> arrayAdapter = new ArrayAdapter(getContext(), R.layout.spinner_comic_number_item);
-        arrayAdapter.addAll(mViewModel.getComicRange());
-        mBinding.comicNumberSpinner.setAdapter(arrayAdapter);
-        mBinding.comicNumberSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                mViewModel.loadComic(arrayAdapter.getItem(position));
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
     }
 
     private void observeData(){
         mViewModel.getComic().observe(this, comic -> {
             ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(comic.getTitle());
+            mExecuteOnItemSelected = false;
+            mBinding.comicNumberSpinner.setSelection(comic.getNum() - 1);
+            mExecuteOnItemSelected = true;
             GlideApp.with(this).load(comic.getImgUrl()).into(mBinding.imageView);
         });
 
@@ -140,6 +130,25 @@ public class ComicFragment extends Fragment {
 
     private void setupToolbar(){
         ((AppCompatActivity) getActivity()).setSupportActionBar(mBinding.toolbar);
+    }
+
+    private void setupSpinner() {
+        ArrayAdapter<Integer> arrayAdapter = new ArrayAdapter(getContext(), R.layout.spinner_comic_number_item);
+        arrayAdapter.addAll(mViewModel.getComicRange());
+        mBinding.comicNumberSpinner.setAdapter(arrayAdapter);
+        mBinding.comicNumberSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(mExecuteOnItemSelected){
+                    mViewModel.onGoTo(arrayAdapter.getItem(position));
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     @Override

@@ -4,6 +4,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import io.reactivex.Maybe;
+import io.reactivex.Single;
 import pl.jpcodetask.xkcdcomics.data.model.Comic;
 import pl.jpcodetask.xkcdcomics.data.model.ComicWrapper;
 import pl.jpcodetask.xkcdcomics.data.source.Repository;
@@ -61,5 +62,10 @@ public class SingleComicUseCaseImpl implements SingleComicUseCase {
                         mPreferenceProvider.setBookmarkComicNumber(comic.getNum());
                     }
                 });
+    }
+
+    @Override
+    public Single<Integer> getLatestComicNumber() {
+        return Single.just(mPreferenceProvider.getLatestComicNumber(DEFAULT_LATEST_COMIC_NUMBER));
     }
 }

@@ -13,6 +13,8 @@ import pl.jpcodetask.xkcdcomics.usecase.SingleComicUseCase;
 public class ComicViewModel extends ViewModel implements ComicNavigator{
 
     private final SingleComicUseCase mSingleComicUseCase;
+    private boolean mIsUserAction = false;
+    private int mLatestComicNumber;
 
 
     /** View state*/
@@ -84,9 +86,15 @@ public class ComicViewModel extends ViewModel implements ComicNavigator{
 
 
     List<Integer> getComicRange(){
+
+        mSingleComicUseCase.getLatestComicNumber().
+                doOnSuccess(comicNumber -> {
+                    mLatestComicNumber = comicNumber;
+                }).subscribe();
+
         ArrayList<Integer> range =  new ArrayList<>();
-        for (int i = 2048; i > 0; i--){
-            range.add(i);
+        for (int i = mLatestComicNumber; i > 0; i--){
+            range.add(0, i);
         }
 
         return range;
@@ -105,7 +113,11 @@ public class ComicViewModel extends ViewModel implements ComicNavigator{
 
     @Override
     public void onGoTo(int comicNumber) {
-        //TODO implement
+        if (mIsUserAction){
+            loadComic(comicNumber);
+        }
+        //first selection is made by system
+        mIsUserAction = true;
     }
 
     @Override
