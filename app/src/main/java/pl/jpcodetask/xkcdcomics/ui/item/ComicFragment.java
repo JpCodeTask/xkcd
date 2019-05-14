@@ -118,8 +118,8 @@ public class ComicFragment extends Fragment {
             }
         });
 
-        mViewModel.getIsFirst().observe(this, isLatest -> {
-            if (isLatest){
+        mViewModel.getIsFirst().observe(this, isFirst -> {
+            if (isFirst){
                 mBinding.prevBtn.setEnabled(false);
             }else{
                 mBinding.prevBtn.setEnabled(true);
@@ -142,6 +142,7 @@ public class ComicFragment extends Fragment {
                 if(mExecuteOnItemSelected){
                     mViewModel.onGoTo(arrayAdapter.getItem(position));
                 }
+                //TODO handle error onReload wheen adapter has range 1
             }
 
             @Override
