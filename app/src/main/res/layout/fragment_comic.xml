@@ -144,23 +144,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <!--<TextView
-            android:layout_width="0dp"
-            android:id="@+id/comic_number_text_view"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_8"
-            android:layout_marginEnd="@dimen/margin_8"
-            android:layout_marginBottom="@dimen/margin_8"
-            android:padding="2dp"
-            android:gravity="center"
-            android:text="@{`` + viewmodel.comic.num}"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
-            android:visibility="@{activityviewmodel.network.isConnected() ? View.VISIBLE : View.GONE}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/more_btn"
-            app:layout_constraintStart_toEndOf="@id/next_btn"
-            tools:text="2100" />-->
-
         <Spinner
             android:id="@+id/comic_number_spinner"
             style="@style/ComicNumberSpinnerStyle"
@@ -169,20 +152,20 @@
             android:layout_marginStart="@dimen/margin_8"
             android:layout_marginEnd="@dimen/margin_8"
             android:layout_marginBottom="@dimen/margin_8"
+            android:visibility="@{activityviewmodel.network.isConnected() ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/more_btn"
             app:layout_constraintStart_toEndOf="@id/next_btn" />
 
         <Button
-            tools:visibility="gone"
-            android:layout_height="@dimen/rounded_btn_height"
             android:id="@+id/archive_btn"
             android:layout_width="0dp"
-            android:drawableStart="@drawable/baseline_archive_black_24"
+            android:layout_height="@dimen/rounded_btn_height"
             android:layout_marginStart="@dimen/margin_16"
             android:layout_marginEnd="@dimen/margin_16"
             android:layout_marginBottom="@dimen/margin_8"
             android:background="@drawable/round_btn_shape"
+            android:drawableStart="@drawable/baseline_archive_black_24"
             android:onClick="@{()->activityviewmodel.navigateTo(NavigationItem.NAVIGATION_ARCHIVE)}"
             android:padding="2dp"
             android:paddingStart="@dimen/padding_16"
@@ -191,7 +174,8 @@
             android:visibility="@{!activityviewmodel.network.isConnected() ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/more_btn"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            tools:visibility="gone" />
 
         <ImageButton
             android:id="@+id/prev_btn"
@@ -250,12 +234,12 @@
 
 
             <LinearLayout
-                tools:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#000000"
                 android:orientation="vertical"
-                android:padding="@dimen/padding_8">
+                android:padding="@dimen/padding_8"
+                tools:visibility="gone">
 
                 <TextView
                     android:id="@+id/comic_title_text_view"
