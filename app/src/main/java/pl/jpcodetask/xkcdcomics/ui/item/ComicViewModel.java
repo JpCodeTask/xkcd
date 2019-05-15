@@ -30,7 +30,7 @@ public class ComicViewModel extends ViewModel implements ComicNavigator{
     private final MutableLiveData<Boolean> mIsLatest = new MutableLiveData<>();
     private final MutableLiveData<Boolean> mIsFirst = new MutableLiveData<>();
 
-
+    //TODO wrap states to object
 
     public ComicViewModel(SingleComicUseCase singleComicUseCase) {
        mSingleComicUseCase = singleComicUseCase;

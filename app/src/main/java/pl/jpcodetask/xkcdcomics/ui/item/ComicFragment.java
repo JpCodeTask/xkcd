@@ -143,6 +143,7 @@ public class ComicFragment extends Fragment {
                     mViewModel.onGoTo(arrayAdapter.getItem(position));
                 }
                 //TODO handle error onReload wheen adapter has range 1
+                //TODO fix bug with onReload and spinner value
             }
 
             @Override
