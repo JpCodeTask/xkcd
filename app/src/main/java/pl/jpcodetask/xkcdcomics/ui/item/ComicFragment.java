@@ -85,9 +85,7 @@ public class ComicFragment extends Fragment implements ComicNavigator{
     private void observeData(){
         mViewModel.getComic().observe(this, comic -> {
             ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(comic.getTitle());
-            mExecuteOnItemSelected = false;
-            mBinding.comicNumberSpinner.setSelection(comic.getNum() - 1);
-            mExecuteOnItemSelected = true;
+            setSpinnerSelectionWithoutCallback(comic.getNum() - 1);
             GlideApp.with(this).load(comic.getImgUrl()).into(mBinding.imageView);
         });
 
@@ -98,6 +96,12 @@ public class ComicFragment extends Fragment implements ComicNavigator{
             }
 
         });
+    }
+
+    private void setSpinnerSelectionWithoutCallback(int comicNumber){
+        mExecuteOnItemSelected = false;
+        mBinding.comicNumberSpinner.setSelection(comicNumber);
+        mExecuteOnItemSelected = true;
     }
 
     private void observeViewState(){
@@ -141,7 +145,12 @@ public class ComicFragment extends Fragment implements ComicNavigator{
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if(mExecuteOnItemSelected){
-                    onGoTo(arrayAdapter.getItem(position));
+
+                    //temporary !!!
+                    if (position < arrayAdapter.getCount()){
+                        onGoTo(arrayAdapter.getItem(position));
+                    }
+
                 }
                 //TODO handle error onReload wheen adapter has range 1
                 //TODO fix bug with onReload and spinner value

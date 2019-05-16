@@ -15,6 +15,7 @@ public class ComicViewModel extends ViewModel {
     private final SingleComicUseCase mSingleComicUseCase;
     private boolean mIsUserAction = false;
     private int mLatestComicNumber;
+    private int mRequestItemComic;
 
 
     /** View state*/
@@ -46,6 +47,7 @@ public class ComicViewModel extends ViewModel {
                         mComicLiveData.setValue(comic);
                         mIsLatest.setValue(comicWrapper.isLatest());
                         mIsFirst.setValue(comicWrapper.isFirst());
+                        mRequestItemComic = comic.getNum();
                     }else{
                         mIsDataLoading.setValue(false);
                         mIsError.setValue(true);
@@ -54,6 +56,8 @@ public class ComicViewModel extends ViewModel {
     }
 
     void loadComic(int comicNumber){
+        mRequestItemComic = comicNumber;
+
         mIsError.setValue(false);
         mIsDataLoading.setValue(true);
         mSingleComicUseCase.loadComic(comicNumber)
@@ -72,16 +76,19 @@ public class ComicViewModel extends ViewModel {
     }
 
     public void loadNext() {
-        loadComic(mComicLiveData.getValue().getNum() + 1);
+        mRequestItemComic =  mComicLiveData.getValue().getNum() + 1;
+        loadComic(mRequestItemComic);
     }
 
 
     public void loadPrev() {
-        loadComic(mComicLiveData.getValue().getNum() - 1);
+        mRequestItemComic =  mComicLiveData.getValue().getNum() - 1;
+        loadComic(mRequestItemComic);
     }
 
     public void goToComic(int comicNumber) {
         if (mIsUserAction){
+            mRequestItemComic = comicNumber;
             loadComic(comicNumber);
         }
         //first selection is made by system
@@ -89,7 +96,11 @@ public class ComicViewModel extends ViewModel {
     }
 
     public void reload() {
-        loadComic();
+        if (mRequestItemComic > 0){
+            loadComic(mRequestItemComic);
+        }else{
+            loadComic();
+        }
     }
 
     void setComicFavorite(boolean isFavorite){
@@ -133,8 +144,6 @@ public class ComicViewModel extends ViewModel {
     public LiveData<Boolean> getIsLatest() { return mIsLatest; }
 
     public LiveData<Boolean> getIsFirst() { return mIsFirst; }
-
-    //public LiveData<Boolean> getIsDetailsVisible() { return mIsDetailsVisible; }
 
     public LiveData<Boolean> getIsError() { return mIsError; }
 
