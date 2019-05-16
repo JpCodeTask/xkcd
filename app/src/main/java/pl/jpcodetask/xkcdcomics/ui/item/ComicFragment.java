@@ -27,7 +27,7 @@ import pl.jpcodetask.xkcdcomics.ui.MainViewModel;
 import pl.jpcodetask.xkcdcomics.utils.GlideApp;
 import pl.jpcodetask.xkcdcomics.viewmodel.XkcdViewModelFactory;
 
-public class ComicFragment extends Fragment {
+public class ComicFragment extends Fragment implements ComicNavigator{
 
     @Inject
     XkcdViewModelFactory mViewModelFactory;
@@ -37,6 +37,7 @@ public class ComicFragment extends Fragment {
     private FragmentComicBinding mBinding;
 
     private boolean mExecuteOnItemSelected = true;
+    private boolean mComicDetailsVisible = false;
 
     public ComicFragment(){
         //empty
@@ -67,7 +68,7 @@ public class ComicFragment extends Fragment {
         mBinding.setLifecycleOwner(getActivity());
         mBinding.setViewmodel(mViewModel);
         mBinding.setActivityviewmodel(mActivityViewModel);
-        mBinding.setNavigator(mViewModel);
+        mBinding.setNavigator(this);
 
         return mBinding.getRoot();
     }
@@ -106,7 +107,7 @@ public class ComicFragment extends Fragment {
     private void observeDataState(){
         mActivityViewModel.getNetwork().observe(this, network -> {
             if (network.isConnected() && mViewModel.getIsError().getValue()){
-                mViewModel.onReload();
+                onReload();
             }
         });
 
@@ -140,7 +141,7 @@ public class ComicFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if(mExecuteOnItemSelected){
-                    mViewModel.onGoTo(arrayAdapter.getItem(position));
+                    onGoTo(arrayAdapter.getItem(position));
                 }
                 //TODO handle error onReload wheen adapter has range 1
                 //TODO fix bug with onReload and spinner value
@@ -185,4 +186,39 @@ public class ComicFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onNext() {
+        mViewModel.loadNext();
+    }
+
+    @Override
+    public void onPrev() {
+        mViewModel.loadPrev();
+    }
+
+    @Override
+    public void onGoTo(int comicNumber) {
+        mViewModel.goToComic(comicNumber);
+    }
+
+    @Override
+    public void onComicDetails() {
+        if (!mComicDetailsVisible){
+            mBinding.comicDetailsView.setVisibility(View.VISIBLE);
+            mComicDetailsVisible = true;
+        }else{
+            mBinding.comicDetailsView.setVisibility(View.GONE);
+            mComicDetailsVisible = false;
+        }
+    }
+
+    @Override
+    public void onRandom() {
+
+    }
+
+    @Override
+    public void onReload() {
+        mViewModel.reload();
+    }
 }

@@ -10,7 +10,7 @@ import pl.jpcodetask.xkcdcomics.Event;
 import pl.jpcodetask.xkcdcomics.data.model.Comic;
 import pl.jpcodetask.xkcdcomics.usecase.SingleComicUseCase;
 
-public class ComicViewModel extends ViewModel implements ComicNavigator{
+public class ComicViewModel extends ViewModel {
 
     private final SingleComicUseCase mSingleComicUseCase;
     private boolean mIsUserAction = false;
@@ -18,7 +18,6 @@ public class ComicViewModel extends ViewModel implements ComicNavigator{
 
 
     /** View state*/
-    private final MutableLiveData<Boolean> mIsDetailsVisible = new MutableLiveData<>();
     private final MutableLiveData<Boolean> mIsDataLoading = new MutableLiveData<>();
     private final MutableLiveData<Boolean> mIsError = new MutableLiveData<>();
 
@@ -38,7 +37,6 @@ public class ComicViewModel extends ViewModel implements ComicNavigator{
 
     void loadComic(){
         mIsError.setValue(false);
-        mIsDetailsVisible.setValue(false);
         mIsDataLoading.setValue(true);
         mSingleComicUseCase.loadComic()
                 .doOnSuccess(comicWrapper -> {
@@ -57,7 +55,6 @@ public class ComicViewModel extends ViewModel implements ComicNavigator{
 
     void loadComic(int comicNumber){
         mIsError.setValue(false);
-        mIsDetailsVisible.setValue(false);
         mIsDataLoading.setValue(true);
         mSingleComicUseCase.loadComic(comicNumber)
                 .doOnSuccess(comicWrapper -> {
@@ -74,6 +71,27 @@ public class ComicViewModel extends ViewModel implements ComicNavigator{
                 }).subscribe();
     }
 
+    public void loadNext() {
+        loadComic(mComicLiveData.getValue().getNum() + 1);
+    }
+
+
+    public void loadPrev() {
+        loadComic(mComicLiveData.getValue().getNum() - 1);
+    }
+
+    public void goToComic(int comicNumber) {
+        if (mIsUserAction){
+            loadComic(comicNumber);
+        }
+        //first selection is made by system
+        mIsUserAction = true;
+    }
+
+    public void reload() {
+        loadComic();
+    }
+
     void setComicFavorite(boolean isFavorite){
         //TODO add missing implementation
         if(isFavorite){
@@ -83,7 +101,6 @@ public class ComicViewModel extends ViewModel implements ComicNavigator{
         }
 
     }
-
 
     List<Integer> getComicRange(){
 
@@ -101,42 +118,6 @@ public class ComicViewModel extends ViewModel implements ComicNavigator{
     }
 
 
-    @Override
-    public void onNext() {
-        loadComic(mComicLiveData.getValue().getNum() + 1);
-    }
-
-    @Override
-    public void onPrev() {
-        loadComic(mComicLiveData.getValue().getNum() - 1);
-    }
-
-    @Override
-    public void onGoTo(int comicNumber) {
-        if (mIsUserAction){
-            loadComic(comicNumber);
-        }
-        //first selection is made by system
-        mIsUserAction = true;
-    }
-
-    @Override
-    public void onComicDetails() {
-        if(mIsDetailsVisible.getValue() != null){
-            mIsDetailsVisible.setValue(!mIsDetailsVisible.getValue());
-        }
-    }
-
-    @Override
-    public void onRandom() {
-
-    }
-
-    @Override
-    public void onReload() {
-        loadComic();
-    }
-
     public LiveData<Comic> getComic(){
         return mComicLiveData;
     }
@@ -153,7 +134,7 @@ public class ComicViewModel extends ViewModel implements ComicNavigator{
 
     public LiveData<Boolean> getIsFirst() { return mIsFirst; }
 
-    public LiveData<Boolean> getIsDetailsVisible() { return mIsDetailsVisible; }
+    //public LiveData<Boolean> getIsDetailsVisible() { return mIsDetailsVisible; }
 
     public LiveData<Boolean> getIsError() { return mIsError; }
 
