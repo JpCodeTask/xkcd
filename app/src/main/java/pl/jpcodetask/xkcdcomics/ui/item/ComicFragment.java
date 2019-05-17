@@ -105,31 +105,32 @@ public class ComicFragment extends Fragment implements ComicNavigator{
     }
 
     private void observeViewState(){
+        mViewModel.getViewState().observe(this, comicViewState -> {
 
+            if (comicViewState.isNextAvailable()){
+                mBinding.nextBtn.setEnabled(true);
+            }else{
+                mBinding.nextBtn.setEnabled(false);
+            }
+
+            if (comicViewState.isPrevAvailable()){
+                mBinding.prevBtn.setEnabled(true);
+            }else{
+                mBinding.prevBtn.setEnabled(false);
+            }
+
+
+        });
     }
 
     private void observeDataState(){
-        mActivityViewModel.getNetwork().observe(this, network -> {
-            if (network.isConnected() && mViewModel.getIsError().getValue()){
+       mActivityViewModel.getNetwork().observe(this, network -> {
+            if (network.isConnected() && mViewModel.getViewState().getValue().isErrorOccurred()){
                 onReload();
             }
         });
 
-        mViewModel.getIsLatest().observe(this, isLatest -> {
-            if (isLatest){
-                mBinding.nextBtn.setEnabled(false);
-            }else{
-                mBinding.nextBtn.setEnabled(true);
-            }
-        });
-
-        mViewModel.getIsFirst().observe(this, isFirst -> {
-            if (isFirst){
-                mBinding.prevBtn.setEnabled(false);
-            }else{
-                mBinding.prevBtn.setEnabled(true);
-            }
-        });
+       mViewModel.getRequestComicNumber().observe(this, comicNumber -> setSpinnerSelectionWithoutCallback(comicNumber - 1));
     }
 
 
