@@ -13,7 +13,6 @@ import pl.jpcodetask.xkcdcomics.usecase.SingleComicUseCase;
 public class ComicViewModel extends ViewModel {
 
     private final SingleComicUseCase mSingleComicUseCase;
-    private int mLatestComicNumber;
 
     /** View state*/
     private final MutableLiveData<ComicState> mState = new MutableLiveData<>();
@@ -129,11 +128,11 @@ public class ComicViewModel extends ViewModel {
     }
 
     List<Integer> getComicRange(){
-        mLatestComicNumber = mSingleComicUseCase.getLatestComicNumber();
+        int latestComicNumber = mSingleComicUseCase.getLatestComicNumber();
 
 
         ArrayList<Integer> range =  new ArrayList<>();
-        for (int i = mLatestComicNumber; i > 0; i--){
+        for (int i = latestComicNumber; i > 0; i--){
             range.add(0, i);
         }
 
