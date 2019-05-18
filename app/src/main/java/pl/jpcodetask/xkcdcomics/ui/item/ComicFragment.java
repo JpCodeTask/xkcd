@@ -36,7 +36,6 @@ public class ComicFragment extends Fragment implements ComicNavigator{
     private MainViewModel mActivityViewModel;
     private FragmentComicBinding mBinding;
 
-    private boolean mExecuteOnItemSelected = false;
     private boolean mComicDetailsVisible = false;
     private ArrayAdapter<Integer> mArrayAdapter;
 
