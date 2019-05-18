@@ -104,6 +104,12 @@ public class ComicViewModel extends ViewModel {
         loadComic(comicNumber);
     }
 
+    public void loadRandom(){
+        int randomComicNumber = (int) Math.abs( Math.random() * mSingleComicUseCase.getLatestComicNumber() + 1);
+        mRequestComicNumber.setValue(randomComicNumber);
+        loadComic(randomComicNumber);
+    }
+
     public void reload() {
         if (mRequestComicNumber.getValue() != null){
             loadComic(mRequestComicNumber.getValue());

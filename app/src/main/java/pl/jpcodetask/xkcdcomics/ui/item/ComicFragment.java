@@ -241,7 +241,7 @@ public class ComicFragment extends Fragment implements ComicNavigator{
 
     @Override
     public void onRandom() {
-
+        mViewModel.loadRandom();
     }
 
     @Override
