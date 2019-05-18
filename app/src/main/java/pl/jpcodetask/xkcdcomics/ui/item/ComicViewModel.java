@@ -17,7 +17,7 @@ public class ComicViewModel extends ViewModel {
     private int mLatestComicNumber;
 
     /** View state*/
-    private final MutableLiveData<ComicViewState> mViewState = new MutableLiveData<>();
+    private final MutableLiveData<ComicState> mViewState = new MutableLiveData<>();
 
     /** Data*/
     private final MutableLiveData<Comic> mComicLiveData = new MutableLiveData<>();
@@ -44,7 +44,7 @@ public class ComicViewModel extends ViewModel {
 
     private void initViewState(){
         mViewState.setValue(
-                new ComicViewState.Builder()
+                new ComicState.Builder()
                         .setDataLoading(true)
                         .setErrorOccurred(false)
                         .setNextAvailable(true)
@@ -55,7 +55,7 @@ public class ComicViewModel extends ViewModel {
 
     private void setViewStateOnSuccess(boolean isLatest, boolean isFirst){
         mViewState.setValue(
-                new ComicViewState.Builder()
+                new ComicState.Builder()
                         .setDataLoading(false)
                         .setErrorOccurred(false)
                         .setNextAvailable(!isLatest)
@@ -66,7 +66,7 @@ public class ComicViewModel extends ViewModel {
 
     private void setViewStateOnError(){
         mViewState.setValue(
-                new ComicViewState.Builder()
+                new ComicState.Builder()
                         .setDataLoading(false)
                         .setErrorOccurred(true)
                         .setNextAvailable(true)
@@ -111,7 +111,7 @@ public class ComicViewModel extends ViewModel {
     }
 
     public void reload() {
-        if (mRequestComicNumber.getValue() > 0){
+        if (mRequestComicNumber.getValue() != null){
             loadComic(mRequestComicNumber.getValue());
         }else{
             loadComic();
@@ -152,7 +152,7 @@ public class ComicViewModel extends ViewModel {
         return mSnackBarMessage;
     }
 
-    public LiveData<ComicViewState> getViewState() { return mViewState; }
+    public LiveData<ComicState> getViewState() { return mViewState; }
 
     public LiveData<Integer> getRequestComicNumber() { return mRequestComicNumber; }
 }

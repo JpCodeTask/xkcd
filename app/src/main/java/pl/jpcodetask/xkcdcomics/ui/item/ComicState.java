@@ -2,7 +2,7 @@ package pl.jpcodetask.xkcdcomics.ui.item;
 
 import pl.jpcodetask.xkcdcomics.utils.AbstractBuilder;
 
-public class ComicViewState {
+public class ComicState {
 
     private boolean mIsDataLoading;
     private boolean mIsNextAvailable;
@@ -10,7 +10,7 @@ public class ComicViewState {
     private boolean mIsErrorOccurred;
 
 
-    private ComicViewState(Builder builder){
+    private ComicState(Builder builder){
         this.mIsDataLoading = builder.mIsDataLoading;
         this.mIsNextAvailable = builder.mIsNextAvailable;
         this.mIsPrevAvailable = builder.mIsPrevAvailable;
@@ -35,7 +35,7 @@ public class ComicViewState {
     }
 
 
-    public static class Builder implements AbstractBuilder<ComicViewState>{
+    public static class Builder implements AbstractBuilder<ComicState>{
 
         private boolean mIsDataLoading;
         private boolean mIsNextAvailable;
@@ -46,11 +46,11 @@ public class ComicViewState {
 
         }
 
-        public Builder(ComicViewState comicViewState){
-            this.mIsDataLoading = comicViewState.mIsDataLoading;
-            this.mIsNextAvailable = comicViewState.mIsNextAvailable;
-            this.mIsPrevAvailable = comicViewState.mIsPrevAvailable;
-            this.mIsErrorOccurred = comicViewState.mIsErrorOccurred;
+        public Builder(ComicState comicState){
+            this.mIsDataLoading = comicState.mIsDataLoading;
+            this.mIsNextAvailable = comicState.mIsNextAvailable;
+            this.mIsPrevAvailable = comicState.mIsPrevAvailable;
+            this.mIsErrorOccurred = comicState.mIsErrorOccurred;
         }
 
 
@@ -75,8 +75,8 @@ public class ComicViewState {
         }
 
         @Override
-        public ComicViewState build() {
-            return new ComicViewState(this);
+        public ComicState build() {
+            return new ComicState(this);
         }
     }
 }
