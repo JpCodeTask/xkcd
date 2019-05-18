@@ -1,5 +1,7 @@
 package pl.jpcodetask.xkcdcomics.ui.item;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +35,7 @@ public class ComicViewModel extends ViewModel {
                     if(comicWrapper.isSuccess()){
                         Comic comic = comicWrapper.getComic();
                         mComicLiveData.setValue(comic);
+                        mRequestComicNumber.setValue(comic.getNum());
                         setStateOnSuccess(comicWrapper.isLatest(), comicWrapper.isFirst());
                     }else{
                         setViewStateOnError(comicWrapper.isLatest(), comicWrapper.isFirst());
@@ -74,6 +77,7 @@ public class ComicViewModel extends ViewModel {
     }
 
     void loadComic(int comicNumber){
+        Log.d("Load", "!");
         setStateOnLoading();
         mSingleComicUseCase.loadComic(comicNumber)
                 .doOnSuccess(comicWrapper -> {
@@ -99,6 +103,7 @@ public class ComicViewModel extends ViewModel {
     }
 
     public void goToComic(int comicNumber) {
+        Log.d("Load", "goto");
         mRequestComicNumber.setValue(comicNumber);
         loadComic(comicNumber);
     }

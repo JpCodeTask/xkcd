@@ -29,6 +29,8 @@ import pl.jpcodetask.xkcdcomics.viewmodel.XkcdViewModelFactory;
 
 public class ComicFragment extends Fragment implements ComicNavigator{
 
+    private static final String NOT_EXECUTE_SPINNER_ITEM_SELECTED = "NOT_EXECUTE_SPINNER_ITEM_SELECTED";
+
     @Inject
     XkcdViewModelFactory mViewModelFactory;
 
@@ -36,6 +38,7 @@ public class ComicFragment extends Fragment implements ComicNavigator{
     private MainViewModel mActivityViewModel;
     private FragmentComicBinding mBinding;
 
+    private boolean mExecuteSpinnerSelected = false;
     private boolean mComicDetailsVisible = false;
     private ArrayAdapter<Integer> mArrayAdapter;
 
@@ -85,7 +88,6 @@ public class ComicFragment extends Fragment implements ComicNavigator{
     private void observeData(){
         mViewModel.getComic().observe(this, comic -> {
             ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(comic.getTitle());
-            setSpinnerSelectionWithoutCallback(comic.getNum());
             GlideApp.with(this).load(comic.getImgUrl()).into(mBinding.imageView);
         });
 
@@ -99,7 +101,7 @@ public class ComicFragment extends Fragment implements ComicNavigator{
     }
 
     private void setSpinnerSelectionWithoutCallback(int comicNumber){
-        mBinding.comicNumberSpinner.setTag(comicNumber);
+        mExecuteSpinnerSelected = false;
 
         if (comicNumber > mArrayAdapter.getCount()){
             mArrayAdapter.clear();
@@ -166,11 +168,11 @@ public class ComicFragment extends Fragment implements ComicNavigator{
         mBinding.comicNumberSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(view.getTag() == null){
+                if(mExecuteSpinnerSelected){
                     onGoTo(mArrayAdapter.getItem(position));
                 }
 
-                view.setTag(null);
+                mExecuteSpinnerSelected = true;
             }
 
             @Override
