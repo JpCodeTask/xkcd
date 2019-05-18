@@ -4,7 +4,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import io.reactivex.Maybe;
-import io.reactivex.Single;
 import pl.jpcodetask.xkcdcomics.data.model.Comic;
 import pl.jpcodetask.xkcdcomics.data.model.ComicWrapper;
 import pl.jpcodetask.xkcdcomics.data.source.Repository;
@@ -14,7 +13,7 @@ import pl.jpcodetask.xkcdcomics.utils.SharedPreferenceProvider;
 public class SingleComicUseCaseImpl implements SingleComicUseCase {
 
     private static final int NO_BOOKMARK = -1;
-    private static final int DEFAULT_LATEST_COMIC_NUMBER = 1;
+    private static final int DEFAULT_LATEST_COMIC_NUMBER = 0;
 
     private final Repository mDataSource;
     private final SharedPreferenceProvider mPreferenceProvider;
@@ -38,6 +37,11 @@ public class SingleComicUseCaseImpl implements SingleComicUseCase {
                             mPreferenceProvider.setLatestComicNumber(comic.getNum());
                             mPreferenceProvider.setFirstLaunch();
                             mPreferenceProvider.setBookmarkComicNumber(comic.getNum());
+                        }else{
+                            if (mPreferenceProvider.getLatestComicNumber(DEFAULT_LATEST_COMIC_NUMBER) == DEFAULT_LATEST_COMIC_NUMBER){
+                                comicWrapper.setLatest(true);
+                                comicWrapper.setFirst(true);
+                            }
                         }
                     });
         }else{
@@ -60,12 +64,17 @@ public class SingleComicUseCaseImpl implements SingleComicUseCase {
                             comicWrapper.setLatest(true);
                         }
                         mPreferenceProvider.setBookmarkComicNumber(comic.getNum());
+                    }else{
+                        if (mPreferenceProvider.getLatestComicNumber(DEFAULT_LATEST_COMIC_NUMBER) == DEFAULT_LATEST_COMIC_NUMBER){
+                            comicWrapper.setLatest(true);
+                            comicWrapper.setFirst(true);
+                        }
                     }
                 });
     }
 
     @Override
-    public Single<Integer> getLatestComicNumber() {
-        return Single.just(mPreferenceProvider.getLatestComicNumber(DEFAULT_LATEST_COMIC_NUMBER));
+    public int getLatestComicNumber() {
+        return mPreferenceProvider.getLatestComicNumber(DEFAULT_LATEST_COMIC_NUMBER);
     }
 }

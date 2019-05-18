@@ -36,8 +36,9 @@ public class ComicFragment extends Fragment implements ComicNavigator{
     private MainViewModel mActivityViewModel;
     private FragmentComicBinding mBinding;
 
-    private boolean mExecuteOnItemSelected = true;
+    private boolean mExecuteOnItemSelected = false;
     private boolean mComicDetailsVisible = false;
+    private ArrayAdapter<Integer> mArrayAdapter;
 
     public ComicFragment(){
         //empty
@@ -85,7 +86,7 @@ public class ComicFragment extends Fragment implements ComicNavigator{
     private void observeData(){
         mViewModel.getComic().observe(this, comic -> {
             ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(comic.getTitle());
-            setSpinnerSelectionWithoutCallback(comic.getNum() - 1);
+            setSpinnerSelectionWithoutCallback(comic.getNum());
             GlideApp.with(this).load(comic.getImgUrl()).into(mBinding.imageView);
         });
 
@@ -100,37 +101,60 @@ public class ComicFragment extends Fragment implements ComicNavigator{
 
     private void setSpinnerSelectionWithoutCallback(int comicNumber){
         mExecuteOnItemSelected = false;
-        mBinding.comicNumberSpinner.setSelection(comicNumber);
+
+        if (comicNumber >= mArrayAdapter.getCount()){
+            mArrayAdapter.clear();
+            mArrayAdapter.addAll(mViewModel.getComicRange());
+            mArrayAdapter.notifyDataSetChanged();
+        }
+
+        mBinding.comicNumberSpinner.setSelection(comicNumber - 1);
+
         mExecuteOnItemSelected = true;
     }
 
     private void observeViewState(){
-        mViewModel.getViewState().observe(this, comicViewState -> {
+        mViewModel.getState().observe(this, comicState -> {
 
-            if (comicViewState.isNextAvailable()){
+            if (comicState.isNextAvailable()){
                 mBinding.nextBtn.setEnabled(true);
             }else{
                 mBinding.nextBtn.setEnabled(false);
             }
 
-            if (comicViewState.isPrevAvailable()){
+            if (comicState.isPrevAvailable()){
                 mBinding.prevBtn.setEnabled(true);
             }else{
                 mBinding.prevBtn.setEnabled(false);
             }
 
+            if (comicState.isDataLoading()){
+                mBinding.moreBtn.setEnabled(false);
+                mBinding.randomFloatingBtn.setEnabled(false);
+                mBinding.comicNumberSpinner.setEnabled(false);
+            }else{
+                mBinding.moreBtn.setEnabled(true);
+                mBinding.randomFloatingBtn.setEnabled(true);
+                mBinding.comicNumberSpinner.setEnabled(true);
+            }
+
+            if (comicState.isErrorOccurred()){
+                mBinding.moreBtn.setEnabled(false);
+            }else{
+                mBinding.moreBtn.setEnabled(true);
+            }
 
         });
     }
 
     private void observeDataState(){
        mActivityViewModel.getNetwork().observe(this, network -> {
-            if (network.isConnected() && mViewModel.getViewState().getValue().isErrorOccurred()){
+            if (network.isConnected() && mViewModel.getState().getValue().isErrorOccurred()){
                 onReload();
             }
         });
 
-       mViewModel.getRequestComicNumber().observe(this, comicNumber -> setSpinnerSelectionWithoutCallback(comicNumber - 1));
+       mViewModel.getRequestComicNumber().observe(this, comicNumber -> setSpinnerSelectionWithoutCallback(comicNumber));
     }
 
 
@@ -139,22 +163,15 @@ public class ComicFragment extends Fragment implements ComicNavigator{
     }
 
     private void setupSpinner() {
-        ArrayAdapter<Integer> arrayAdapter = new ArrayAdapter(getContext(), R.layout.spinner_comic_number_item);
-        arrayAdapter.addAll(mViewModel.getComicRange());
-        mBinding.comicNumberSpinner.setAdapter(arrayAdapter);
+        mArrayAdapter = new ArrayAdapter(getContext(), R.layout.spinner_comic_number_item);
+        mArrayAdapter.addAll(mViewModel.getComicRange());
+        mBinding.comicNumberSpinner.setAdapter(mArrayAdapter);
         mBinding.comicNumberSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if(mExecuteOnItemSelected){
-
-                    //temporary !!!
-                    if (position < arrayAdapter.getCount()){
-                        onGoTo(arrayAdapter.getItem(position));
-                    }
-
+                    onGoTo(mArrayAdapter.getItem(position));
                 }
-                //TODO handle error onReload wheen adapter has range 1
-                //TODO fix bug with onReload and spinner value
             }
 
             @Override

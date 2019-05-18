@@ -13,11 +13,10 @@ import pl.jpcodetask.xkcdcomics.usecase.SingleComicUseCase;
 public class ComicViewModel extends ViewModel {
 
     private final SingleComicUseCase mSingleComicUseCase;
-    private boolean mIsUserAction = false;
     private int mLatestComicNumber;
 
     /** View state*/
-    private final MutableLiveData<ComicState> mViewState = new MutableLiveData<>();
+    private final MutableLiveData<ComicState> mState = new MutableLiveData<>();
 
     /** Data*/
     private final MutableLiveData<Comic> mComicLiveData = new MutableLiveData<>();
@@ -29,32 +28,32 @@ public class ComicViewModel extends ViewModel {
     }
 
     void loadComic(){
-        initViewState();
+        setStateOnLoading();
         mSingleComicUseCase.loadComic()
                 .doOnSuccess(comicWrapper -> {
                     if(comicWrapper.isSuccess()){
                         Comic comic = comicWrapper.getComic();
                         mComicLiveData.setValue(comic);
-                        setViewStateOnSuccess(comicWrapper.isLatest(), comicWrapper.isFirst());
+                        setStateOnSuccess(comicWrapper.isLatest(), comicWrapper.isFirst());
                     }else{
-                        setViewStateOnError();
+                        setViewStateOnError(comicWrapper.isLatest(), comicWrapper.isFirst());
                     }
                 }).subscribe();
     }
 
-    private void initViewState(){
-        mViewState.setValue(
+    private void setStateOnLoading(){
+        mState.setValue(
                 new ComicState.Builder()
                         .setDataLoading(true)
                         .setErrorOccurred(false)
-                        .setNextAvailable(true)
-                        .setPrevAvailable(true)
+                        .setNextAvailable(false)
+                        .setPrevAvailable(false)
                         .build()
         );
     }
 
-    private void setViewStateOnSuccess(boolean isLatest, boolean isFirst){
-        mViewState.setValue(
+    private void setStateOnSuccess(boolean isLatest, boolean isFirst){
+        mState.setValue(
                 new ComicState.Builder()
                         .setDataLoading(false)
                         .setErrorOccurred(false)
@@ -64,27 +63,27 @@ public class ComicViewModel extends ViewModel {
         );
     }
 
-    private void setViewStateOnError(){
-        mViewState.setValue(
+    private void setViewStateOnError(boolean isLatest, boolean isFirst){
+        mState.setValue(
                 new ComicState.Builder()
                         .setDataLoading(false)
                         .setErrorOccurred(true)
-                        .setNextAvailable(true)
-                        .setPrevAvailable(true)
+                        .setNextAvailable(!isLatest)
+                        .setPrevAvailable(!isFirst)
                         .build()
         );
     }
 
     void loadComic(int comicNumber){
-        initViewState();
+        setStateOnLoading();
         mSingleComicUseCase.loadComic(comicNumber)
                 .doOnSuccess(comicWrapper -> {
                     if(comicWrapper.isSuccess()){
                         Comic comic = comicWrapper.getComic();
                         mComicLiveData.setValue(comic);
-                        setViewStateOnSuccess(comicWrapper.isLatest(), comicWrapper.isFirst());
+                        setStateOnSuccess(comicWrapper.isLatest(), comicWrapper.isFirst());
                     }else{
-                        setViewStateOnError();
+                        setViewStateOnError(comicWrapper.isLatest(), comicWrapper.isFirst());
                     }
                 }).subscribe();
     }
@@ -101,13 +100,8 @@ public class ComicViewModel extends ViewModel {
     }
 
     public void goToComic(int comicNumber) {
-        //TODO viewmodel should not know about it
-        if (mIsUserAction){
-            mRequestComicNumber.setValue(comicNumber);
-            loadComic(comicNumber);
-        }
-        //first selection is made by system
-        mIsUserAction = true;
+        mRequestComicNumber.setValue(comicNumber);
+        loadComic(comicNumber);
     }
 
     public void reload() {
@@ -129,11 +123,8 @@ public class ComicViewModel extends ViewModel {
     }
 
     List<Integer> getComicRange(){
+        mLatestComicNumber = mSingleComicUseCase.getLatestComicNumber();
 
-        mSingleComicUseCase.getLatestComicNumber().
-                doOnSuccess(comicNumber -> {
-                    mLatestComicNumber = comicNumber;
-                }).subscribe();
 
         ArrayList<Integer> range =  new ArrayList<>();
         for (int i = mLatestComicNumber; i > 0; i--){
@@ -152,7 +143,7 @@ public class ComicViewModel extends ViewModel {
         return mSnackBarMessage;
     }
 
-    public LiveData<ComicState> getViewState() { return mViewState; }
+    public LiveData<ComicState> getState() { return mState; }
 
     public LiveData<Integer> getRequestComicNumber() { return mRequestComicNumber; }
 }
