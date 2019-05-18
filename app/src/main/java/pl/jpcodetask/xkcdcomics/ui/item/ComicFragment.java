@@ -100,7 +100,7 @@ public class ComicFragment extends Fragment implements ComicNavigator{
     }
 
     private void setSpinnerSelectionWithoutCallback(int comicNumber){
-        mExecuteOnItemSelected = false;
+        mBinding.comicNumberSpinner.setTag(comicNumber);
 
         if (comicNumber > mArrayAdapter.getCount()){
             mArrayAdapter.clear();
@@ -167,11 +167,11 @@ public class ComicFragment extends Fragment implements ComicNavigator{
         mBinding.comicNumberSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(mExecuteOnItemSelected){
+                if(view.getTag() == null){
                     onGoTo(mArrayAdapter.getItem(position));
                 }
 
-                mExecuteOnItemSelected = true;
+                view.setTag(null);
             }
 
             @Override
