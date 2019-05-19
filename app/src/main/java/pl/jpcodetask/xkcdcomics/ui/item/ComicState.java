@@ -7,6 +7,7 @@ public class ComicState {
     private boolean mIsDataLoading;
     private boolean mIsNextAvailable;
     private boolean mIsPrevAvailable;
+    private boolean mIsFavorite;
     private boolean mIsErrorOccurred;
 
 
@@ -14,6 +15,7 @@ public class ComicState {
         this.mIsDataLoading = builder.mIsDataLoading;
         this.mIsNextAvailable = builder.mIsNextAvailable;
         this.mIsPrevAvailable = builder.mIsPrevAvailable;
+        this.mIsFavorite = builder.mIsFavorite;
         this.mIsErrorOccurred = builder.mIsErrorOccurred;
     }
 
@@ -30,6 +32,10 @@ public class ComicState {
         return mIsPrevAvailable;
     }
 
+    public boolean isFavorite() {
+        return mIsFavorite;
+    }
+
     public boolean isErrorOccurred() {
         return mIsErrorOccurred;
     }
@@ -40,17 +46,11 @@ public class ComicState {
         private boolean mIsDataLoading;
         private boolean mIsNextAvailable;
         private boolean mIsPrevAvailable;
+        private boolean mIsFavorite;
         private boolean mIsErrorOccurred;
 
         public Builder(){
 
-        }
-
-        public Builder(ComicState comicState){
-            this.mIsDataLoading = comicState.mIsDataLoading;
-            this.mIsNextAvailable = comicState.mIsNextAvailable;
-            this.mIsPrevAvailable = comicState.mIsPrevAvailable;
-            this.mIsErrorOccurred = comicState.mIsErrorOccurred;
         }
 
 
@@ -66,6 +66,11 @@ public class ComicState {
 
         public Builder setPrevAvailable(boolean prevAvailable) {
             mIsPrevAvailable = prevAvailable;
+            return this;
+        }
+
+        public Builder setFavorite(boolean favorite) {
+            mIsFavorite = favorite;
             return this;
         }
 
