@@ -10,5 +10,5 @@ public interface Repository {
     Maybe<ComicWrapper> getComic(int comicNumber);
     Maybe<ComicWrapper> getLatestComic();
     Completable saveComic(@NonNull Comic comic);
-    Completable updateComic(@NonNull Comic comic);
+    Completable setFavorite(int comicNumber, boolean isFavorite);
 }

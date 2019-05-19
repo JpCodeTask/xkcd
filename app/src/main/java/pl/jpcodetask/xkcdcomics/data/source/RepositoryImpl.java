@@ -76,7 +76,7 @@ public class RepositoryImpl implements Repository {
     }
 
     @Override
-    public Completable updateComic(@NonNull Comic comic) {
-        return mLocalDataSource.updateComic(comic);
+    public Completable setFavorite(int comicNumber, boolean isFavorite) {
+        return mLocalDataSource.setFavorite(comicNumber, isFavorite);
     }
 }

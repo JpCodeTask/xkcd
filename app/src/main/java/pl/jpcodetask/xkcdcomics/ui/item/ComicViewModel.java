@@ -11,17 +11,18 @@ import androidx.lifecycle.ViewModel;
 import pl.jpcodetask.xkcdcomics.Event;
 import pl.jpcodetask.xkcdcomics.data.model.Comic;
 import pl.jpcodetask.xkcdcomics.usecase.SingleComicUseCase;
+import pl.jpcodetask.xkcdcomics.utils.Schedulers;
 
 public class ComicViewModel extends ViewModel {
 
     private final SingleComicUseCase mSingleComicUseCase;
 
-    /** View state*/
+    /** State*/
     private final MutableLiveData<ComicState> mState = new MutableLiveData<>();
 
     /** Data*/
     private final MutableLiveData<Comic> mComicLiveData = new MutableLiveData<>();
-    private final MutableLiveData<Event<String>> mSnackBarMessage = new MutableLiveData<>();
+    private final MutableLiveData<Event<String>> mMessage = new MutableLiveData<>();
     private final MutableLiveData<Integer> mRequestComicNumber = new MutableLiveData<>();
 
     public ComicViewModel(SingleComicUseCase singleComicUseCase) {
@@ -36,7 +37,7 @@ public class ComicViewModel extends ViewModel {
                         Comic comic = comicWrapper.getComic();
                         mComicLiveData.setValue(comic);
                         mRequestComicNumber.setValue(comic.getNum());
-                        setStateOnSuccess(comicWrapper.isLatest(), comicWrapper.isFirst());
+                        setStateOnSuccess(comicWrapper.isLatest(), comicWrapper.isFirst(), comic.isFavorite());
                     }else{
                         setViewStateOnError(comicWrapper.isLatest(), comicWrapper.isFirst());
                     }
@@ -54,13 +55,14 @@ public class ComicViewModel extends ViewModel {
         );
     }
 
-    private void setStateOnSuccess(boolean isLatest, boolean isFirst){
+    private void setStateOnSuccess(boolean isLatest, boolean isFirst, boolean isFavorite){
         mState.setValue(
                 new ComicState.Builder()
                         .setDataLoading(false)
                         .setErrorOccurred(false)
                         .setNextAvailable(!isLatest)
                         .setPrevAvailable(!isFirst)
+                        .setFavorite(isFavorite)
                         .build()
         );
     }
@@ -84,11 +86,15 @@ public class ComicViewModel extends ViewModel {
                     if(comicWrapper.isSuccess()){
                         Comic comic = comicWrapper.getComic();
                         mComicLiveData.setValue(comic);
-                        setStateOnSuccess(comicWrapper.isLatest(), comicWrapper.isFirst());
+                        setStateOnSuccess(comicWrapper.isLatest(), comicWrapper.isFirst(), comic.isFavorite());
                     }else{
                         setViewStateOnError(comicWrapper.isLatest(), comicWrapper.isFirst());
                     }
-                }).subscribe();
+                })
+                .doOnError(throwable -> {
+                    Log.e("Error", "Error", throwable);
+                })
+                .subscribe();
     }
 
     public void loadNext() {
@@ -124,12 +130,24 @@ public class ComicViewModel extends ViewModel {
 
     void setComicFavorite(boolean isFavorite){
         //TODO add missing implementation
-        if(isFavorite){
-            mSnackBarMessage.setValue(new Event<>("Add to favorites"));
-        }else{
-            mSnackBarMessage.setValue(new Event<>("Remove from favorites"));
+        if(mComicLiveData.getValue() == null){
+            return;
         }
 
+        mSingleComicUseCase.setFavorite(mComicLiveData.getValue().getNum(), isFavorite)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.mainThread())
+                .doOnComplete(() -> {
+                    if (isFavorite){
+                        mMessage.setValue(new Event<>("Add to favorites"));
+                        mState.setValue(new ComicState.Builder(mState.getValue()).setFavorite(true).build());
+                    }else{
+                        mMessage.setValue(new Event<>("Remove from favorites"));
+                        mState.setValue(new ComicState.Builder(mState.getValue()).setFavorite(false).build());
+
+                    }
+                })
+                .subscribe();
     }
 
     List<Integer> getComicRange(){
@@ -149,8 +167,8 @@ public class ComicViewModel extends ViewModel {
         return mComicLiveData;
     }
 
-    public LiveData<Event<String>> getSnackBarMessage(){
-        return mSnackBarMessage;
+    public LiveData<Event<String>> getMessage(){
+        return mMessage;
     }
 
     public LiveData<ComicState> getState() { return mState; }

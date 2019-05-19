@@ -40,6 +40,7 @@ public class ComicFragment extends Fragment implements ComicNavigator{
 
     private boolean mExecuteSpinnerSelected = false;
     private boolean mComicDetailsVisible = false;
+    private boolean mComicIsFavorite = false;
     private ArrayAdapter<Integer> mArrayAdapter;
 
     public ComicFragment(){
@@ -91,7 +92,7 @@ public class ComicFragment extends Fragment implements ComicNavigator{
             GlideApp.with(this).load(comic.getImgUrl()).into(mBinding.imageView);
         });
 
-        mViewModel.getSnackBarMessage().observe(this, eventString -> {
+        mViewModel.getMessage().observe(this, eventString -> {
             String message = eventString.getEventContentIfNotHandled();
             if (message != null){
                 Snackbar.make(mBinding.getRoot(), message, Snackbar.LENGTH_SHORT).show();
@@ -141,6 +142,14 @@ public class ComicFragment extends Fragment implements ComicNavigator{
                 mBinding.moreBtn.setEnabled(false);
             }else{
                 mBinding.moreBtn.setEnabled(true);
+            }
+
+            if (comicState.isFavorite()){
+                mComicIsFavorite = true;
+                getActivity().invalidateOptionsMenu();
+            }else{
+                mComicIsFavorite = false;
+                getActivity().invalidateOptionsMenu();
             }
 
         });
@@ -195,17 +204,26 @@ public class ComicFragment extends Fragment implements ComicNavigator{
     }
 
     @Override
+    public void onPrepareOptionsMenu(@NonNull Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        MenuItem favoriteBtn = menu.findItem(R.id.action_favorite);
+        if (mComicIsFavorite){
+            favoriteBtn.setTitle(R.string.menu_item_favorite);
+            favoriteBtn.setIcon(R.drawable.baseline_favorite_black_24);
+        }else{
+            favoriteBtn.setIcon(R.drawable.baseline_favorite_border_black_24);
+            favoriteBtn.setTitle(R.string.menu_item_unfavorite);
+        }
+    }
+
+    @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_favorite:
                 if(item.getTitle() == getString(R.string.menu_item_favorite)){
-                    mViewModel.setComicFavorite(true);
-                    item.setTitle(R.string.menu_item_unfavorite);
-                    item.setIcon(R.drawable.baseline_favorite_black_24);
-                }else{
                     mViewModel.setComicFavorite(false);
-                    item.setTitle(R.string.menu_item_favorite);
-                    item.setIcon(R.drawable.baseline_favorite_border_black_24);
+                }else{
+                    mViewModel.setComicFavorite(true);
                 }
 
                 return true;

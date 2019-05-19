@@ -9,5 +9,5 @@ public interface DataSource {
     Maybe<Comic> getComic(int comicNumber);
     Maybe<Comic> getLatestComic();
     Completable saveComic(@NonNull Comic comic);
-    Completable updateComic(@NonNull Comic comic);
+    Completable setFavorite(int comicNumber, boolean isFavorite);
 }

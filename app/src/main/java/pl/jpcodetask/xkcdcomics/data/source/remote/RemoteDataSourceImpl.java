@@ -23,21 +23,11 @@ public class RemoteDataSourceImpl implements DataSource {
                 .doOnError(throwable -> {
                     Log.wtf("Remote", throwable);
                 });
-        /*return mApi.comicItem(comicNumber)
-                .map(ComicWrapper::from)
-                .onErrorResumeNext(throwable -> {
-                    return Maybe.just(ComicWrapper.from(throwable));
-                });*/
     }
 
     @Override
     public Maybe<Comic> getLatestComic() {
         return mApi.latestComicItem();
-        /*return mApi.latestComicItem()
-                .map(ComicWrapper::from)
-                .onErrorResumeNext(throwable -> {
-                    return Maybe.just(ComicWrapper.from(throwable));
-                });*/
     }
 
     @Override
@@ -46,7 +36,7 @@ public class RemoteDataSourceImpl implements DataSource {
     }
 
     @Override
-    public Completable updateComic(@NonNull Comic comic) {
+    public Completable setFavorite(int comicNumber, boolean isFavorite) {
         throw new UnsupportedOperationException("Remote data source does not support update operation.");
     }
 }

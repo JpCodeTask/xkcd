@@ -3,6 +3,7 @@ package pl.jpcodetask.xkcdcomics.usecase;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import io.reactivex.Completable;
 import io.reactivex.Maybe;
 import pl.jpcodetask.xkcdcomics.data.model.Comic;
 import pl.jpcodetask.xkcdcomics.data.model.ComicWrapper;
@@ -76,5 +77,10 @@ public class SingleComicUseCaseImpl implements SingleComicUseCase {
     @Override
     public int getLatestComicNumber() {
         return mPreferenceProvider.getLatestComicNumber(DEFAULT_LATEST_COMIC_NUMBER);
+    }
+
+    @Override
+    public Completable setFavorite(int comicNumber, boolean isFavorite) {
+        return mDataSource.setFavorite(comicNumber, isFavorite);
     }
 }

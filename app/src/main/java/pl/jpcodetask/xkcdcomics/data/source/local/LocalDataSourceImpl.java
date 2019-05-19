@@ -31,7 +31,7 @@ public class LocalDataSourceImpl implements DataSource {
     }
 
     @Override
-    public Completable updateComic(@NonNull Comic comic) {
-        return null;
+    public Completable setFavorite(int comicNumber, boolean isFavorite) {
+        return mComicDao.setFavorite(comicNumber, isFavorite);
     }
 }

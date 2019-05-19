@@ -6,7 +6,6 @@ import androidx.annotation.NonNull;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
-import androidx.room.Update;
 import io.reactivex.Completable;
 import io.reactivex.Maybe;
 import io.reactivex.Observable;
@@ -16,9 +15,6 @@ import pl.jpcodetask.xkcdcomics.data.model.Comic;
 public interface ComicDao {
     @Insert
     Completable insert(@NonNull Comic comic);
-
-    @Update
-    Completable update(@NonNull Comic comic);
 
     @Query("SELECT * FROM comic")
     Observable<List<Comic>> all();
@@ -34,5 +30,8 @@ public interface ComicDao {
 
     @Query("DELETE FROM comic")
     Completable removeAll();
+
+    @Query("UPDATE comic SET favorite = :isFavorite WHERE num = :comicNumber")
+    Completable setFavorite(int comicNumber, boolean isFavorite);
 
 }
