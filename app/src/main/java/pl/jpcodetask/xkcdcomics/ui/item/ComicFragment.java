@@ -24,13 +24,12 @@ import dagger.android.support.AndroidSupportInjection;
 import pl.jpcodetask.xkcdcomics.R;
 import pl.jpcodetask.xkcdcomics.databinding.FragmentComicBinding;
 import pl.jpcodetask.xkcdcomics.ui.MainViewModel;
+import pl.jpcodetask.xkcdcomics.ui.NavigationItem;
 import pl.jpcodetask.xkcdcomics.utils.GlideApp;
 import pl.jpcodetask.xkcdcomics.viewmodel.XkcdViewModelFactory;
 
 public class ComicFragment extends Fragment implements ComicNavigator{
-
-    private static final String NOT_EXECUTE_SPINNER_ITEM_SELECTED = "NOT_EXECUTE_SPINNER_ITEM_SELECTED";
-
+    
     @Inject
     XkcdViewModelFactory mViewModelFactory;
 
@@ -67,10 +66,10 @@ public class ComicFragment extends Fragment implements ComicNavigator{
         setupToolbar();
         setHasOptionsMenu(true);
         setupSpinner();
+        setupArchiveBtn();
 
         mBinding.setLifecycleOwner(getActivity());
         mBinding.setViewmodel(mViewModel);
-        mBinding.setActivityviewmodel(mActivityViewModel);
         mBinding.setNavigator(this);
 
         return mBinding.getRoot();
@@ -96,7 +95,22 @@ public class ComicFragment extends Fragment implements ComicNavigator{
             if (message != null){
                 Snackbar.make(mBinding.getRoot(), message, Snackbar.LENGTH_SHORT).show();
             }
-
+        });
+        
+        mActivityViewModel.getNetwork().observe(this, network -> {
+            if (!network.isConnected()){
+                mBinding.randomFloatingBtn.setVisibility(View.GONE);
+                mBinding.nextBtn.setVisibility(View.GONE);
+                mBinding.prevBtn.setVisibility(View.GONE);
+                mBinding.comicNumberSpinner.setVisibility(View.GONE);
+                mBinding.archiveBtn.setVisibility(View.VISIBLE);
+            }else{
+                mBinding.randomFloatingBtn.setVisibility(View.VISIBLE);
+                mBinding.nextBtn.setVisibility(View.VISIBLE);
+                mBinding.prevBtn.setVisibility(View.VISIBLE);
+                mBinding.comicNumberSpinner.setVisibility(View.VISIBLE);
+                mBinding.archiveBtn.setVisibility(View.GONE);
+            }
         });
     }
 
@@ -179,6 +193,12 @@ public class ComicFragment extends Fragment implements ComicNavigator{
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
+        });
+    }
+
+    private void setupArchiveBtn() {
+        mBinding.archiveBtn.setOnClickListener(view -> {
+            mActivityViewModel.navigateTo(NavigationItem.NAVIGATION_ARCHIVE);
         });
     }
 
