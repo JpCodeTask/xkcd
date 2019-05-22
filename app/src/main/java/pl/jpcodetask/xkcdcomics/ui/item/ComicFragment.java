@@ -1,6 +1,7 @@
 package pl.jpcodetask.xkcdcomics.ui.item;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,6 +23,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import dagger.android.support.AndroidSupportInjection;
 import pl.jpcodetask.xkcdcomics.R;
+import pl.jpcodetask.xkcdcomics.data.model.Comic;
 import pl.jpcodetask.xkcdcomics.databinding.FragmentComicBinding;
 import pl.jpcodetask.xkcdcomics.ui.MainViewModel;
 import pl.jpcodetask.xkcdcomics.ui.NavigationItem;
@@ -36,6 +38,8 @@ public class ComicFragment extends Fragment implements ComicNavigator{
     private ComicViewModel mViewModel;
     private MainViewModel mActivityViewModel;
     private FragmentComicBinding mBinding;
+
+    private Intent mShareIntent;
 
     private boolean mExecuteSpinnerSelected = false;
     private boolean mComicDetailsVisible = false;
@@ -88,6 +92,7 @@ public class ComicFragment extends Fragment implements ComicNavigator{
         mViewModel.getComic().observe(this, comic -> {
             ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(comic.getTitle());
             GlideApp.with(this).load(comic.getImgUrl()).into(mBinding.imageView);
+            createShareIntent(comic);
         });
 
         mViewModel.getSnackBarMessage().observe(this, eventString -> {
@@ -112,6 +117,12 @@ public class ComicFragment extends Fragment implements ComicNavigator{
                 mBinding.archiveBtn.setVisibility(View.GONE);
             }
         });
+    }
+
+    private void createShareIntent(Comic comic) {
+        mShareIntent = new Intent(Intent.ACTION_SEND);
+        mShareIntent.putExtra(Intent.EXTRA_TEXT, comic.getImgUrl());
+        mShareIntent.setType("text/plain");
     }
 
     private void setSpinnerSelectionWithoutCallback(int comicNumber){
@@ -208,6 +219,7 @@ public class ComicFragment extends Fragment implements ComicNavigator{
         mViewModel.loadComic();
     }
 
+
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
@@ -228,6 +240,12 @@ public class ComicFragment extends Fragment implements ComicNavigator{
                     item.setIcon(R.drawable.baseline_favorite_border_black_24);
                 }
 
+                return true;
+
+            case R.id.action_share :
+                if (mShareIntent != null){
+                    startActivity(Intent.createChooser(mShareIntent, "Share comic image"));
+                }
                 return true;
 
         }
