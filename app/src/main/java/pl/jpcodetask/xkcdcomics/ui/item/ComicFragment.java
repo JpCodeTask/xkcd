@@ -78,7 +78,7 @@ public class ComicFragment extends Fragment implements ComicNavigator{
     private void setupViewModel(){
         mViewModel = ViewModelProviders.of(this, mViewModelFactory).get(ComicViewModel.class);
         mActivityViewModel = ViewModelProviders.of(getActivity(), mViewModelFactory).get(MainViewModel.class);
-        //TODO separate layout from network state and navigationitem
+
         observeData();
         observeViewState();
         observeDataState();
