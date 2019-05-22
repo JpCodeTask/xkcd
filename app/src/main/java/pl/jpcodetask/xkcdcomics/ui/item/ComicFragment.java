@@ -203,8 +203,8 @@ public class ComicFragment extends Fragment implements ComicNavigator{
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onStart() {
+        super.onStart();
         mViewModel.loadComic();
     }
 
