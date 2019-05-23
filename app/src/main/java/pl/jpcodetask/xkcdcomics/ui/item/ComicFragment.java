@@ -1,6 +1,7 @@
 package pl.jpcodetask.xkcdcomics.ui.item;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,21 +23,23 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import dagger.android.support.AndroidSupportInjection;
 import pl.jpcodetask.xkcdcomics.R;
+import pl.jpcodetask.xkcdcomics.data.model.Comic;
 import pl.jpcodetask.xkcdcomics.databinding.FragmentComicBinding;
 import pl.jpcodetask.xkcdcomics.ui.MainViewModel;
+import pl.jpcodetask.xkcdcomics.ui.NavigationItem;
 import pl.jpcodetask.xkcdcomics.utils.GlideApp;
 import pl.jpcodetask.xkcdcomics.viewmodel.XkcdViewModelFactory;
 
 public class ComicFragment extends Fragment implements ComicNavigator{
-
-    private static final String NOT_EXECUTE_SPINNER_ITEM_SELECTED = "NOT_EXECUTE_SPINNER_ITEM_SELECTED";
-
+    
     @Inject
     XkcdViewModelFactory mViewModelFactory;
 
     private ComicViewModel mViewModel;
     private MainViewModel mActivityViewModel;
     private FragmentComicBinding mBinding;
+
+    private Intent mShareIntent;
 
     private boolean mExecuteSpinnerSelected = false;
     private boolean mComicDetailsVisible = false;
@@ -68,10 +71,10 @@ public class ComicFragment extends Fragment implements ComicNavigator{
         setupToolbar();
         setHasOptionsMenu(true);
         setupSpinner();
+        setupArchiveBtn();
 
         mBinding.setLifecycleOwner(getActivity());
         mBinding.setViewmodel(mViewModel);
-        mBinding.setActivityviewmodel(mActivityViewModel);
         mBinding.setNavigator(this);
 
         return mBinding.getRoot();
@@ -80,7 +83,7 @@ public class ComicFragment extends Fragment implements ComicNavigator{
     private void setupViewModel(){
         mViewModel = ViewModelProviders.of(this, mViewModelFactory).get(ComicViewModel.class);
         mActivityViewModel = ViewModelProviders.of(getActivity(), mViewModelFactory).get(MainViewModel.class);
-        //TODO separate layout from network state and navigationitem
+
         observeData();
         observeViewState();
         observeDataState();
@@ -90,6 +93,7 @@ public class ComicFragment extends Fragment implements ComicNavigator{
         mViewModel.getComic().observe(this, comic -> {
             ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(comic.getTitle());
             GlideApp.with(this).load(comic.getImgUrl()).into(mBinding.imageView);
+            createShareIntent(comic);
         });
 
         mViewModel.getMessage().observe(this, eventString -> {
@@ -97,8 +101,29 @@ public class ComicFragment extends Fragment implements ComicNavigator{
             if (message != null){
                 Snackbar.make(mBinding.getRoot(), message, Snackbar.LENGTH_SHORT).show();
             }
-
         });
+        
+        mActivityViewModel.getNetwork().observe(this, network -> {
+            if (!network.isConnected()){
+                mBinding.randomFloatingBtn.setVisibility(View.GONE);
+                mBinding.nextBtn.setVisibility(View.GONE);
+                mBinding.prevBtn.setVisibility(View.GONE);
+                mBinding.comicNumberSpinner.setVisibility(View.GONE);
+                mBinding.archiveBtn.setVisibility(View.VISIBLE);
+            }else{
+                mBinding.randomFloatingBtn.setVisibility(View.VISIBLE);
+                mBinding.nextBtn.setVisibility(View.VISIBLE);
+                mBinding.prevBtn.setVisibility(View.VISIBLE);
+                mBinding.comicNumberSpinner.setVisibility(View.VISIBLE);
+                mBinding.archiveBtn.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    private void createShareIntent(Comic comic) {
+        mShareIntent = new Intent(Intent.ACTION_SEND);
+        mShareIntent.putExtra(Intent.EXTRA_TEXT, comic.getImgUrl());
+        mShareIntent.setType("text/plain");
     }
 
     private void setSpinnerSelectionWithoutCallback(int comicNumber){
@@ -191,11 +216,18 @@ public class ComicFragment extends Fragment implements ComicNavigator{
         });
     }
 
+    private void setupArchiveBtn() {
+        mBinding.archiveBtn.setOnClickListener(view -> {
+            mActivityViewModel.navigateTo(NavigationItem.NAVIGATION_ARCHIVE);
+        });
+    }
+
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onStart() {
+        super.onStart();
         mViewModel.loadComic();
     }
+
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
@@ -226,6 +258,12 @@ public class ComicFragment extends Fragment implements ComicNavigator{
                     mViewModel.setComicFavorite(true);
                 }
 
+                return true;
+
+            case R.id.action_share :
+                if (mShareIntent != null){
+                    startActivity(Intent.createChooser(mShareIntent, "Share comic image"));
+                }
                 return true;
 
         }
