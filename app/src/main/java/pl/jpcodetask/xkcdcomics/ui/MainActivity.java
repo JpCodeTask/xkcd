@@ -19,6 +19,7 @@ import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
 import pl.jpcodetask.xkcdcomics.R;
 import pl.jpcodetask.xkcdcomics.databinding.ActivityMainBinding;
+import pl.jpcodetask.xkcdcomics.ui.favorites.FavoritesFragment;
 import pl.jpcodetask.xkcdcomics.ui.item.ComicFragment;
 import pl.jpcodetask.xkcdcomics.viewmodel.XkcdViewModelFactory;
 
@@ -46,24 +47,34 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
         setupNavigationDrawer();
 
         mMainViewModel.navigateTo(NavigationItem.NAVIGATION_EXPLORE);
-
     }
 
     private void setupViewModel() {
         mMainViewModel = ViewModelProviders.of(this, mXkcdViewModelFactory).get(MainViewModel.class);
         mMainViewModel.getNavigationItem().observe(this, item -> {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+
             switch (item){
                 case NavigationItem.NAVIGATION_EXPLORE:
 
-                    FragmentManager fragmentManager = getSupportFragmentManager();
-                    Fragment fragment = fragmentManager.findFragmentById(R.id.fragment_container);
-                    if(fragment == null){
-                        ComicFragment comicFragment = ComicFragment.newInstance();
-                        fragmentManager.beginTransaction()
-                                .add(mBinding.fragmentContainer.getId(), comicFragment)
-                                .commit();
-                    }
+                    ComicFragment comicFragment = ComicFragment.newInstance();
+                    fragmentManager.beginTransaction()
+                            .replace(mBinding.fragmentContainerOne.getId(), comicFragment)
+                            .commit();
+
                     break;
+
+
+                case NavigationItem.NAVIGATION_FAVORITES:
+                    FavoritesFragment favoritesFragment = FavoritesFragment.newInstance();
+                    fragmentManager.beginTransaction()
+                            .replace(mBinding.fragmentContainerOne.getId(), favoritesFragment)
+                            .commit();
+
+                    break;
+
+                case NavigationItem.NAVIGATION_ARCHIVE:
+
 
                 default:
                     Toast.makeText(this, "To implement", Toast.LENGTH_SHORT).show();
@@ -80,10 +91,15 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
         mBinding.navView.setNavigationItemSelectedListener(menuItem ->{
             switch (menuItem.getItemId()){
                 case R.id.nav_action_explore:
+                    mMainViewModel.navigateTo(NavigationItem.NAVIGATION_EXPLORE);
                     break;
 
                 case R.id.nav_action_favorites:
-                    Toast.makeText(this, "To implement", Toast.LENGTH_SHORT).show();
+                    mMainViewModel.navigateTo(NavigationItem.NAVIGATION_FAVORITES);
+                    break;
+
+                case R.id.nav_action_archive:
+                    mMainViewModel.navigateTo(NavigationItem.NAVIGATION_ARCHIVE);
                     break;
 
                 default:
