@@ -192,6 +192,7 @@ public class ComicFragment extends Fragment implements ComicNavigator{
 
 
     private void setupToolbar(){
+        mBinding.toolbar.setNavigationIcon(R.drawable.baseline_menu_black_24);
         ((AppCompatActivity) getActivity()).setSupportActionBar(mBinding.toolbar);
     }
 

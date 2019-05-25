@@ -34,8 +34,7 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                app:elevation="0dp"
-                app:navigationIcon="@drawable/baseline_menu_black_24" />
+                app:elevation="0dp" />
 
         </com.google.android.material.appbar.AppBarLayout>
 
