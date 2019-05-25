@@ -30,8 +30,11 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
     @Inject
     XkcdViewModelFactory mXkcdViewModelFactory;
 
+    private static final long BACK_BUTTON_EXIT_DELAY_MS = 2000;
+
     private ActivityMainBinding mBinding;
     private MainViewModel mMainViewModel;
+    private long mBackButtonTimestamp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,4 +110,17 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
         }
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void onBackPressed() {
+
+        if(mBackButtonTimestamp + BACK_BUTTON_EXIT_DELAY_MS > System.currentTimeMillis()){
+            super.onBackPressed();
+            return;
+        }
+
+        Toast.makeText(this, getString(R.string.back_btn_twice_message), Toast.LENGTH_SHORT).show();
+        mBackButtonTimestamp = System.currentTimeMillis();
+    }
+
 }
