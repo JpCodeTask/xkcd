@@ -10,6 +10,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import pl.jpcodetask.xkcdcomics.Event;
 import pl.jpcodetask.xkcdcomics.data.model.Comic;
+import pl.jpcodetask.xkcdcomics.ui.common.ComicState;
 import pl.jpcodetask.xkcdcomics.usecase.SingleComicUseCase;
 import pl.jpcodetask.xkcdcomics.utils.Schedulers;
 

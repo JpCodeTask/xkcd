@@ -1,4 +1,4 @@
-package pl.jpcodetask.xkcdcomics.ui;
+package pl.jpcodetask.xkcdcomics.ui.common;
 
 public interface NavigationItem {
 

@@ -1,4 +1,4 @@
-package pl.jpcodetask.xkcdcomics.ui.item;
+package pl.jpcodetask.xkcdcomics.ui.common;
 
 import pl.jpcodetask.xkcdcomics.utils.AbstractBuilder;
 

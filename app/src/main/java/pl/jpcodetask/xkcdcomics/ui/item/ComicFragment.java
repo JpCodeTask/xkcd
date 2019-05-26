@@ -26,7 +26,7 @@ import pl.jpcodetask.xkcdcomics.R;
 import pl.jpcodetask.xkcdcomics.data.model.Comic;
 import pl.jpcodetask.xkcdcomics.databinding.FragmentComicBinding;
 import pl.jpcodetask.xkcdcomics.ui.MainViewModel;
-import pl.jpcodetask.xkcdcomics.ui.NavigationItem;
+import pl.jpcodetask.xkcdcomics.ui.common.NavigationItem;
 import pl.jpcodetask.xkcdcomics.utils.GlideApp;
 import pl.jpcodetask.xkcdcomics.viewmodel.XkcdViewModelFactory;
 
