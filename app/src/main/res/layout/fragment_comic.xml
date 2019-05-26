@@ -34,7 +34,8 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                app:elevation="0dp" />
+                app:elevation="0dp"
+                app:navigationIcon="@drawable/baseline_menu_black_24" />
 
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -115,9 +116,9 @@
             android:layout_marginEnd="@dimen/margin_16"
             android:layout_marginBottom="@dimen/margin_16"
             android:elevation="0dp"
+            android:onClick="@{()->navigator.onRandom()}"
             android:src="@drawable/ic_dice_multiple_white_24dp"
             app:fabSize="normal"
-            android:onClick="@{()->navigator.onRandom()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
