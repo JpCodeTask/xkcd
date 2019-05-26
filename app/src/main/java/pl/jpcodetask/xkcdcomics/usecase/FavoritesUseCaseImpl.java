@@ -5,6 +5,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import io.reactivex.Completable;
 import io.reactivex.Maybe;
 import pl.jpcodetask.xkcdcomics.data.model.Comic;
 import pl.jpcodetask.xkcdcomics.data.model.ComicWrapper;
@@ -34,5 +35,10 @@ public class FavoritesUseCaseImpl implements FavoritesUseCase {
         return mDataSource.getComic(comicNumber)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.mainThread());
+    }
+
+    @Override
+    public Completable setFavorite(int comicNumber, boolean isFavorite) {
+        return mDataSource.setFavorite(comicNumber, isFavorite);
     }
 }
