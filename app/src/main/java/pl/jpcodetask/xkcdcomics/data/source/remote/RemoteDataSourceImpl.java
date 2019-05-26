@@ -3,6 +3,9 @@ package pl.jpcodetask.xkcdcomics.data.source.remote;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+
+import java.util.List;
+
 import io.reactivex.Completable;
 import io.reactivex.Maybe;
 import pl.jpcodetask.xkcdcomics.data.model.Comic;
@@ -38,5 +41,10 @@ public class RemoteDataSourceImpl implements DataSource {
     @Override
     public Completable setFavorite(int comicNumber, boolean isFavorite) {
         throw new UnsupportedOperationException("Remote data source does not support update operation.");
+    }
+
+    @Override
+    public Maybe<List<Comic>> getFavorites() {
+        throw new UnsupportedOperationException("Remote data source does not support favorites operation.");
     }
 }

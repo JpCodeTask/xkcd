@@ -1,14 +1,14 @@
 package pl.jpcodetask.xkcdcomics.data.source.local;
 
-import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
+
+import java.util.List;
+
 import io.reactivex.Completable;
 import io.reactivex.Maybe;
-import io.reactivex.Observable;
 import pl.jpcodetask.xkcdcomics.data.model.Comic;
 
 @Dao
@@ -17,10 +17,10 @@ public interface ComicDao {
     Completable insert(@NonNull Comic comic);
 
     @Query("SELECT * FROM comic")
-    Observable<List<Comic>> all();
+    Maybe<List<Comic>> all();
 
     @Query("SELECT * FROM comic WHERE favorite = 1")
-    Observable<List<Comic>> favorite();
+    Maybe<List<Comic>> favorite();
 
     @Query("SELECT * FROM comic WHERE num = :comicNumber")
     Maybe<Comic> item(int comicNumber);

@@ -1,5 +1,6 @@
 package pl.jpcodetask.xkcdcomics.ui.favorites;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -8,25 +9,35 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.inject.Inject;
+
+import dagger.android.support.AndroidSupportInjection;
 import pl.jpcodetask.xkcdcomics.R;
 import pl.jpcodetask.xkcdcomics.data.model.Comic;
 import pl.jpcodetask.xkcdcomics.databinding.FavoritesListItemBinding;
 import pl.jpcodetask.xkcdcomics.databinding.FragmentFavoritesBinding;
 import pl.jpcodetask.xkcdcomics.databinding.FragmentFavoritesBindingImpl;
+import pl.jpcodetask.xkcdcomics.viewmodel.XkcdViewModelFactory;
 
 public class FavoritesFragment extends Fragment {
 
+    @Inject
+    XkcdViewModelFactory mXkcdViewModelFactory;
+
     private FragmentFavoritesBinding mBinding;
     private FavoritesAdapter mAdapter;
+    private FavoritesViewModel mViewModel;
 
     public FavoritesFragment(){
         //empty
@@ -36,36 +47,51 @@ public class FavoritesFragment extends Fragment {
         return new FavoritesFragment();
     }
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        AndroidSupportInjection.inject(this);
+        super.onAttach(context);
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mBinding = FragmentFavoritesBindingImpl.inflate(inflater, container, false);
 
+        setupViewModel();
+        setupRecyclerView();
         setupToolbar();
         setHasOptionsMenu(true);
 
+        mBinding.setLifecycleOwner(this);
+
+        return mBinding.getRoot();
+    }
+
+    private void setupRecyclerView() {
         mAdapter = new FavoritesAdapter();
         mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mBinding.recyclerView.setAdapter(mAdapter);
+    }
 
-
-        List<Comic> testList = new ArrayList<>();
-        for (int i = 20; i >= 0; i--){
-            Comic comic = new Comic();
-            comic.setTitle("Lorem impsum dorem");
-            comic.setNum(2100 + i);
-            testList.add(comic);
-        }
-
-        mAdapter.setFavoritesList(testList);
-
-
-        return mBinding.getRoot();
+    private void setupViewModel() {
+        mViewModel = ViewModelProviders.of(this, mXkcdViewModelFactory).get(FavoritesViewModel.class);
+        mViewModel.getComicList().observe(this, comics -> {
+            if (comics != null && !comics.isEmpty()){
+                mAdapter.setFavoritesList(comics);
+            }
+        });
     }
 
     private void setupToolbar() {
         mBinding.toolbar.setTitle(R.string.nav_item_favorites);
         ((AppCompatActivity) getActivity()).setSupportActionBar(mBinding.toolbar);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mViewModel.loadList();
     }
 
     @Override

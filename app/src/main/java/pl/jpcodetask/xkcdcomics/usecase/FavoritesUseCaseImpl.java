@@ -27,7 +27,9 @@ public class FavoritesUseCaseImpl implements FavoritesUseCase {
 
     @Override
     public Maybe<List<Comic>> loadList() {
-        return null;
+        return mDataSource.getFavorites()
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.mainThread());
     }
 
     @Override

@@ -2,11 +2,14 @@ package pl.jpcodetask.xkcdcomics.data.source;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import androidx.annotation.NonNull;
 import io.reactivex.Completable;
 import io.reactivex.Maybe;
 import pl.jpcodetask.xkcdcomics.data.model.Comic;
@@ -78,5 +81,10 @@ public class RepositoryImpl implements Repository {
     @Override
     public Completable setFavorite(int comicNumber, boolean isFavorite) {
         return mLocalDataSource.setFavorite(comicNumber, isFavorite);
+    }
+
+    @Override
+    public Maybe<List<Comic>> getFavorites() {
+        return mLocalDataSource.getFavorites();
     }
 }
