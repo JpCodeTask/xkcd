@@ -13,4 +13,6 @@
     <string name="browse_archive">browse archive</string>
     <string name="comic_number">Comic number</string>
     <string name="back_btn_twice_message">Press the \'Back\' button again to exit</string>
+    <string name="menu_item_sort">Sort</string>
+    <string name="menu_item_search">Search</string>
 </resources>
