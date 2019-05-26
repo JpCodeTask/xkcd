@@ -30,6 +30,7 @@
         </com.google.android.material.appbar.AppBarLayout>
 
         <TextView
+            android:visibility="gone"
             android:id="@+id/empty_list_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
