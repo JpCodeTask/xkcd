@@ -2,6 +2,7 @@ package pl.jpcodetask.xkcdcomics.ui.favorites;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.transition.Fade;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -69,7 +70,24 @@ public class FavoritesFragment extends Fragment {
     }
 
     private void setupRecyclerView() {
-        mAdapter = new FavoritesAdapter();
+
+        mAdapter = new FavoritesAdapter((view, comic) -> {
+
+            FavoritesItemFragment favoritesItemFragment = FavoritesItemFragment.newInstance();
+            favoritesItemFragment.setSharedElementEnterTransition(new DetailsTransition());
+            favoritesItemFragment.setEnterTransition(new Fade());
+            setExitTransition(new Fade());
+            favoritesItemFragment.setSharedElementReturnTransition(new DetailsTransition());
+
+
+            getActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .addSharedElement(view, "comicTitle")
+                    .replace(R.id.fragment_container_one, favoritesItemFragment)
+                    .addToBackStack(null)
+                    .commit();
+        });
+
         mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mBinding.recyclerView.setAdapter(mAdapter);
     }
@@ -104,9 +122,18 @@ public class FavoritesFragment extends Fragment {
         inflater.inflate(R.menu.favorites_menu, menu);
     }
 
+    private interface FavoriteItemClickListener {
+        void OnFavoriteItemClick(View view, Comic comic);
+    }
+
     private static class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.FavoriteViewHolder>{
 
         private List<Comic> mFavoritesList = new ArrayList<>();
+        private FavoriteItemClickListener mFavoriteItemClickListener;
+
+        public FavoritesAdapter(@NonNull FavoriteItemClickListener favoriteItemClickListener){
+            mFavoriteItemClickListener = favoriteItemClickListener;
+        }
 
         void setFavoritesList(@NonNull List<Comic> favoritesList){
             mFavoritesList = favoritesList;
@@ -124,7 +151,7 @@ public class FavoritesFragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull FavoriteViewHolder holder, int position) {
             Comic comic = mFavoritesList.get(position);
-            holder.bind(comic);
+            holder.bind(comic, mFavoriteItemClickListener);
         }
 
         @Override
@@ -142,8 +169,12 @@ public class FavoritesFragment extends Fragment {
                 mBinding = binding;
             }
 
-            void bind(@NonNull Comic comic){
+            void bind(final @NonNull Comic comic, final FavoriteItemClickListener favoriteItemClickListener){
                 mBinding.setItem(comic);
+                mBinding.getRoot().setTransitionName(comic.getTitle() + "_" + comic.getNum());
+                mBinding.getRoot().setOnClickListener(v -> {
+                    favoriteItemClickListener.OnFavoriteItemClick(v, comic);
+                });
                 mBinding.executePendingBindings();
             }
         }
