@@ -11,7 +11,7 @@ import pl.jpcodetask.xkcdcomics.data.source.Repository;
 import pl.jpcodetask.xkcdcomics.utils.Schedulers;
 import pl.jpcodetask.xkcdcomics.utils.SharedPreferenceProvider;
 
-public class SingleComicUseCaseImpl implements SingleComicUseCase {
+public class ExploreUseCaseImpl implements ExploreUseCase {
 
     private static final int NO_BOOKMARK = -1;
     private static final int DEFAULT_LATEST_COMIC_NUMBER = 0;
@@ -20,7 +20,7 @@ public class SingleComicUseCaseImpl implements SingleComicUseCase {
     private final SharedPreferenceProvider mPreferenceProvider;
 
     @Inject
-    public SingleComicUseCaseImpl(@Named("repository") Repository dataSource, SharedPreferenceProvider preferenceProvider) {
+    public ExploreUseCaseImpl(@Named("repository") Repository dataSource, SharedPreferenceProvider preferenceProvider) {
         mDataSource = dataSource;
         mPreferenceProvider = preferenceProvider;
     }
