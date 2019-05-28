@@ -6,9 +6,13 @@ import android.transition.Fade;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,12 +21,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.inject.Inject;
-
 import dagger.android.support.AndroidSupportInjection;
 import pl.jpcodetask.xkcdcomics.R;
 import pl.jpcodetask.xkcdcomics.data.model.Comic;
@@ -73,7 +71,7 @@ public class FavoritesFragment extends Fragment {
 
         mAdapter = new FavoritesAdapter((view, comic) -> {
 
-            FavoritesItemFragment favoritesItemFragment = FavoritesItemFragment.newInstance();
+            FavoritesItemFragment favoritesItemFragment = FavoritesItemFragment.newInstance(comic.getNum());
             favoritesItemFragment.setSharedElementEnterTransition(new DetailsTransition());
             favoritesItemFragment.setEnterTransition(new Fade());
             setExitTransition(new Fade());
@@ -112,10 +110,6 @@ public class FavoritesFragment extends Fragment {
         mViewModel.loadList();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        return super.onOptionsItemSelected(item);
-    }
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
