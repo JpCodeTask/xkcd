@@ -130,6 +130,11 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
     @Override
     public void onBackPressed() {
 
+        if(mBinding.drawer.isDrawerOpen(GravityCompat.START)){
+            mBinding.drawer.closeDrawers();
+            return;
+        }
+
         if(mBackButtonTimestamp + BACK_BUTTON_EXIT_DELAY_MS > System.currentTimeMillis()){
             super.onBackPressed();
             return;
