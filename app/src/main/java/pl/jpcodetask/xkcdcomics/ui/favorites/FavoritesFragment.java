@@ -9,11 +9,6 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.inject.Inject;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,6 +16,12 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.inject.Inject;
+
 import dagger.android.support.AndroidSupportInjection;
 import pl.jpcodetask.xkcdcomics.R;
 import pl.jpcodetask.xkcdcomics.data.model.Comic;
@@ -102,12 +103,6 @@ public class FavoritesFragment extends Fragment {
     private void setupToolbar() {
         mBinding.toolbar.setTitle(R.string.nav_item_favorites);
         ((AppCompatActivity) getActivity()).setSupportActionBar(mBinding.toolbar);
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        mViewModel.loadList();
     }
 
 

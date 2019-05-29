@@ -17,6 +17,7 @@ public class FavoritesViewModel extends ViewModel {
 
     public FavoritesViewModel(FavoritesUseCase favoritesUseCase){
         mFavoritesUseCase = favoritesUseCase;
+        loadList();
     }
 
     void loadList(){
