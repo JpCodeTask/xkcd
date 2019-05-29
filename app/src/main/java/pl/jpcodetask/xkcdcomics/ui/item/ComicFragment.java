@@ -12,15 +12,16 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
-import com.google.android.material.snackbar.Snackbar;
-
-import javax.inject.Inject;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+
+import com.google.android.material.snackbar.Snackbar;
+
+import javax.inject.Inject;
+
 import dagger.android.support.AndroidSupportInjection;
 import pl.jpcodetask.xkcdcomics.R;
 import pl.jpcodetask.xkcdcomics.data.model.Comic;
@@ -222,13 +223,6 @@ public class ComicFragment extends Fragment implements ComicNavigator{
             mActivityViewModel.navigateTo(NavigationItem.NAVIGATION_ARCHIVE);
         });
     }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        mViewModel.loadComic();
-    }
-
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
