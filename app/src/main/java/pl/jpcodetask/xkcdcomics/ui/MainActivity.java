@@ -47,8 +47,6 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
 
         setupViewModel();
         setupNavigationDrawer();
-
-        mMainViewModel.navigateTo(NavigationItem.NAVIGATION_EXPLORE);
     }
 
     private void setupViewModel() {
@@ -122,6 +120,12 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+
+                if(getSupportFragmentManager().getBackStackEntryCount() > 0){
+                    getSupportFragmentManager().popBackStack();
+                    return true;
+                }
+
                 // Open the navigation drawer when the home icon is selected from the toolbar.
                 mBinding.drawer.openDrawer(GravityCompat.START);
                 return true;
@@ -131,6 +135,12 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
 
     @Override
     public void onBackPressed() {
+
+        if(mBinding.drawer.isDrawerOpen(GravityCompat.START)){
+            mBinding.drawer.closeDrawers();
+            return;
+        }
+
 
         if( getSupportFragmentManager().getBackStackEntryCount() > 0|| mBackButtonTimestamp + BACK_BUTTON_EXIT_DELAY_MS > System.currentTimeMillis()){
             super.onBackPressed();

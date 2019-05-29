@@ -10,12 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import javax.inject.Inject;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+
+import javax.inject.Inject;
+
 import dagger.android.support.AndroidSupportInjection;
 import pl.jpcodetask.xkcdcomics.R;
 import pl.jpcodetask.xkcdcomics.databinding.FragmentFavoritesItemBinding;
@@ -77,11 +78,6 @@ public class FavoritesItemFragment extends Fragment {
 
             case R.id.action_favorite:
                 Toast.makeText(getContext(), "Favorite", Toast.LENGTH_SHORT).show();
-                return true;
-
-            case android.R.id.home:
-                Toast.makeText(getContext(), "Back", Toast.LENGTH_SHORT).show();
-                getActivity().getSupportFragmentManager().popBackStack();
                 return true;
 
             default:

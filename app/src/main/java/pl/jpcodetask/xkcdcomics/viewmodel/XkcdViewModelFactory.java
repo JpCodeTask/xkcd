@@ -2,32 +2,32 @@ package pl.jpcodetask.xkcdcomics.viewmodel;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
+
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import androidx.annotation.NonNull;
-import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
 import pl.jpcodetask.xkcdcomics.ui.MainViewModel;
 import pl.jpcodetask.xkcdcomics.ui.favorites.FavoritesViewModel;
 import pl.jpcodetask.xkcdcomics.ui.item.ComicViewModel;
+import pl.jpcodetask.xkcdcomics.usecase.ExploreUseCase;
+import pl.jpcodetask.xkcdcomics.usecase.ExploreUseCaseImpl;
 import pl.jpcodetask.xkcdcomics.usecase.FavoritesUseCase;
 import pl.jpcodetask.xkcdcomics.usecase.FavoritesUseCaseImpl;
-import pl.jpcodetask.xkcdcomics.usecase.SingleComicUseCase;
-import pl.jpcodetask.xkcdcomics.usecase.SingleComicUseCaseImpl;
 
 @Singleton
 public class XkcdViewModelFactory implements ViewModelProvider.Factory {
 
     private final Context mContext;
-    private final SingleComicUseCase mSingleComicUseCase;
+    private final ExploreUseCase mExploreUseCase;
     private final FavoritesUseCase mFavoritesUseCase;
-
     @Inject
-    public XkcdViewModelFactory(@Named("application_context") Context context, SingleComicUseCaseImpl exploreUseCase, FavoritesUseCaseImpl favoritesUseCase){
+    public XkcdViewModelFactory(@Named("application_context") Context context, ExploreUseCaseImpl exploreUseCase, FavoritesUseCaseImpl favoritesUseCase){
         mContext = context;
-        mSingleComicUseCase = exploreUseCase;
+        mExploreUseCase = exploreUseCase;
         mFavoritesUseCase = favoritesUseCase;
     }
 
@@ -35,7 +35,7 @@ public class XkcdViewModelFactory implements ViewModelProvider.Factory {
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if (modelClass.isAssignableFrom(ComicViewModel.class)){
-            return (T) new ComicViewModel(mSingleComicUseCase);
+            return (T) new ComicViewModel(mExploreUseCase);
         }
 
         if (modelClass.isAssignableFrom(FavoritesViewModel.class)){
