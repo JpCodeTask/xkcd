@@ -120,6 +120,12 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+
+                if(getSupportFragmentManager().getBackStackEntryCount() > 0){
+                    getSupportFragmentManager().popBackStack();
+                    return true;
+                }
+
                 // Open the navigation drawer when the home icon is selected from the toolbar.
                 mBinding.drawer.openDrawer(GravityCompat.START);
                 return true;
