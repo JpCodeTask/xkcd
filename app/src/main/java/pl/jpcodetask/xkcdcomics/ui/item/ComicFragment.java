@@ -29,6 +29,7 @@ import pl.jpcodetask.xkcdcomics.databinding.FragmentComicBinding;
 import pl.jpcodetask.xkcdcomics.ui.MainViewModel;
 import pl.jpcodetask.xkcdcomics.ui.common.NavigationItem;
 import pl.jpcodetask.xkcdcomics.utils.GlideApp;
+import pl.jpcodetask.xkcdcomics.utils.Utils;
 import pl.jpcodetask.xkcdcomics.viewmodel.XkcdViewModelFactory;
 
 public class ComicFragment extends Fragment implements ComicNavigator{
@@ -94,7 +95,7 @@ public class ComicFragment extends Fragment implements ComicNavigator{
         mViewModel.getComic().observe(this, comic -> {
             ((AppCompatActivity) getActivity()).getSupportActionBar().setSubtitle(comic.getTitle());
             GlideApp.with(this).load(comic.getImgUrl()).into(mBinding.imageView);
-            createShareIntent(comic);
+            setupShareIntent(comic);
         });
 
         mViewModel.getMessage().observe(this, eventString -> {
@@ -121,10 +122,8 @@ public class ComicFragment extends Fragment implements ComicNavigator{
         });
     }
 
-    private void createShareIntent(Comic comic) {
-        mShareIntent = new Intent(Intent.ACTION_SEND);
-        mShareIntent.putExtra(Intent.EXTRA_TEXT, comic.getImgUrl());
-        mShareIntent.setType("text/plain");
+    private void setupShareIntent(Comic comic) {
+        mShareIntent = Utils.getComicShareIntent(comic);
     }
 
     private void setSpinnerSelectionWithoutCallback(int comicNumber){
