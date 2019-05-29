@@ -2,21 +2,22 @@ package pl.jpcodetask.xkcdcomics.ui.item;
 
 import android.util.Log;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import pl.jpcodetask.xkcdcomics.Event;
 import pl.jpcodetask.xkcdcomics.data.model.Comic;
 import pl.jpcodetask.xkcdcomics.ui.common.ComicState;
-import pl.jpcodetask.xkcdcomics.usecase.SingleComicUseCase;
+import pl.jpcodetask.xkcdcomics.usecase.ExploreUseCase;
 import pl.jpcodetask.xkcdcomics.utils.Schedulers;
 
 public class ComicViewModel extends ViewModel {
 
-    private final SingleComicUseCase mSingleComicUseCase;
+    private final ExploreUseCase mExploreUseCase;
 
     /** State*/
     private final MutableLiveData<ComicState> mState = new MutableLiveData<>();
@@ -26,13 +27,13 @@ public class ComicViewModel extends ViewModel {
     private final MutableLiveData<Event<String>> mMessage = new MutableLiveData<>();
     private final MutableLiveData<Integer> mRequestComicNumber = new MutableLiveData<>();
 
-    public ComicViewModel(SingleComicUseCase singleComicUseCase) {
-       mSingleComicUseCase = singleComicUseCase;
+    public ComicViewModel(ExploreUseCase exploreUseCase) {
+       mExploreUseCase = exploreUseCase;
     }
 
     void loadComic(){
         setStateOnLoading();
-        mSingleComicUseCase.loadComic()
+        mExploreUseCase.loadComic()
                 .doOnSuccess(comicWrapper -> {
                     if(comicWrapper.isSuccess()){
                         Comic comic = comicWrapper.getComic();
@@ -82,7 +83,7 @@ public class ComicViewModel extends ViewModel {
     void loadComic(int comicNumber){
         Log.d("Load", "!");
         setStateOnLoading();
-        mSingleComicUseCase.loadComic(comicNumber)
+        mExploreUseCase.loadComic(comicNumber)
                 .doOnSuccess(comicWrapper -> {
                     if(comicWrapper.isSuccess()){
                         Comic comic = comicWrapper.getComic();
@@ -116,7 +117,7 @@ public class ComicViewModel extends ViewModel {
     }
 
     public void loadRandom(){
-        int randomComicNumber = (int) Math.abs( Math.random() * mSingleComicUseCase.getLatestComicNumber() + 1);
+        int randomComicNumber = (int) Math.abs( Math.random() * mExploreUseCase.getLatestComicNumber() + 1);
         mRequestComicNumber.setValue(randomComicNumber);
         loadComic(randomComicNumber);
     }
@@ -130,12 +131,12 @@ public class ComicViewModel extends ViewModel {
     }
 
     void setComicFavorite(boolean isFavorite){
-        //TODO add missing implementation
+
         if(mComicLiveData.getValue() == null){
             return;
         }
 
-        mSingleComicUseCase.setFavorite(mComicLiveData.getValue().getNum(), isFavorite)
+        mExploreUseCase.setFavorite(mComicLiveData.getValue().getNum(), isFavorite)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.mainThread())
                 .doOnComplete(() -> {
@@ -152,7 +153,7 @@ public class ComicViewModel extends ViewModel {
     }
 
     List<Integer> getComicRange(){
-        int latestComicNumber = mSingleComicUseCase.getLatestComicNumber();
+        int latestComicNumber = mExploreUseCase.getLatestComicNumber();
 
 
         ArrayList<Integer> range =  new ArrayList<>();

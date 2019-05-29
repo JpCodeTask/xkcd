@@ -91,7 +91,7 @@ public class ComicFragment extends Fragment implements ComicNavigator{
 
     private void observeData(){
         mViewModel.getComic().observe(this, comic -> {
-            ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(comic.getTitle());
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setSubtitle(comic.getTitle());
             GlideApp.with(this).load(comic.getImgUrl()).into(mBinding.imageView);
             createShareIntent(comic);
         });
@@ -192,6 +192,7 @@ public class ComicFragment extends Fragment implements ComicNavigator{
 
 
     private void setupToolbar(){
+        mBinding.toolbar.setTitle(R.string.nav_item_explore);
         ((AppCompatActivity) getActivity()).setSupportActionBar(mBinding.toolbar);
     }
 
