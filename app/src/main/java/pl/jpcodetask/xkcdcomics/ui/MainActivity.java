@@ -47,8 +47,6 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
 
         setupViewModel();
         setupNavigationDrawer();
-
-        mMainViewModel.navigateTo(NavigationItem.NAVIGATION_EXPLORE);
     }
 
     private void setupViewModel() {
