@@ -29,6 +29,7 @@ public class ComicViewModel extends ViewModel {
 
     public ComicViewModel(ExploreUseCase exploreUseCase) {
        mExploreUseCase = exploreUseCase;
+       loadComic();
     }
 
     void loadComic(){
