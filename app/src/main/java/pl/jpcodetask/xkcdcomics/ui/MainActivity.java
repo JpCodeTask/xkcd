@@ -54,6 +54,10 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
         mMainViewModel.getNavigationItem().observe(this, item -> {
             FragmentManager fragmentManager = getSupportFragmentManager();
 
+            if(fragmentManager.getBackStackEntryCount() > 0){
+                getSupportFragmentManager().popBackStack();
+            }
+
             switch (item){
                 case NavigationItem.NAVIGATION_EXPLORE:
 
