@@ -11,7 +11,8 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 
 import pl.jpcodetask.xkcdcomics.ui.MainViewModel;
-import pl.jpcodetask.xkcdcomics.ui.favorites.FavoritesViewModel;
+import pl.jpcodetask.xkcdcomics.ui.favorites.item.FavoritesItemViewModel;
+import pl.jpcodetask.xkcdcomics.ui.favorites.list.FavoritesViewModel;
 import pl.jpcodetask.xkcdcomics.ui.item.ComicViewModel;
 import pl.jpcodetask.xkcdcomics.usecase.ExploreUseCase;
 import pl.jpcodetask.xkcdcomics.usecase.ExploreUseCaseImpl;
@@ -42,6 +43,9 @@ public class XkcdViewModelFactory implements ViewModelProvider.Factory {
             return (T) new FavoritesViewModel(mFavoritesUseCase);
         }
 
+        if (modelClass.isAssignableFrom(FavoritesItemViewModel.class)){
+            return (T) new FavoritesItemViewModel(mFavoritesUseCase);
+        }
 
         if (modelClass.isAssignableFrom(MainViewModel.class)){
             return (T) new MainViewModel(mContext);

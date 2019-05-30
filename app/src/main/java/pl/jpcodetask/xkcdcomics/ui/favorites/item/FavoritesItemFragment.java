@@ -1,6 +1,7 @@
-package pl.jpcodetask.xkcdcomics.ui.favorites;
+package pl.jpcodetask.xkcdcomics.ui.favorites.item;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -14,20 +15,32 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 
 import javax.inject.Inject;
 
 import dagger.android.support.AndroidSupportInjection;
 import pl.jpcodetask.xkcdcomics.R;
+import pl.jpcodetask.xkcdcomics.data.model.Comic;
 import pl.jpcodetask.xkcdcomics.databinding.FragmentFavoritesItemBinding;
+import pl.jpcodetask.xkcdcomics.ui.common.ComicViewer;
+import pl.jpcodetask.xkcdcomics.utils.ComicUtils;
+import pl.jpcodetask.xkcdcomics.utils.GlideApp;
 import pl.jpcodetask.xkcdcomics.viewmodel.XkcdViewModelFactory;
 
-public class FavoritesItemFragment extends Fragment {
+public class FavoritesItemFragment extends Fragment implements ComicViewer {
 
-    private static final String ARG_COMIC_NUMBER = "ARG_COMIC_NUMBER";
     @Inject
     XkcdViewModelFactory mViewModelFactory;
+
+
+    private static final String ARG_COMIC_NUMBER = "ARG_COMIC_NUMBER";
+
     private FragmentFavoritesItemBinding mBinding;
+    private boolean mComicDetailsVisible = false;
+    private boolean mIsFavorite = false;
+    private FavoritesItemViewModel mViewmodel;
+    private Intent mShareIntent;
 
     public FavoritesItemFragment(){
 
@@ -54,7 +67,11 @@ public class FavoritesItemFragment extends Fragment {
         mBinding = FragmentFavoritesItemBinding.inflate(inflater, container, false);
 
         setupToolbar();
+        setupViewmodel();
         setHasOptionsMenu(true);
+
+        mBinding.setViewer(this);
+        mBinding.setViewmodel(mViewmodel);
         mBinding.setLifecycleOwner(this);
 
         return mBinding.getRoot();
@@ -62,6 +79,26 @@ public class FavoritesItemFragment extends Fragment {
 
     private void setupToolbar() {
         ((AppCompatActivity) getActivity()).setSupportActionBar(mBinding.toolbar);
+    }
+
+    private void setupViewmodel() {
+        mViewmodel = ViewModelProviders.of(this, mViewModelFactory).get(FavoritesItemViewModel.class);
+        mViewmodel.getComic().observe(this, comic -> {
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(comic.getTitle());
+            GlideApp.with(this).load(comic.getImgUrl()).into(mBinding.imageView);
+            setupShareIntent(comic);
+        });
+    }
+
+
+    private void setupShareIntent(Comic comic) {
+        mShareIntent = ComicUtils.getComicShareIntent(comic);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mViewmodel.loadComic(getArguments().getInt(ARG_COMIC_NUMBER));
     }
 
     @Override
@@ -73,7 +110,9 @@ public class FavoritesItemFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.action_share:
-                Toast.makeText(getContext(), "Share", Toast.LENGTH_SHORT).show();
+                if (mShareIntent != null){
+                    startActivity(Intent.createChooser(mShareIntent, "Share comic image"));
+                }
                 return true;
 
             case R.id.action_favorite:
@@ -83,5 +122,21 @@ public class FavoritesItemFragment extends Fragment {
             default:
                 return true;
         }
+    }
+
+    @Override
+    public void onComicDetails() {
+        if (!mComicDetailsVisible){
+            mBinding.comicDetailsView.setVisibility(View.VISIBLE);
+            mComicDetailsVisible = true;
+        }else{
+            mBinding.comicDetailsView.setVisibility(View.GONE);
+            mComicDetailsVisible = false;
+        }
+    }
+
+    @Override
+    public void onReload() {
+
     }
 }

@@ -1,4 +1,4 @@
-package pl.jpcodetask.xkcdcomics.ui.favorites;
+package pl.jpcodetask.xkcdcomics.ui.favorites.list;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -28,6 +28,8 @@ import pl.jpcodetask.xkcdcomics.data.model.Comic;
 import pl.jpcodetask.xkcdcomics.databinding.FavoritesListItemBinding;
 import pl.jpcodetask.xkcdcomics.databinding.FragmentFavoritesBinding;
 import pl.jpcodetask.xkcdcomics.databinding.FragmentFavoritesBindingImpl;
+import pl.jpcodetask.xkcdcomics.ui.favorites.DetailsTransition;
+import pl.jpcodetask.xkcdcomics.ui.favorites.item.FavoritesItemFragment;
 import pl.jpcodetask.xkcdcomics.viewmodel.XkcdViewModelFactory;
 
 public class FavoritesFragment extends Fragment {
@@ -81,7 +83,7 @@ public class FavoritesFragment extends Fragment {
 
             getActivity().getSupportFragmentManager()
                     .beginTransaction()
-                    .addSharedElement(view, "comicTitle")
+                    .addSharedElement(view, "comic")
                     .replace(R.id.fragment_container_one, favoritesItemFragment)
                     .addToBackStack(null)
                     .commit();
