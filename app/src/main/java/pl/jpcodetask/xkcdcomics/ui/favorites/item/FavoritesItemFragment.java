@@ -9,13 +9,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import javax.inject.Inject;
 
@@ -38,8 +39,8 @@ public class FavoritesItemFragment extends Fragment implements ComicViewer {
 
     private FragmentFavoritesItemBinding mBinding;
     private boolean mComicDetailsVisible = false;
-    private boolean mIsFavorite = false;
-    private FavoritesItemViewModel mViewmodel;
+    private boolean mComicIsFavorite = false;
+    private FavoritesItemViewModel mViewModel;
     private Intent mShareIntent;
 
     public FavoritesItemFragment(){
@@ -71,7 +72,7 @@ public class FavoritesItemFragment extends Fragment implements ComicViewer {
         setHasOptionsMenu(true);
 
         mBinding.setViewer(this);
-        mBinding.setViewmodel(mViewmodel);
+        mBinding.setViewmodel(mViewModel);
         mBinding.setLifecycleOwner(this);
 
         return mBinding.getRoot();
@@ -82,11 +83,44 @@ public class FavoritesItemFragment extends Fragment implements ComicViewer {
     }
 
     private void setupViewmodel() {
-        mViewmodel = ViewModelProviders.of(this, mViewModelFactory).get(FavoritesItemViewModel.class);
-        mViewmodel.getComic().observe(this, comic -> {
+        mViewModel = ViewModelProviders.of(this, mViewModelFactory).get(FavoritesItemViewModel.class);
+
+        mViewModel.getComic().observe(this, comic -> {
             ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(comic.getTitle());
             GlideApp.with(this).load(comic.getImgUrl()).into(mBinding.imageView);
             setupShareIntent(comic);
+        });
+
+        mViewModel.getMessage().observe(this, eventString -> {
+            String message = eventString.getEventContentIfNotHandled();
+            if (message != null){
+                Snackbar.make(mBinding.getRoot(), message, Snackbar.LENGTH_SHORT).show();
+            }
+        });
+
+        mViewModel.getState().observe(this, comicState -> {
+
+
+            if (comicState.isDataLoading()){
+                mBinding.moreBtn.setEnabled(false);
+            }else{
+                mBinding.moreBtn.setEnabled(true);
+            }
+
+            if (comicState.isErrorOccurred()){
+                mBinding.moreBtn.setEnabled(false);
+            }else{
+                mBinding.moreBtn.setEnabled(true);
+            }
+
+            if (comicState.isFavorite()){
+                mComicIsFavorite = true;
+                getActivity().invalidateOptionsMenu();
+            }else{
+                mComicIsFavorite = false;
+                getActivity().invalidateOptionsMenu();
+            }
+
         });
     }
 
@@ -98,12 +132,25 @@ public class FavoritesItemFragment extends Fragment implements ComicViewer {
     @Override
     public void onStart() {
         super.onStart();
-        mViewmodel.loadComic(getArguments().getInt(ARG_COMIC_NUMBER));
+        mViewModel.loadComic(getArguments().getInt(ARG_COMIC_NUMBER));
     }
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.item_menu, menu);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(@NonNull Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        MenuItem favoriteBtn = menu.findItem(R.id.action_favorite);
+        if (mComicIsFavorite){
+            favoriteBtn.setTitle(R.string.menu_item_favorite);
+            favoriteBtn.setIcon(R.drawable.baseline_favorite_black_24);
+        }else{
+            favoriteBtn.setIcon(R.drawable.baseline_favorite_border_black_24);
+            favoriteBtn.setTitle(R.string.menu_item_unfavorite);
+        }
     }
 
     @Override
@@ -116,7 +163,12 @@ public class FavoritesItemFragment extends Fragment implements ComicViewer {
                 return true;
 
             case R.id.action_favorite:
-                Toast.makeText(getContext(), "Favorite", Toast.LENGTH_SHORT).show();
+                if(item.getTitle() == getString(R.string.menu_item_favorite)){
+                    mViewModel.setComicFavorite(false);
+                }else{
+                    mViewModel.setComicFavorite(true);
+                }
+
                 return true;
 
             default:
