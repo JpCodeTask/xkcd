@@ -18,6 +18,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -119,16 +121,37 @@ public class FavoritesFragment extends Fragment {
 
     private static class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.FavoriteViewHolder>{
 
+        private static final String SORT_BY_NUM = "SORT_BY_NUM";
+        private static final String SORT_BY_TITLE = "SORT_BY_TITLE";
+
         private List<Comic> mFavoritesList = new ArrayList<>();
+        private final Comparator<Comic> mComicComparator;
         private FavoriteItemClickListener mFavoriteItemClickListener;
+        private String mCurrentSortField = SORT_BY_NUM;
 
         public FavoritesAdapter(@NonNull FavoriteItemClickListener favoriteItemClickListener){
             mFavoriteItemClickListener = favoriteItemClickListener;
+            mComicComparator = (o1, o2) -> {
+               switch (mCurrentSortField){
+                   case SORT_BY_TITLE:
+                       return o1.getTitle().compareTo(o2.getTitle());
+                   case SORT_BY_NUM:
+                       return o2.getNum() - o1.getNum();
+
+                   default:
+                       return 0;
+               }
+            };
         }
 
         void setFavoritesList(@NonNull List<Comic> favoritesList){
             mFavoritesList = favoritesList;
+            Collections.sort(mFavoritesList, mComicComparator);
             notifyDataSetChanged();
+        }
+
+        void sortBy(String sortField){
+
         }
 
         @NonNull
