@@ -1,4 +1,4 @@
-package pl.jpcodetask.xkcdcomics.ui.favorites;
+package pl.jpcodetask.xkcdcomics.ui.favorites.list;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -9,11 +9,6 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.inject.Inject;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,12 +16,22 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+import javax.inject.Inject;
+
 import dagger.android.support.AndroidSupportInjection;
 import pl.jpcodetask.xkcdcomics.R;
 import pl.jpcodetask.xkcdcomics.data.model.Comic;
 import pl.jpcodetask.xkcdcomics.databinding.FavoritesListItemBinding;
 import pl.jpcodetask.xkcdcomics.databinding.FragmentFavoritesBinding;
 import pl.jpcodetask.xkcdcomics.databinding.FragmentFavoritesBindingImpl;
+import pl.jpcodetask.xkcdcomics.ui.favorites.DetailsTransition;
+import pl.jpcodetask.xkcdcomics.ui.favorites.item.FavoritesItemFragment;
 import pl.jpcodetask.xkcdcomics.viewmodel.XkcdViewModelFactory;
 
 public class FavoritesFragment extends Fragment {
@@ -80,7 +85,7 @@ public class FavoritesFragment extends Fragment {
 
             getActivity().getSupportFragmentManager()
                     .beginTransaction()
-                    .addSharedElement(view, "comicTitle")
+                    .addSharedElement(view, "comic")
                     .replace(R.id.fragment_container_one, favoritesItemFragment)
                     .addToBackStack(null)
                     .commit();
@@ -104,12 +109,6 @@ public class FavoritesFragment extends Fragment {
         ((AppCompatActivity) getActivity()).setSupportActionBar(mBinding.toolbar);
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        mViewModel.loadList();
-    }
-
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
@@ -122,16 +121,37 @@ public class FavoritesFragment extends Fragment {
 
     private static class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.FavoriteViewHolder>{
 
+        private static final String SORT_BY_NUM = "SORT_BY_NUM";
+        private static final String SORT_BY_TITLE = "SORT_BY_TITLE";
+
         private List<Comic> mFavoritesList = new ArrayList<>();
+        private final Comparator<Comic> mComicComparator;
         private FavoriteItemClickListener mFavoriteItemClickListener;
+        private String mCurrentSortField = SORT_BY_NUM;
 
         public FavoritesAdapter(@NonNull FavoriteItemClickListener favoriteItemClickListener){
             mFavoriteItemClickListener = favoriteItemClickListener;
+            mComicComparator = (o1, o2) -> {
+               switch (mCurrentSortField){
+                   case SORT_BY_TITLE:
+                       return o1.getTitle().compareTo(o2.getTitle());
+                   case SORT_BY_NUM:
+                       return o2.getNum() - o1.getNum();
+
+                   default:
+                       return 0;
+               }
+            };
         }
 
         void setFavoritesList(@NonNull List<Comic> favoritesList){
             mFavoritesList = favoritesList;
+            Collections.sort(mFavoritesList, mComicComparator);
             notifyDataSetChanged();
+        }
+
+        void sortBy(String sortField){
+
         }
 
         @NonNull

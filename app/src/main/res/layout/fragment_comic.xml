@@ -8,7 +8,7 @@
 
         <variable
             name="navigator"
-            type="pl.jpcodetask.xkcdcomics.ui.item.ComicNavigator" />
+            type="pl.jpcodetask.xkcdcomics.ui.common.ComicNavigator" />
 
         <variable
             name="viewmodel"

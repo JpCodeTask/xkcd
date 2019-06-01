@@ -4,10 +4,10 @@ import android.content.Intent;
 
 import pl.jpcodetask.xkcdcomics.data.model.Comic;
 
-public class Utils {
+public class ComicUtils {
 
-    private Utils(){
-        //
+    private ComicUtils(){
+        //empty
     }
 
     public static Intent getComicShareIntent(Comic comic){

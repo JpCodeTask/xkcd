@@ -1,4 +1,4 @@
-package pl.jpcodetask.xkcdcomics.ui.favorites;
+package pl.jpcodetask.xkcdcomics.ui.favorites.list;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -17,6 +17,7 @@ public class FavoritesViewModel extends ViewModel {
 
     public FavoritesViewModel(FavoritesUseCase favoritesUseCase){
         mFavoritesUseCase = favoritesUseCase;
+        loadList();
     }
 
     void loadList(){

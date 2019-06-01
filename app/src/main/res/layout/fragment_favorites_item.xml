@@ -1,14 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewer"
+            type="pl.jpcodetask.xkcdcomics.ui.common.ComicViewer" />
+
         <variable
             name="viewmodel"
-            type="pl.jpcodetask.xkcdcomics.ui.item.ComicViewModel" />
+            type="pl.jpcodetask.xkcdcomics.ui.favorites.item.FavoritesItemViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:animateLayoutChanges="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -23,6 +32,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <androidx.appcompat.widget.Toolbar
+                android:transitionName="comic"
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
@@ -31,16 +41,60 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:transitionName="comicTitle"
-            app:layout_constraintBottom_toBottomOf="parent"
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="@dimen/margin_8"
+            android:layout_marginEnd="@dimen/margin_32"
+            android:layout_marginBottom="@dimen/margin_8"
+            android:indeterminate="true"
+            android:visibility="@{viewmodel.state.isDataLoading() ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toTopOf="@id/more_btn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/app_bar_layout" />
 
-        <!--<ImageView
+        <TextView
+            android:id="@+id/error_text_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_8"
+            android:layout_marginTop="@dimen/margin_8"
+            android:layout_marginEnd="@dimen/margin_8"
+            android:layout_marginBottom="@dimen/margin_8"
+            android:gravity="center"
+            android:text="@string/something_went_wrong"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            android:visibility="@{viewmodel.state.isErrorOccurred() ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toTopOf="@+id/more_btn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/app_bar_layout"
+            app:layout_constraintVertical_bias="0.42000002" />
+
+        <ImageButton
+            android:id="@+id/reload_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_8"
+            android:layout_marginTop="@dimen/margin_8"
+            android:layout_marginEnd="@dimen/margin_8"
+            android:layout_marginBottom="@dimen/margin_8"
+            android:background="?android:selectableItemBackground"
+            android:onClick="@{()->viewer.onReload()}"
+            android:src="@drawable/baseline_autorenew_black_48"
+            android:visibility="@{viewmodel.state.isErrorOccurred() ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toTopOf="@id/more_btn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/error_text_view"
+            app:layout_constraintVertical_bias="0.1" />
+
+
+        <ImageView
             android:id="@+id/imageView"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -48,11 +102,28 @@
             android:layout_marginTop="@dimen/margin_8"
             android:layout_marginEnd="@dimen/margin_8"
             android:layout_marginBottom="@dimen/margin_8"
+            android:visibility="@{(viewmodel.state.isErrorOccurred() || viewmodel.state.isDataLoading()) ? View.GONE : View.VISIBLE}"
             app:layout_constraintBottom_toTopOf="@id/more_btn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/app_bar_layout"
             tools:src="@drawable/ic_launcher_background" />
+
+        <TextView
+            android:id="@+id/comic_number_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="60dp"
+            android:layout_marginEnd="@dimen/margin_8"
+            android:layout_marginBottom="@dimen/margin_8"
+            android:gravity="center"
+            android:text="@{String.valueOf(viewmodel.comic.num)}"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+            android:transitionName="comicNumber"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/more_btn"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="2101" />
 
         <ImageButton
             android:id="@+id/more_btn"
@@ -60,6 +131,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:background="@drawable/comic_details_btn_shape"
+            android:onClick="@{()->viewer.onComicDetails()}"
             android:paddingBottom="@dimen/padding_4"
             android:src="@drawable/baseline_expand_less_white_36"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -82,6 +154,7 @@
             app:layout_constraintVertical_bias="1.0">
 
             <ImageButton
+                android:onClick="@{()->viewer.onComicDetails()}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/comic_details_btn_shape"
@@ -131,7 +204,7 @@
             </LinearLayout>
 
 
-        </LinearLayout>-->
+        </LinearLayout>
 
 
 

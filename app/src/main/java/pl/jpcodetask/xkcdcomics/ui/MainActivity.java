@@ -21,7 +21,7 @@ import dagger.android.support.HasSupportFragmentInjector;
 import pl.jpcodetask.xkcdcomics.R;
 import pl.jpcodetask.xkcdcomics.databinding.ActivityMainBinding;
 import pl.jpcodetask.xkcdcomics.ui.common.NavigationItem;
-import pl.jpcodetask.xkcdcomics.ui.favorites.FavoritesFragment;
+import pl.jpcodetask.xkcdcomics.ui.favorites.list.FavoritesFragment;
 import pl.jpcodetask.xkcdcomics.ui.item.ComicFragment;
 import pl.jpcodetask.xkcdcomics.viewmodel.XkcdViewModelFactory;
 
@@ -53,6 +53,10 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
         mMainViewModel = ViewModelProviders.of(this, mXkcdViewModelFactory).get(MainViewModel.class);
         mMainViewModel.getNavigationItem().observe(this, item -> {
             FragmentManager fragmentManager = getSupportFragmentManager();
+
+            if(fragmentManager.getBackStackEntryCount() > 0){
+                getSupportFragmentManager().popBackStack();
+            }
 
             switch (item){
                 case NavigationItem.NAVIGATION_EXPLORE:
