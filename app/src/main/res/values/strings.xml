@@ -15,4 +15,5 @@
     <string name="back_btn_twice_message">Press the \'Back\' button again to exit</string>
     <string name="menu_item_sort">Sort</string>
     <string name="menu_item_search">Search</string>
+    <string name="sort_by">Sort by</string>
 </resources>

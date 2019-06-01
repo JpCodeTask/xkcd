@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="sort_by_array">
+        <item>@string/sort_by_title</item>
+        <item>@string/sort_by_number</item>
+    </string-array>
+
+
+    <string name="sort_by_number">Comic number</string>
+    <string name="sort_by_title">Title</string>
+</resources>

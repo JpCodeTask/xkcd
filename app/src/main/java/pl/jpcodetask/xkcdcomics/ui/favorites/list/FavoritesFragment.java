@@ -1,18 +1,24 @@
 package pl.jpcodetask.xkcdcomics.ui.favorites.list;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.transition.Fade;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -38,6 +44,9 @@ public class FavoritesFragment extends Fragment {
 
     @Inject
     XkcdViewModelFactory mXkcdViewModelFactory;
+
+    private static final String DIALOG_SORT = "DialogSort";
+    private static final int REQUEST_SORT_BY_OPTION = 1001;
 
     private FragmentFavoritesBinding mBinding;
     private FavoritesAdapter mAdapter;
@@ -115,6 +124,39 @@ public class FavoritesFragment extends Fragment {
         inflater.inflate(R.menu.favorites_menu, menu);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.action_sort:
+                FragmentManager manager = getActivity().getSupportFragmentManager();
+                DialogFragment dialogFragment = SortDialogFragment.newInstance();
+                dialogFragment.setTargetFragment(this, REQUEST_SORT_BY_OPTION);
+                dialogFragment.show(manager, DIALOG_SORT);
+                return true;
+
+            case R.id.action_search:
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (resultCode != Activity.RESULT_OK){
+            return;
+        }
+
+        if (requestCode == REQUEST_SORT_BY_OPTION){
+            String selectedOption = data.getStringExtra(SortDialogFragment.EXTRA_SELECTED_OPTION);
+            Toast.makeText(getContext(), selectedOption, Toast.LENGTH_SHORT).show();
+
+
+        }
+    }
+
     private interface FavoriteItemClickListener {
         void OnFavoriteItemClick(View view, Comic comic);
     }
@@ -146,12 +188,13 @@ public class FavoritesFragment extends Fragment {
 
         void setFavoritesList(@NonNull List<Comic> favoritesList){
             mFavoritesList = favoritesList;
-            Collections.sort(mFavoritesList, mComicComparator);
-            notifyDataSetChanged();
+            sortBy(SORT_BY_NUM);
         }
 
         void sortBy(String sortField){
-
+            mCurrentSortField = sortField;
+            Collections.sort(mFavoritesList, mComicComparator);
+            notifyDataSetChanged();
         }
 
         @NonNull
