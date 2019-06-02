@@ -11,7 +11,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -129,7 +128,7 @@ public class FavoritesFragment extends Fragment {
         switch (item.getItemId()){
             case R.id.action_sort:
                 FragmentManager manager = getActivity().getSupportFragmentManager();
-                DialogFragment dialogFragment = SortDialogFragment.newInstance();
+                DialogFragment dialogFragment = SortDialogFragment.newInstance(mAdapter.getCurrentSortField());
                 dialogFragment.setTargetFragment(this, REQUEST_SORT_BY_OPTION);
                 dialogFragment.show(manager, DIALOG_SORT);
                 return true;
@@ -149,11 +148,17 @@ public class FavoritesFragment extends Fragment {
             return;
         }
 
-        if (requestCode == REQUEST_SORT_BY_OPTION){
-            String selectedOption = data.getStringExtra(SortDialogFragment.EXTRA_SELECTED_OPTION);
-            Toast.makeText(getContext(), selectedOption, Toast.LENGTH_SHORT).show();
+        if (requestCode == REQUEST_SORT_BY_OPTION && data != null){
+            int optionId = data.getIntExtra(SortDialogFragment.EXTRA_SELECTED_OPTION, FavoritesAdapter.SORT_BY_TITLE);
+            switch (optionId){
+                case R.string.sort_by_title:
+                    mAdapter.sortBy(FavoritesAdapter.SORT_BY_TITLE);
+                    break;
 
-
+                case R.string.sort_by_number:
+                    mAdapter.sortBy(FavoritesAdapter.SORT_BY_NUM);
+                    break;
+            }
         }
     }
 
@@ -163,13 +168,13 @@ public class FavoritesFragment extends Fragment {
 
     private static class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.FavoriteViewHolder>{
 
-        private static final String SORT_BY_NUM = "SORT_BY_NUM";
-        private static final String SORT_BY_TITLE = "SORT_BY_TITLE";
+        private static final int SORT_BY_NUM = R.string.sort_by_number;
+        private static final int SORT_BY_TITLE = R.string.sort_by_title;
 
         private List<Comic> mFavoritesList = new ArrayList<>();
         private final Comparator<Comic> mComicComparator;
         private FavoriteItemClickListener mFavoriteItemClickListener;
-        private String mCurrentSortField = SORT_BY_NUM;
+        private int mCurrentSortField;
 
         public FavoritesAdapter(@NonNull FavoriteItemClickListener favoriteItemClickListener){
             mFavoriteItemClickListener = favoriteItemClickListener;
@@ -188,13 +193,21 @@ public class FavoritesFragment extends Fragment {
 
         void setFavoritesList(@NonNull List<Comic> favoritesList){
             mFavoritesList = favoritesList;
-            sortBy(SORT_BY_NUM);
+            sortBy(SORT_BY_TITLE);
         }
 
-        void sortBy(String sortField){
+        void sortBy(int sortField){
+            if(sortField == mCurrentSortField){
+                return;
+            }
+
             mCurrentSortField = sortField;
             Collections.sort(mFavoritesList, mComicComparator);
             notifyDataSetChanged();
+        }
+
+        int getCurrentSortField(){
+            return mCurrentSortField;
         }
 
         @NonNull
