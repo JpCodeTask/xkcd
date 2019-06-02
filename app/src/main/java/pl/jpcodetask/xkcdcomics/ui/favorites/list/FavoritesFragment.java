@@ -127,10 +127,7 @@ public class FavoritesFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.action_sort:
-                FragmentManager manager = getActivity().getSupportFragmentManager();
-                DialogFragment dialogFragment = SortDialogFragment.newInstance(mAdapter.getCurrentSortField());
-                dialogFragment.setTargetFragment(this, REQUEST_SORT_BY_OPTION);
-                dialogFragment.show(manager, DIALOG_SORT);
+                openSortDialogFragment();
                 return true;
 
             case R.id.action_search:
@@ -140,6 +137,13 @@ public class FavoritesFragment extends Fragment {
                 return super.onOptionsItemSelected(item);
         }
 
+    }
+
+    private void openSortDialogFragment(){
+        FragmentManager manager = getActivity().getSupportFragmentManager();
+        DialogFragment dialogFragment = SortDialogFragment.newInstance(mAdapter.getCurrentSortField());
+        dialogFragment.setTargetFragment(this, REQUEST_SORT_BY_OPTION);
+        dialogFragment.show(manager, DIALOG_SORT);
     }
 
     @Override
@@ -176,7 +180,7 @@ public class FavoritesFragment extends Fragment {
         private FavoriteItemClickListener mFavoriteItemClickListener;
         private int mCurrentSortField;
 
-        public FavoritesAdapter(@NonNull FavoriteItemClickListener favoriteItemClickListener){
+        FavoritesAdapter(@NonNull FavoriteItemClickListener favoriteItemClickListener){
             mFavoriteItemClickListener = favoriteItemClickListener;
             mComicComparator = (o1, o2) -> {
                switch (mCurrentSortField){
