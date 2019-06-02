@@ -11,6 +11,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -120,7 +121,30 @@ public class FavoritesFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.favorites_menu, menu);
+
+        MenuItem item = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) item.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                mAdapter.searchBy(s);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                if (s.isEmpty()){
+                    mAdapter.searchBy(null);
+                }
+                return false;
+            }
+        });
+        searchView.setOnCloseListener(() -> {
+            mAdapter.searchBy(null);
+            return false;
+        });
     }
 
     @Override
@@ -176,8 +200,10 @@ public class FavoritesFragment extends Fragment {
         private static final int SORT_BY_TITLE = R.string.sort_by_title;
 
         private List<Comic> mFavoritesList = new ArrayList<>();
-        private final Comparator<Comic> mComicComparator;
+        private List<Comic> mFavoritesOriginalList = new ArrayList<>();
         private FavoriteItemClickListener mFavoriteItemClickListener;
+
+        private final Comparator<Comic> mComicComparator;
         private int mCurrentSortField;
 
         FavoritesAdapter(@NonNull FavoriteItemClickListener favoriteItemClickListener){
@@ -197,7 +223,15 @@ public class FavoritesFragment extends Fragment {
 
         void setFavoritesList(@NonNull List<Comic> favoritesList){
             mFavoritesList = favoritesList;
-            sortBy(SORT_BY_TITLE);
+            if (mCurrentSortField > 0){
+                sortBy(mCurrentSortField);
+            }else{
+                sortBy(SORT_BY_TITLE);
+            }
+
+            if (mFavoritesOriginalList.isEmpty()){
+                mFavoritesOriginalList = favoritesList;
+            }
         }
 
         void sortBy(int sortField){
@@ -207,6 +241,25 @@ public class FavoritesFragment extends Fragment {
 
             mCurrentSortField = sortField;
             Collections.sort(mFavoritesList, mComicComparator);
+            notifyDataSetChanged();
+        }
+
+        void searchBy(String query){
+            if (query == null || query.isEmpty()){
+                setFavoritesList(mFavoritesOriginalList);
+                notifyDataSetChanged();
+                return;
+            }
+
+            List<Comic> searchedFavoritesList =  new ArrayList<>();
+
+            for (Comic comic : mFavoritesOriginalList){
+                if (comic.getTitle().contains(query)){
+                    searchedFavoritesList.add(comic);
+                }
+            }
+
+            setFavoritesList(searchedFavoritesList);
             notifyDataSetChanged();
         }
 
