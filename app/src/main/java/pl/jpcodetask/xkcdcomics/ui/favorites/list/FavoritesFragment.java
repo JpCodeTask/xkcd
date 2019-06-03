@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.transition.Fade;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -51,6 +52,7 @@ public class FavoritesFragment extends Fragment {
     private FragmentFavoritesBinding mBinding;
     private FavoritesAdapter mAdapter;
     private FavoritesViewModel mViewModel;
+    private SearchView mSearchView;
 
     public FavoritesFragment(){
         //empty
@@ -64,6 +66,31 @@ public class FavoritesFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         AndroidSupportInjection.inject(this);
         super.onAttach(context);
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setupAdapter();
+    }
+
+    private void setupAdapter() {
+        mAdapter = new FavoritesAdapter((view, comic) -> {
+
+            FavoritesItemFragment favoritesItemFragment = FavoritesItemFragment.newInstance(comic.getNum());
+            favoritesItemFragment.setSharedElementEnterTransition(new DetailsTransition());
+            favoritesItemFragment.setEnterTransition(new Fade());
+            setExitTransition(new Fade());
+            favoritesItemFragment.setSharedElementReturnTransition(new DetailsTransition());
+
+
+            getActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .addSharedElement(view, "comic")
+                    .replace(R.id.fragment_container_one, favoritesItemFragment)
+                    .addToBackStack(null)
+                    .commit();
+        });
     }
 
     @Nullable
@@ -82,24 +109,6 @@ public class FavoritesFragment extends Fragment {
     }
 
     private void setupRecyclerView() {
-
-        mAdapter = new FavoritesAdapter((view, comic) -> {
-
-            FavoritesItemFragment favoritesItemFragment = FavoritesItemFragment.newInstance(comic.getNum());
-            favoritesItemFragment.setSharedElementEnterTransition(new DetailsTransition());
-            favoritesItemFragment.setEnterTransition(new Fade());
-            setExitTransition(new Fade());
-            favoritesItemFragment.setSharedElementReturnTransition(new DetailsTransition());
-
-
-            getActivity().getSupportFragmentManager()
-                    .beginTransaction()
-                    .addSharedElement(view, "comic")
-                    .replace(R.id.fragment_container_one, favoritesItemFragment)
-                    .addToBackStack(null)
-                    .commit();
-        });
-
         mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mBinding.recyclerView.setAdapter(mAdapter);
     }
@@ -110,6 +119,15 @@ public class FavoritesFragment extends Fragment {
             if (comics != null && !comics.isEmpty()){
                 mAdapter.setFavoritesList(comics);
             }
+        });
+
+
+        mViewModel.getSearchQuery().observe(this, query ->{
+            mAdapter.searchBy(query);
+        });
+
+        mViewModel.getSortField().observe(this, sortFieldId ->{
+            mAdapter.sortBy(sortFieldId);
         });
     }
 
@@ -125,26 +143,33 @@ public class FavoritesFragment extends Fragment {
         inflater.inflate(R.menu.favorites_menu, menu);
 
         MenuItem item = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView) item.getActionView();
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        mSearchView = (SearchView) item.getActionView();
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
-                mAdapter.searchBy(s);
+                if (!TextUtils.isEmpty(s)){
+
+                }
+
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String s) {
                 if (s.isEmpty()){
-                    mAdapter.searchBy(null);
+                    mViewModel.search(null);
                 }
                 return false;
             }
         });
-        searchView.setOnCloseListener(() -> {
-            mAdapter.searchBy(null);
+        mSearchView.setOnCloseListener(() -> {
+            mViewModel.search(null);
             return false;
         });
+
+        if(!TextUtils.isEmpty(mViewModel.getSearchQuery().getValue())){
+            mSearchView.setQuery(mViewModel.getSearchQuery().getValue(), true);
+        }
     }
 
     @Override
@@ -180,11 +205,11 @@ public class FavoritesFragment extends Fragment {
             int optionId = data.getIntExtra(SortDialogFragment.EXTRA_SELECTED_OPTION, FavoritesAdapter.SORT_BY_TITLE);
             switch (optionId){
                 case R.string.sort_by_title:
-                    mAdapter.sortBy(FavoritesAdapter.SORT_BY_TITLE);
+                    mViewModel.sort(FavoritesAdapter.SORT_BY_TITLE);
                     break;
 
                 case R.string.sort_by_number:
-                    mAdapter.sortBy(FavoritesAdapter.SORT_BY_NUM);
+                    mViewModel.sort(FavoritesAdapter.SORT_BY_NUM);
                     break;
             }
         }
@@ -205,6 +230,7 @@ public class FavoritesFragment extends Fragment {
 
         private final Comparator<Comic> mComicComparator;
         private int mCurrentSortField;
+        private String mQuery;
 
         FavoritesAdapter(@NonNull FavoriteItemClickListener favoriteItemClickListener){
             mFavoriteItemClickListener = favoriteItemClickListener;
@@ -245,7 +271,9 @@ public class FavoritesFragment extends Fragment {
         }
 
         void searchBy(String query){
-            if (query == null || query.isEmpty()){
+            mQuery= query;
+
+            if (TextUtils.isEmpty(query)){
                 setFavoritesList(mFavoritesOriginalList);
                 notifyDataSetChanged();
                 return;
@@ -265,6 +293,10 @@ public class FavoritesFragment extends Fragment {
 
         int getCurrentSortField(){
             return mCurrentSortField;
+        }
+
+        String getQuery() {
+            return mQuery;
         }
 
         @NonNull

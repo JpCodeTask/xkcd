@@ -14,6 +14,8 @@ public class FavoritesViewModel extends ViewModel {
     private final FavoritesUseCase mFavoritesUseCase;
 
     private final MutableLiveData<List<Comic>> mComicList = new MutableLiveData<>();
+    private final MutableLiveData<String> mSearchQuery = new MutableLiveData<>();
+    private final MutableLiveData<Integer> mSortField = new MutableLiveData<>();
 
     public FavoritesViewModel(FavoritesUseCase favoritesUseCase){
         mFavoritesUseCase = favoritesUseCase;
@@ -28,7 +30,24 @@ public class FavoritesViewModel extends ViewModel {
                 .subscribe();
     }
 
-    public LiveData<List<Comic>> getComicList() {
+
+    public void search(String query){
+        mSearchQuery.setValue(query);
+    }
+
+    public void sort(Integer sortfield){
+        mSortField.setValue(sortfield);
+    }
+
+    LiveData<List<Comic>> getComicList() {
         return mComicList;
+    }
+
+    LiveData<Integer> getSortField() {
+        return mSortField;
+    }
+
+    LiveData<String> getSearchQuery() {
+        return mSearchQuery;
     }
 }
