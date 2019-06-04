@@ -25,8 +25,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -118,16 +116,9 @@ public class FavoritesFragment extends Fragment {
         mViewModel.getComicList().observe(this, comics -> {
             if (comics != null && !comics.isEmpty()){
                 mAdapter.setFavoritesList(comics);
+            }else{
+                mBinding.emptyListView.setVisibility(View.VISIBLE);
             }
-        });
-
-
-        mViewModel.getSearchQuery().observe(this, query ->{
-            mAdapter.searchBy(query);
-        });
-
-        mViewModel.getSortField().observe(this, sortFieldId ->{
-            mAdapter.sortBy(sortFieldId);
         });
     }
 
@@ -147,10 +138,7 @@ public class FavoritesFragment extends Fragment {
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
-                if (!TextUtils.isEmpty(s)){
-
-                }
-
+                mViewModel.search(s);
                 return false;
             }
 
@@ -169,6 +157,8 @@ public class FavoritesFragment extends Fragment {
 
         if(!TextUtils.isEmpty(mViewModel.getSearchQuery().getValue())){
             mSearchView.setQuery(mViewModel.getSearchQuery().getValue(), true);
+            mSearchView.setIconified(false);
+            mSearchView.clearFocus();
         }
     }
 
@@ -190,7 +180,7 @@ public class FavoritesFragment extends Fragment {
 
     private void openSortDialogFragment(){
         FragmentManager manager = getActivity().getSupportFragmentManager();
-        DialogFragment dialogFragment = SortDialogFragment.newInstance(mAdapter.getCurrentSortField());
+        DialogFragment dialogFragment = SortDialogFragment.newInstance(mViewModel.getSortField().getValue());
         dialogFragment.setTargetFragment(this, REQUEST_SORT_BY_OPTION);
         dialogFragment.show(manager, DIALOG_SORT);
     }
@@ -202,14 +192,14 @@ public class FavoritesFragment extends Fragment {
         }
 
         if (requestCode == REQUEST_SORT_BY_OPTION && data != null){
-            int optionId = data.getIntExtra(SortDialogFragment.EXTRA_SELECTED_OPTION, FavoritesAdapter.SORT_BY_TITLE);
+            int optionId = data.getIntExtra(SortDialogFragment.EXTRA_SELECTED_OPTION, FavoritesViewModel.SORT_BY_TITLE);
             switch (optionId){
                 case R.string.sort_by_title:
-                    mViewModel.sort(FavoritesAdapter.SORT_BY_TITLE);
+                    mViewModel.sort(FavoritesViewModel.SORT_BY_TITLE);
                     break;
 
                 case R.string.sort_by_number:
-                    mViewModel.sort(FavoritesAdapter.SORT_BY_NUM);
+                    mViewModel.sort(FavoritesViewModel.SORT_BY_NUM);
                     break;
             }
         }
@@ -221,82 +211,16 @@ public class FavoritesFragment extends Fragment {
 
     private static class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.FavoriteViewHolder>{
 
-        private static final int SORT_BY_NUM = R.string.sort_by_number;
-        private static final int SORT_BY_TITLE = R.string.sort_by_title;
-
         private List<Comic> mFavoritesList = new ArrayList<>();
-        private List<Comic> mFavoritesOriginalList = new ArrayList<>();
         private FavoriteItemClickListener mFavoriteItemClickListener;
-
-        private final Comparator<Comic> mComicComparator;
-        private int mCurrentSortField;
-        private String mQuery;
 
         FavoritesAdapter(@NonNull FavoriteItemClickListener favoriteItemClickListener){
             mFavoriteItemClickListener = favoriteItemClickListener;
-            mComicComparator = (o1, o2) -> {
-               switch (mCurrentSortField){
-                   case SORT_BY_TITLE:
-                       return o1.getTitle().compareTo(o2.getTitle());
-                   case SORT_BY_NUM:
-                       return o2.getNum() - o1.getNum();
-
-                   default:
-                       return 0;
-               }
-            };
         }
 
         void setFavoritesList(@NonNull List<Comic> favoritesList){
             mFavoritesList = favoritesList;
-            if (mCurrentSortField > 0){
-                sortBy(mCurrentSortField);
-            }else{
-                sortBy(SORT_BY_TITLE);
-            }
-
-            if (mFavoritesOriginalList.isEmpty()){
-                mFavoritesOriginalList = favoritesList;
-            }
-        }
-
-        void sortBy(int sortField){
-            if(sortField == mCurrentSortField){
-                return;
-            }
-
-            mCurrentSortField = sortField;
-            Collections.sort(mFavoritesList, mComicComparator);
             notifyDataSetChanged();
-        }
-
-        void searchBy(String query){
-            mQuery= query;
-
-            if (TextUtils.isEmpty(query)){
-                setFavoritesList(mFavoritesOriginalList);
-                notifyDataSetChanged();
-                return;
-            }
-
-            List<Comic> searchedFavoritesList =  new ArrayList<>();
-
-            for (Comic comic : mFavoritesOriginalList){
-                if (comic.getTitle().contains(query)){
-                    searchedFavoritesList.add(comic);
-                }
-            }
-
-            setFavoritesList(searchedFavoritesList);
-            notifyDataSetChanged();
-        }
-
-        int getCurrentSortField(){
-            return mCurrentSortField;
-        }
-
-        String getQuery() {
-            return mQuery;
         }
 
         @NonNull

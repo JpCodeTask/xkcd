@@ -11,4 +11,6 @@ public interface FavoritesUseCase {
     Maybe<List<Comic>> loadList();
     Maybe<ComicWrapper> loadComic(int comicNumber);
     Completable setFavorite(int comicNumber, boolean isFavorite);
+    int getSortField(int defaultValue);
+    void setFavoriteField(int sortfield);
 }

@@ -43,4 +43,15 @@ public class FavoritesUseCaseImpl implements FavoritesUseCase {
     public Completable setFavorite(int comicNumber, boolean isFavorite) {
         return mDataSource.setFavorite(comicNumber, isFavorite);
     }
+
+    @Override
+    public int getSortField(int defaultValue) {
+        return mPreferenceProvider.getFavoritesSortField(defaultValue);
+    }
+
+    @Override
+    public void setFavoriteField(int sortfield) {
+        mPreferenceProvider.setKeyFavoritesSort(sortfield);
+    }
+
 }
