@@ -1,7 +1,6 @@
 package pl.jpcodetask.xkcdcomics.ui.favorites.list;
 
 import android.text.TextUtils;
-import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -11,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import pl.jpcodetask.xkcdcomics.R;
 import pl.jpcodetask.xkcdcomics.data.model.Comic;
@@ -32,7 +32,6 @@ public class FavoritesViewModel extends ViewModel {
     public FavoritesViewModel(FavoritesUseCase favoritesUseCase){
         mFavoritesUseCase = favoritesUseCase;
         loadList();
-
     }
 
     void loadList(){
@@ -48,28 +47,26 @@ public class FavoritesViewModel extends ViewModel {
 
     void search(String query){
         mSearchQuery.setValue(query);
+
         if (TextUtils.isEmpty(query)){
             mComicList.setValue(mOriginalComicList);
+            sort(mSortField.getValue());
         }else{
             List<Comic> searchedComicList = new ArrayList<>();
             for (Comic comic :  mOriginalComicList){
-                if (true){
-                    //TODO fix condition
+                if (Pattern.compile(query.toLowerCase()).matcher(comic.getTitle().toLowerCase()).find() || Pattern.compile(query.toLowerCase()).matcher(String.valueOf(comic.getNum())).find() ){
                     searchedComicList.add(comic);
                 }
             }
 
             mComicList.setValue(searchedComicList);
+            sort(mSortField.getValue());
         }
 
     }
 
     void sort(Integer sortfield){
 
-        if (mSortField.getValue() == sortfield){
-            return;
-        }
-        Log.wtf("AAAA", "msortfield" + mSortField.getValue());
         mSortField.setValue(sortfield);
         mFavoritesUseCase.setFavoriteField(sortfield);
 
@@ -90,9 +87,9 @@ public class FavoritesViewModel extends ViewModel {
                     return 0;
             }
         };
+
         Collections.sort(sortedList, mComicComparator);
         mComicList.setValue(sortedList);
-
     }
 
     LiveData<List<Comic>> getComicList() {

@@ -114,8 +114,9 @@ public class FavoritesFragment extends Fragment {
     private void setupViewModel() {
         mViewModel = ViewModelProviders.of(this, mXkcdViewModelFactory).get(FavoritesViewModel.class);
         mViewModel.getComicList().observe(this, comics -> {
-            if (comics != null && !comics.isEmpty()){
-                mAdapter.setFavoritesList(comics);
+            mAdapter.setFavoritesList(comics);
+            if (!comics.isEmpty()){
+                mBinding.emptyListView.setVisibility(View.GONE);
             }else{
                 mBinding.emptyListView.setVisibility(View.VISIBLE);
             }
