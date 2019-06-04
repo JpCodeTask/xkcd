@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
             FragmentManager fragmentManager = getSupportFragmentManager();
 
             if(fragmentManager.getBackStackEntryCount() > 0){
-                getSupportFragmentManager().popBackStack();
+                return;
             }
 
             switch (item){
