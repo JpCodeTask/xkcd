@@ -50,7 +50,6 @@ public class FavoritesFragment extends Fragment {
     private FragmentFavoritesBinding mBinding;
     private FavoritesAdapter mAdapter;
     private FavoritesViewModel mViewModel;
-    private SearchView mSearchView;
 
     public FavoritesFragment(){
         //empty
@@ -135,8 +134,8 @@ public class FavoritesFragment extends Fragment {
         inflater.inflate(R.menu.favorites_menu, menu);
 
         MenuItem item = menu.findItem(R.id.action_search);
-        mSearchView = (SearchView) item.getActionView();
-        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        SearchView searchView = (SearchView) item.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
                 mViewModel.search(s);
@@ -151,15 +150,15 @@ public class FavoritesFragment extends Fragment {
                 return false;
             }
         });
-        mSearchView.setOnCloseListener(() -> {
+        searchView.setOnCloseListener(() -> {
             mViewModel.search(null);
             return false;
         });
 
         if(!TextUtils.isEmpty(mViewModel.getSearchQuery().getValue())){
-            mSearchView.setQuery(mViewModel.getSearchQuery().getValue(), true);
-            mSearchView.setIconified(false);
-            mSearchView.clearFocus();
+            searchView.setQuery(mViewModel.getSearchQuery().getValue(), true);
+            searchView.setIconified(false);
+            searchView.clearFocus();
         }
     }
 
