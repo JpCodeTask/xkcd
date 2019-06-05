@@ -15,18 +15,13 @@ public class MainViewModel extends ViewModel {
 
     private final MutableLiveData<Integer> mNavigationItem = new MutableLiveData<>();
     private final NetworkLiveData mNetwork;
+    private final MutableLiveData<Boolean> mNavigationDrawerAvailable = new MutableLiveData<>();
 
     public MainViewModel(Context context) {
         mContext = context;
         mNetwork = new NetworkLiveData(mContext);
         navigateTo(NavigationItem.NAVIGATION_EXPLORE);
     }
-
-    public LiveData<Integer> getNavigationItem(){
-        return mNavigationItem;
-    }
-
-    public NetworkLiveData getNetwork(){ return mNetwork; }
 
     public void navigateTo(Integer navigationItem){
         if (navigationItem.equals(mNavigationItem.getValue())){
@@ -35,5 +30,25 @@ public class MainViewModel extends ViewModel {
 
         mNavigationItem.setValue(navigationItem);
     }
+
+    public void disableNavigationDrawer(){
+        mNavigationDrawerAvailable.setValue(false);
+    }
+
+    public void availableNavigationDrawer(){
+        mNavigationDrawerAvailable.setValue(true);
+    }
+
+    public LiveData<Integer> getNavigationItem(){
+        return mNavigationItem;
+    }
+
+    public NetworkLiveData getNetwork(){ return mNetwork; }
+
+    public LiveData<Boolean> getNavigationDrawerAvailable() {
+        return mNavigationDrawerAvailable;
+    }
+
+
 
 }

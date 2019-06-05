@@ -25,6 +25,7 @@ import dagger.android.support.AndroidSupportInjection;
 import pl.jpcodetask.xkcdcomics.R;
 import pl.jpcodetask.xkcdcomics.data.model.Comic;
 import pl.jpcodetask.xkcdcomics.databinding.FragmentFavoritesItemBinding;
+import pl.jpcodetask.xkcdcomics.ui.MainViewModel;
 import pl.jpcodetask.xkcdcomics.ui.common.ComicViewer;
 import pl.jpcodetask.xkcdcomics.utils.ComicUtils;
 import pl.jpcodetask.xkcdcomics.utils.GlideApp;
@@ -40,6 +41,7 @@ public class FavoritesItemFragment extends Fragment implements ComicViewer {
     private boolean mComicDetailsVisible = false;
     private boolean mComicIsFavorite = false;
     private FavoritesItemViewModel mViewModel;
+    private MainViewModel mActivityViewModel;
     private Intent mShareIntent;
 
     public FavoritesItemFragment(){
@@ -88,6 +90,9 @@ public class FavoritesItemFragment extends Fragment implements ComicViewer {
     }
 
     private void setupViewmodel() {
+        mActivityViewModel = ViewModelProviders.of(getActivity(), mViewModelFactory).get(MainViewModel.class);
+        mActivityViewModel.disableNavigationDrawer();
+
         mViewModel = ViewModelProviders.of(this, mViewModelFactory).get(FavoritesItemViewModel.class);
 
         mViewModel.getComic().observe(this, comic -> {
@@ -142,6 +147,7 @@ public class FavoritesItemFragment extends Fragment implements ComicViewer {
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.item_menu, menu);
     }
 
@@ -179,6 +185,12 @@ public class FavoritesItemFragment extends Fragment implements ComicViewer {
             default:
                 return true;
         }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mActivityViewModel.availableNavigationDrawer();
     }
 
     @Override

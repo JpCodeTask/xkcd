@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.databinding.DataBindingUtil;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
@@ -85,6 +86,14 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
             }
 
             mBinding.navView.getMenu().getItem(item).setChecked(true);
+        });
+
+        mMainViewModel.getNavigationDrawerAvailable().observe(this, isAvailable -> {
+            if (isAvailable){
+                mBinding.drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+            }else{
+                mBinding.drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+            }
         });
 
         mBinding.setViewmodel(mMainViewModel);
