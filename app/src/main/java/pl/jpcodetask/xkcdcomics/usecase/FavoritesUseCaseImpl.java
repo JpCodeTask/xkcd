@@ -50,7 +50,7 @@ public class FavoritesUseCaseImpl implements FavoritesUseCase {
     }
 
     @Override
-    public void setFavoriteField(int sortfield) {
+    public void setSortField(int sortfield) {
         mPreferenceProvider.setKeyFavoritesSort(sortfield);
     }
 

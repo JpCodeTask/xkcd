@@ -50,7 +50,6 @@ public class FavoritesViewModel extends ViewModel {
 
         if (TextUtils.isEmpty(query)){
             mComicList.setValue(mOriginalComicList);
-            sort(mSortField.getValue());
         }else{
             List<Comic> searchedComicList = new ArrayList<>();
             for (Comic comic :  mOriginalComicList){
@@ -59,16 +58,19 @@ public class FavoritesViewModel extends ViewModel {
                 }
             }
 
+            sortList(mSortField.getValue(), searchedComicList);
             mComicList.setValue(searchedComicList);
-            sort(mSortField.getValue());
+
         }
 
     }
 
-    void sort(Integer sortfield){
+    void sort(Integer sortField){
 
-        mSortField.setValue(sortfield);
-        mFavoritesUseCase.setFavoriteField(sortfield);
+        mSortField.setValue(sortField);
+        mFavoritesUseCase.setSortField(sortField);
+
+        sortList(sortField, mOriginalComicList);
 
         if (mComicList.getValue() == null){
             return;
@@ -76,8 +78,13 @@ public class FavoritesViewModel extends ViewModel {
 
 
         List<Comic> sortedList = new ArrayList<>(mComicList.getValue());
+        sortList(sortField, sortedList);
+        mComicList.setValue(sortedList);
+    }
+
+    private void sortList(Integer sortField, List<Comic> list){
         Comparator<Comic> mComicComparator = (o1, o2) -> {
-            switch (sortfield){
+            switch (sortField){
                 case SORT_BY_TITLE:
                     return o1.getTitle().compareTo(o2.getTitle());
                 case SORT_BY_NUM:
@@ -88,8 +95,7 @@ public class FavoritesViewModel extends ViewModel {
             }
         };
 
-        Collections.sort(sortedList, mComicComparator);
-        mComicList.setValue(sortedList);
+        Collections.sort(list, mComicComparator);
     }
 
     LiveData<List<Comic>> getComicList() {
