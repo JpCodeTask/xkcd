@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.snackbar.Snackbar;
 
 import javax.inject.Inject;
@@ -95,7 +96,10 @@ public class ComicFragment extends Fragment implements ComicNavigator {
     private void observeData(){
         mViewModel.getComic().observe(this, comic -> {
             ((AppCompatActivity) getActivity()).getSupportActionBar().setSubtitle(comic.getTitle());
-            GlideApp.with(this).load(comic.getImgUrl()).into(mBinding.imageView);
+            GlideApp.with(this)
+                    .load(comic.getImgUrl())
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(mBinding.imageView);
             setupShareIntent(comic);
         });
 

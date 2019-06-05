@@ -97,7 +97,10 @@ public class FavoritesItemFragment extends Fragment implements ComicViewer {
 
         mViewModel.getComic().observe(this, comic -> {
             ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(comic.getTitle());
-            GlideApp.with(this).load(comic.getImgUrl()).into(mBinding.imageView);
+            GlideApp.with(this)
+                    .load(comic.getImgUrl())
+                    .onlyRetrieveFromCache(true)
+                    .into(mBinding.imageView);
             setupShareIntent(comic);
         });
 
