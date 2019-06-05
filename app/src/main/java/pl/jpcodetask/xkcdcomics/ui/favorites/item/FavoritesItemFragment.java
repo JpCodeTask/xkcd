@@ -1,5 +1,6 @@
 package pl.jpcodetask.xkcdcomics.ui.favorites.item;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -31,6 +32,7 @@ import pl.jpcodetask.xkcdcomics.viewmodel.XkcdViewModelFactory;
 
 public class FavoritesItemFragment extends Fragment implements ComicViewer {
 
+    public static final String EXTRA_UNFAVORITE_COMIC = "EXTRA_UNFAVORITE_COMIC";
     private static final String ARG_COMIC_NUMBER = "ARG_COMIC_NUMBER";
     @Inject
     XkcdViewModelFactory mViewModelFactory;
@@ -177,6 +179,23 @@ public class FavoritesItemFragment extends Fragment implements ComicViewer {
             default:
                 return true;
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        setupResult();
+    }
+
+    private void setupResult(){
+        if (getTargetFragment() == null){
+            return;
+        }
+
+        Intent data = new Intent();
+        data.putExtra(EXTRA_UNFAVORITE_COMIC, !mComicIsFavorite);
+
+        getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, data);
     }
 
     @Override
