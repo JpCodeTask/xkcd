@@ -19,6 +19,8 @@ import pl.jpcodetask.xkcdcomics.utils.Schedulers;
 @Singleton
 public class RepositoryImpl implements Repository {
 
+    private static final String TAG = RepositoryImpl.class.getSimpleName();
+
     private final DataSource mLocalDataSource;
     private final DataSource mRemoteDataSource;
 
@@ -35,7 +37,7 @@ public class RepositoryImpl implements Repository {
                 getComicFromDb(comicNumber),
                 getComicFromApi(comicNumber))
                 .doOnError(throwable -> {
-                    Log.wtf("Repo", throwable);
+                    Log.e(TAG, "Error getComic", throwable);
                 })
                 .map(ComicWrapper::from)
                 .onErrorResumeNext(throwable -> {
@@ -45,14 +47,14 @@ public class RepositoryImpl implements Repository {
 
     private Maybe<Comic> getComicFromDb(int comicNumber) {
         return mLocalDataSource.getComic(comicNumber).doOnSuccess(comic -> {
-            Log.e("Repo", "From db " + comic.getTitle());
+            Log.i(TAG, "getComicFromDb :" + comic.getTitle());
         });
     }
 
     private Maybe<Comic> getComicFromApi(int comicNumber) {
         return mRemoteDataSource.getComic(comicNumber)
                 .doOnError(throwable -> {
-                    Log.wtf("Repo", throwable);
+                    Log.e(TAG, "Error getComicFromApi",throwable);
                 })
                 .doOnSuccess(this::storeInDb);
     }
