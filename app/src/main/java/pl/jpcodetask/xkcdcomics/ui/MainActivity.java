@@ -24,6 +24,7 @@ import pl.jpcodetask.xkcdcomics.databinding.ActivityMainBinding;
 import pl.jpcodetask.xkcdcomics.ui.common.NavigationItem;
 import pl.jpcodetask.xkcdcomics.ui.favorites.list.FavoritesFragment;
 import pl.jpcodetask.xkcdcomics.ui.item.ComicFragment;
+import pl.jpcodetask.xkcdcomics.utils.UpdateJobService;
 import pl.jpcodetask.xkcdcomics.viewmodel.XkcdViewModelFactory;
 
 public class MainActivity extends AppCompatActivity implements HasSupportFragmentInjector {
@@ -48,6 +49,8 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
 
         setupViewModel();
         setupNavigationDrawer();
+
+        UpdateJobService.schedule(getApplicationContext());
     }
 
     private void setupViewModel() {

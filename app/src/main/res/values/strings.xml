@@ -17,4 +17,8 @@
     <string name="menu_item_search">Search</string>
     <string name="sort_by">Sort by</string>
     <string name="no_favorites">There are no favorites</string>
+    <string name="new_comic_notification_title">New comic arrived</string>
+    <string name="channel_name">Comic update channel</string>
+    <string name="channel_description">Channel resposinble for notifying about new comic arriving.</string>
+    <string name="new_comic_notification_text">Click to see</string>
 </resources>
