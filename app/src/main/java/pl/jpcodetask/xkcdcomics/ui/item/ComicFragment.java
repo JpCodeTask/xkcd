@@ -48,6 +48,8 @@ public class ComicFragment extends Fragment implements ComicNavigator {
     private boolean mExecuteSpinnerSelected = false;
     private boolean mComicDetailsVisible = false;
     private boolean mComicIsFavorite = false;
+    private boolean mIsFullscreen = false;
+
     private ArrayAdapter<Integer> mArrayAdapter;
 
     public ComicFragment(){
@@ -76,6 +78,7 @@ public class ComicFragment extends Fragment implements ComicNavigator {
         setHasOptionsMenu(true);
         setupSpinner();
         setupArchiveBtn();
+        setupImageListener();
 
         mBinding.setLifecycleOwner(getActivity());
         mBinding.setViewmodel(mViewModel);
@@ -83,6 +86,8 @@ public class ComicFragment extends Fragment implements ComicNavigator {
 
         return mBinding.getRoot();
     }
+
+
 
     private void setupViewModel(){
         mViewModel = ViewModelProviders.of(this, mViewModelFactory).get(ComicViewModel.class);
@@ -228,6 +233,12 @@ public class ComicFragment extends Fragment implements ComicNavigator {
         });
     }
 
+    private void setupImageListener() {
+        mBinding.imageView.setOnPhotoTapListener((view, x, y) -> {
+            onFullscreen();
+        });
+    }
+
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
@@ -303,5 +314,27 @@ public class ComicFragment extends Fragment implements ComicNavigator {
     @Override
     public void onReload() {
         mViewModel.reload();
+    }
+
+    @Override
+    public void onFullscreen() {
+        if (!mIsFullscreen){
+            mBinding.appBarLayout.setVisibility(View.GONE);
+            mBinding.moreBtn.setVisibility(View.GONE);
+            mBinding.randomFloatingBtn.setVisibility(View.GONE);
+            mBinding.nextBtn.setVisibility(View.GONE);
+            mBinding.prevBtn.setVisibility(View.GONE);
+            mBinding.comicNumberSpinner.setVisibility(View.GONE);
+            mBinding.comicDetailsView.setVisibility(View.GONE);
+            mIsFullscreen = true;
+        }else{
+            mBinding.appBarLayout.setVisibility(View.VISIBLE);
+            mBinding.moreBtn.setVisibility(View.VISIBLE);
+            mBinding.randomFloatingBtn.setVisibility(View.VISIBLE);
+            mBinding.nextBtn.setVisibility(View.VISIBLE);
+            mBinding.prevBtn.setVisibility(View.VISIBLE);
+            mBinding.comicNumberSpinner.setVisibility(View.VISIBLE);
+            mIsFullscreen = false;
+        }
     }
 }

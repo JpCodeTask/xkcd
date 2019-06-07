@@ -43,6 +43,7 @@ public class FavoritesItemFragment extends Fragment implements ComicViewer {
     private FavoritesItemViewModel mViewModel;
     private MainViewModel mActivityViewModel;
     private Intent mShareIntent;
+    private boolean mIsFullscreen = false;
 
     public FavoritesItemFragment(){
 
@@ -76,6 +77,7 @@ public class FavoritesItemFragment extends Fragment implements ComicViewer {
 
         setupToolbar();
         setupViewmodel();
+        setupImageListener();
         setHasOptionsMenu(true);
 
         mBinding.setViewer(this);
@@ -140,6 +142,12 @@ public class FavoritesItemFragment extends Fragment implements ComicViewer {
 
     private void setupShareIntent(Comic comic) {
         mShareIntent = ComicUtils.getComicShareIntent(comic);
+    }
+
+    private void setupImageListener() {
+        mBinding.imageView.setOnPhotoTapListener((view, x, y) -> {
+            onFullscreen();
+        });
     }
 
     @Override
@@ -227,5 +235,21 @@ public class FavoritesItemFragment extends Fragment implements ComicViewer {
     @Override
     public void onReload() {
 
+    }
+
+    @Override
+    public void onFullscreen() {
+        if (!mIsFullscreen){
+            mBinding.appBarLayout.setVisibility(View.GONE);
+            mBinding.moreBtn.setVisibility(View.GONE);
+            mBinding.comicDetailsView.setVisibility(View.GONE);
+            mBinding.comicNumberTv.setVisibility(View.GONE);
+            mIsFullscreen = true;
+        }else{
+            mBinding.appBarLayout.setVisibility(View.VISIBLE);
+            mBinding.moreBtn.setVisibility(View.VISIBLE);
+            mBinding.comicNumberTv.setVisibility(View.VISIBLE);
+            mIsFullscreen = false;
+        }
     }
 }

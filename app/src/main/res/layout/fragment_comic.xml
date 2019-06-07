@@ -16,6 +16,8 @@
 
     </data>
 
+
+
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -102,7 +104,7 @@
             android:layout_marginEnd="@dimen/margin_8"
             android:layout_marginBottom="@dimen/margin_8"
             android:visibility="@{(viewmodel.state.isErrorOccurred() || viewmodel.state.isDataLoading()) ? View.GONE : View.VISIBLE}"
-            app:layout_constraintBottom_toTopOf="@id/more_btn"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/app_bar_layout"
@@ -131,7 +133,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_8"
             android:layout_marginBottom="@dimen/margin_8"
-            android:background="?android:selectableItemBackground"
+            android:background="@drawable/circle_btn_shape"
             android:cropToPadding="true"
             android:onClick="@{()->navigator.onNext()}"
             android:src="@drawable/baseline_chevron_left_black_36"
@@ -175,7 +177,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin_8"
             android:layout_marginBottom="@dimen/margin_8"
-            android:background="?android:selectableItemBackground"
+            android:background="@drawable/circle_btn_shape"
             android:cropToPadding="true"
             android:onClick="@{()->navigator.onPrev()}"
             android:src="@drawable/baseline_chevron_right_black_36"
