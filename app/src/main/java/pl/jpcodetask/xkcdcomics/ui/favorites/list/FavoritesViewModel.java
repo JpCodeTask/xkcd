@@ -12,6 +12,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import io.reactivex.disposables.CompositeDisposable;
 import pl.jpcodetask.xkcdcomics.R;
 import pl.jpcodetask.xkcdcomics.data.model.Comic;
 import pl.jpcodetask.xkcdcomics.usecase.FavoritesUseCase;
@@ -22,6 +23,7 @@ public class FavoritesViewModel extends ViewModel {
     static final int SORT_BY_TITLE = R.string.sort_by_title;
 
     private final FavoritesUseCase mFavoritesUseCase;
+    private final CompositeDisposable mCompositeDisposable = new CompositeDisposable();
 
     private final MutableLiveData<List<Comic>> mComicList = new MutableLiveData<>();
     private final MutableLiveData<String> mSearchQuery = new MutableLiveData<>();
@@ -35,13 +37,13 @@ public class FavoritesViewModel extends ViewModel {
     }
 
     void loadList(){
-        mFavoritesUseCase.loadList()
+        mCompositeDisposable.add(mFavoritesUseCase.loadList()
                 .doOnSuccess(comics -> {
                     mOriginalComicList = comics;
                     mComicList.setValue(comics);
                     sort(mFavoritesUseCase.getSortField(SORT_BY_TITLE));
                 })
-                .subscribe();
+                .subscribe());
     }
 
 
@@ -108,5 +110,11 @@ public class FavoritesViewModel extends ViewModel {
 
     LiveData<String> getSearchQuery() {
         return mSearchQuery;
+    }
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        mCompositeDisposable.clear();
     }
 }

@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import io.reactivex.disposables.CompositeDisposable;
 import pl.jpcodetask.xkcdcomics.Event;
 import pl.jpcodetask.xkcdcomics.data.model.Comic;
 import pl.jpcodetask.xkcdcomics.ui.common.ComicState;
@@ -13,6 +14,7 @@ import pl.jpcodetask.xkcdcomics.utils.Schedulers;
 public class FavoritesItemViewModel extends ViewModel {
 
     private final FavoritesUseCase mFavoritesUseCase;
+    private final CompositeDisposable mCompositeDisposable = new CompositeDisposable();
 
     /** State*/
     private final MutableLiveData<ComicState> mState = new MutableLiveData<>();
@@ -30,7 +32,7 @@ public class FavoritesItemViewModel extends ViewModel {
             return;
         }
         setStateOnLoading();
-        mFavoritesUseCase.loadComic(comicNumber)
+        mCompositeDisposable.add(mFavoritesUseCase.loadComic(comicNumber)
                 .doOnSuccess(comicWrapper -> {
                     if (comicWrapper.isSuccess()){
                         mComicLiveData.setValue(comicWrapper.getComic());
@@ -38,7 +40,7 @@ public class FavoritesItemViewModel extends ViewModel {
                     }else{
                         setViewStateOnError();
                     }
-                }).subscribe();
+                }).subscribe());
     }
 
     private void setStateOnLoading(){
@@ -81,7 +83,7 @@ public class FavoritesItemViewModel extends ViewModel {
             return;
         }
 
-        mFavoritesUseCase.setFavorite(mComicLiveData.getValue().getNum(), isFavorite)
+        mCompositeDisposable.add(mFavoritesUseCase.setFavorite(mComicLiveData.getValue().getNum(), isFavorite)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.mainThread())
                 .doOnComplete(() -> {
@@ -94,7 +96,7 @@ public class FavoritesItemViewModel extends ViewModel {
 
                     }
                 })
-                .subscribe();
+                .subscribe());
     }
 
 
@@ -110,5 +112,9 @@ public class FavoritesItemViewModel extends ViewModel {
         return mMessage;
     }
 
-
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        mCompositeDisposable.clear();
+    }
 }

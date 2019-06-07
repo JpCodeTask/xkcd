@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.disposables.CompositeDisposable;
 import pl.jpcodetask.xkcdcomics.Event;
 import pl.jpcodetask.xkcdcomics.data.model.Comic;
 import pl.jpcodetask.xkcdcomics.ui.common.ComicState;
@@ -18,6 +19,7 @@ import pl.jpcodetask.xkcdcomics.utils.Schedulers;
 public class ComicViewModel extends ViewModel {
 
     private final ExploreUseCase mExploreUseCase;
+    private final CompositeDisposable mCompositeDisposable = new CompositeDisposable();
 
     /** State*/
     private final MutableLiveData<ComicState> mState = new MutableLiveData<>();
@@ -34,7 +36,7 @@ public class ComicViewModel extends ViewModel {
 
     void loadComic(){
         setStateOnLoading();
-        mExploreUseCase.loadComic()
+        mCompositeDisposable.add(mExploreUseCase.loadComic()
                 .doOnSuccess(comicWrapper -> {
                     if(comicWrapper.isSuccess()){
                         Comic comic = comicWrapper.getComic();
@@ -44,7 +46,7 @@ public class ComicViewModel extends ViewModel {
                     }else{
                         setViewStateOnError(comicWrapper.isLatest(), comicWrapper.isFirst());
                     }
-                }).subscribe();
+                }).subscribe());
     }
 
     private void setStateOnLoading(){
@@ -84,7 +86,7 @@ public class ComicViewModel extends ViewModel {
     void loadComic(int comicNumber){
         Log.d("Load", "!");
         setStateOnLoading();
-        mExploreUseCase.loadComic(comicNumber)
+        mCompositeDisposable.add(mExploreUseCase.loadComic(comicNumber)
                 .doOnSuccess(comicWrapper -> {
                     if(comicWrapper.isSuccess()){
                         Comic comic = comicWrapper.getComic();
@@ -97,7 +99,7 @@ public class ComicViewModel extends ViewModel {
                 .doOnError(throwable -> {
                     Log.e("Error", "Error", throwable);
                 })
-                .subscribe();
+                .subscribe());
     }
 
     public void loadNext() {
@@ -137,7 +139,7 @@ public class ComicViewModel extends ViewModel {
             return;
         }
 
-        mExploreUseCase.setFavorite(mComicLiveData.getValue().getNum(), isFavorite)
+        mCompositeDisposable.add(mExploreUseCase.setFavorite(mComicLiveData.getValue().getNum(), isFavorite)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.mainThread())
                 .doOnComplete(() -> {
@@ -150,7 +152,7 @@ public class ComicViewModel extends ViewModel {
 
                     }
                 })
-                .subscribe();
+                .subscribe());
     }
 
     List<Integer> getComicRange(){
@@ -177,4 +179,10 @@ public class ComicViewModel extends ViewModel {
     public LiveData<ComicState> getState() { return mState; }
 
     public LiveData<Integer> getRequestComicNumber() { return mRequestComicNumber; }
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        mCompositeDisposable.clear();
+    }
 }
