@@ -99,6 +99,7 @@ public class FavoritesItemFragment extends Fragment implements ComicViewer {
 
         mViewModel.getComic().observe(this, comic -> {
             ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(comic.getTitle());
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setSubtitle(String.valueOf(comic.getNum()));
             GlideApp.with(this)
                     .load(comic.getImgUrl())
                     .onlyRetrieveFromCache(true)
@@ -243,12 +244,10 @@ public class FavoritesItemFragment extends Fragment implements ComicViewer {
             mBinding.appBarLayout.setVisibility(View.GONE);
             mBinding.moreBtn.setVisibility(View.GONE);
             mBinding.comicDetailsView.setVisibility(View.GONE);
-            mBinding.comicNumberTv.setVisibility(View.GONE);
             mIsFullscreen = true;
         }else{
             mBinding.appBarLayout.setVisibility(View.VISIBLE);
             mBinding.moreBtn.setVisibility(View.VISIBLE);
-            mBinding.comicNumberTv.setVisibility(View.VISIBLE);
             mIsFullscreen = false;
         }
     }

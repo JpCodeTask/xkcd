@@ -103,27 +103,11 @@
             android:layout_marginEnd="@dimen/margin_8"
             android:layout_marginBottom="@dimen/margin_8"
             android:visibility="@{(viewmodel.state.isErrorOccurred() || viewmodel.state.isDataLoading()) ? View.GONE : View.VISIBLE}"
-            app:layout_constraintBottom_toTopOf="@id/more_btn"
+            app:layout_constraintBottom_toBottomOf="parent "
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/app_bar_layout"
             tools:src="@drawable/ic_launcher_background" />
-
-        <TextView
-            android:id="@+id/comic_number_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="60dp"
-            android:layout_marginEnd="@dimen/margin_8"
-            android:layout_marginBottom="@dimen/margin_8"
-            android:gravity="center"
-            android:text="@{String.valueOf(viewmodel.comic.num)}"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
-            android:transitionName="comicNumber"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/more_btn"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:text="2101" />
 
         <ImageButton
             android:id="@+id/more_btn"
