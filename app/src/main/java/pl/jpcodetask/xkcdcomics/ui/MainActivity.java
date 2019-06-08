@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
 
                     ComicFragment comicFragment = ComicFragment.newInstance();
                     fragmentManager.beginTransaction()
+                            .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
                             .replace(mBinding.fragmentContainerOne.getId(), comicFragment)
                             .commit();
 
@@ -76,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
                 case NavigationItem.NAVIGATION_FAVORITES:
                     FavoritesFragment favoritesFragment = FavoritesFragment.newInstance();
                     fragmentManager.beginTransaction()
+                            .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
                             .replace(mBinding.fragmentContainerOne.getId(), favoritesFragment)
                             .commit();
 
