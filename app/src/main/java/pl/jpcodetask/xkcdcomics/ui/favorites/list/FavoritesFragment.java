@@ -35,6 +35,7 @@ import pl.jpcodetask.xkcdcomics.data.model.Comic;
 import pl.jpcodetask.xkcdcomics.databinding.FavoritesListItemBinding;
 import pl.jpcodetask.xkcdcomics.databinding.FragmentFavoritesBinding;
 import pl.jpcodetask.xkcdcomics.databinding.FragmentFavoritesBindingImpl;
+import pl.jpcodetask.xkcdcomics.ui.MainViewModel;
 import pl.jpcodetask.xkcdcomics.ui.favorites.DetailsTransition;
 import pl.jpcodetask.xkcdcomics.ui.favorites.item.FavoritesItemFragment;
 import pl.jpcodetask.xkcdcomics.viewmodel.XkcdViewModelFactory;
@@ -52,6 +53,8 @@ public class FavoritesFragment extends Fragment {
     private FavoritesAdapter mAdapter;
     private FavoritesViewModel mViewModel;
     private int mLastViewedItemPosition = 0;
+    private SearchView mSearchView;
+    private MainViewModel mMainViewModel;
 
     public FavoritesFragment(){
         //empty
@@ -139,8 +142,8 @@ public class FavoritesFragment extends Fragment {
         inflater.inflate(R.menu.favorites_menu, menu);
 
         MenuItem item = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView) item.getActionView();
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        mSearchView = (SearchView) item.getActionView();
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
                 mViewModel.search(s);
@@ -155,14 +158,14 @@ public class FavoritesFragment extends Fragment {
                 return false;
             }
         });
-        searchView.setOnCloseListener(() -> {
+        mSearchView.setOnCloseListener(() -> {
             mViewModel.search(null);
             return false;
         });
 
         if(!TextUtils.isEmpty(mViewModel.getSearchQuery().getValue())){
-            searchView.setQuery(mViewModel.getSearchQuery().getValue(), true);
-            searchView.clearFocus();
+            mSearchView.setQuery(mViewModel.getSearchQuery().getValue(), true);
+            mSearchView.clearFocus();
         }
     }
 
@@ -214,6 +217,12 @@ public class FavoritesFragment extends Fragment {
               mAdapter.removeAtPosition(mLastViewedItemPosition);
             }
         }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mSearchView.clearFocus();
     }
 
     private interface FavoriteItemClickListener {
