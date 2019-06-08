@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,7 +20,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.google.android.material.snackbar.Snackbar;
 
 import javax.inject.Inject;
 
@@ -49,6 +49,7 @@ public class ComicFragment extends Fragment implements ComicNavigator {
     private boolean mComicDetailsVisible = false;
     private boolean mComicIsFavorite = false;
     private boolean mIsFullscreen = false;
+    private boolean mHasNetwork = false;
 
     private ArrayAdapter<Integer> mArrayAdapter;
 
@@ -111,18 +112,20 @@ public class ComicFragment extends Fragment implements ComicNavigator {
         mViewModel.getMessage().observe(this, eventString -> {
             String message = eventString.getEventContentIfNotHandled();
             if (message != null){
-                Snackbar.make(mBinding.getRoot(), message, Snackbar.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
             }
         });
         
         mActivityViewModel.getNetwork().observe(this, network -> {
             if (!network.isConnected()){
+                mHasNetwork = false;
                 mBinding.randomFloatingBtn.setVisibility(View.GONE);
                 mBinding.nextBtn.setVisibility(View.GONE);
                 mBinding.prevBtn.setVisibility(View.GONE);
                 mBinding.comicNumberSpinner.setVisibility(View.GONE);
                 mBinding.archiveBtn.setVisibility(View.VISIBLE);
             }else{
+                mHasNetwork = true;
                 mBinding.randomFloatingBtn.setVisibility(View.VISIBLE);
                 mBinding.nextBtn.setVisibility(View.VISIBLE);
                 mBinding.prevBtn.setVisibility(View.VISIBLE);
@@ -326,6 +329,10 @@ public class ComicFragment extends Fragment implements ComicNavigator {
             mBinding.prevBtn.setVisibility(View.GONE);
             mBinding.comicNumberSpinner.setVisibility(View.GONE);
             mBinding.comicDetailsView.setVisibility(View.GONE);
+            if (!mHasNetwork){
+                mBinding.archiveBtn.setVisibility(View.GONE);
+            }
+
             mIsFullscreen = true;
         }else{
             mBinding.appBarLayout.setVisibility(View.VISIBLE);
@@ -334,6 +341,9 @@ public class ComicFragment extends Fragment implements ComicNavigator {
             mBinding.nextBtn.setVisibility(View.VISIBLE);
             mBinding.prevBtn.setVisibility(View.VISIBLE);
             mBinding.comicNumberSpinner.setVisibility(View.VISIBLE);
+            if (!mHasNetwork){
+                mBinding.archiveBtn.setVisibility(View.VISIBLE);
+            }
             mIsFullscreen = false;
         }
     }
