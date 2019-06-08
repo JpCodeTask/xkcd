@@ -239,15 +239,6 @@ public class FavoritesItemFragment extends Fragment implements ComicViewer {
 
     @Override
     public void onFullscreen() {
-        if (!mIsFullscreen){
-            mBinding.appBarLayout.setVisibility(View.GONE);
-            mBinding.moreBtn.setVisibility(View.GONE);
-            mBinding.comicDetailsView.setVisibility(View.GONE);
-            mIsFullscreen = true;
-        }else{
-            mBinding.appBarLayout.setVisibility(View.VISIBLE);
-            mBinding.moreBtn.setVisibility(View.VISIBLE);
-            mIsFullscreen = false;
-        }
+        mViewModel.fullscreen();
     }
 }

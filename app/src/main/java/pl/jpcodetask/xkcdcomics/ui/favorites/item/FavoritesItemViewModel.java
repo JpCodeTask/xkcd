@@ -18,6 +18,7 @@ public class FavoritesItemViewModel extends ViewModel {
 
     /** State*/
     private final MutableLiveData<ComicState> mState = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> mIsFullscreen = new MutableLiveData<>();
 
     /** Data*/
     private final MutableLiveData<Comic> mComicLiveData = new MutableLiveData<>();
@@ -99,6 +100,13 @@ public class FavoritesItemViewModel extends ViewModel {
                 .subscribe());
     }
 
+    void fullscreen() {
+        if (mIsFullscreen.getValue() != null){
+            mIsFullscreen.setValue(!mIsFullscreen.getValue());
+        }else{
+            mIsFullscreen.setValue(true);
+        }
+    }
 
     public LiveData<Comic> getComic() {
         return mComicLiveData;
@@ -112,9 +120,15 @@ public class FavoritesItemViewModel extends ViewModel {
         return mMessage;
     }
 
+    public LiveData<Boolean> getIsFullscreen() {
+        return mIsFullscreen;
+    }
+
     @Override
     protected void onCleared() {
         super.onCleared();
         mCompositeDisposable.clear();
     }
+
+
 }

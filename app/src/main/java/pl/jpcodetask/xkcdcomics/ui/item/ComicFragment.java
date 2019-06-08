@@ -48,8 +48,6 @@ public class ComicFragment extends Fragment implements ComicNavigator {
     private boolean mExecuteSpinnerSelected = false;
     private boolean mComicDetailsVisible = false;
     private boolean mComicIsFavorite = false;
-    private boolean mIsFullscreen = false;
-    private boolean mHasNetwork = false;
 
     private ArrayAdapter<Integer> mArrayAdapter;
 
@@ -83,6 +81,7 @@ public class ComicFragment extends Fragment implements ComicNavigator {
 
         mBinding.setLifecycleOwner(getActivity());
         mBinding.setViewmodel(mViewModel);
+        mBinding.setActivityviewmodel(mActivityViewModel);
         mBinding.setNavigator(this);
 
         return mBinding.getRoot();
@@ -113,24 +112,6 @@ public class ComicFragment extends Fragment implements ComicNavigator {
             String message = eventString.getEventContentIfNotHandled();
             if (message != null){
                 Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
-            }
-        });
-        
-        mActivityViewModel.getNetwork().observe(this, network -> {
-            if (!network.isConnected()){
-                mHasNetwork = false;
-                mBinding.randomFloatingBtn.setVisibility(View.GONE);
-                mBinding.nextBtn.setVisibility(View.GONE);
-                mBinding.prevBtn.setVisibility(View.GONE);
-                mBinding.comicNumberSpinner.setVisibility(View.GONE);
-                mBinding.archiveBtn.setVisibility(View.VISIBLE);
-            }else{
-                mHasNetwork = true;
-                mBinding.randomFloatingBtn.setVisibility(View.VISIBLE);
-                mBinding.nextBtn.setVisibility(View.VISIBLE);
-                mBinding.prevBtn.setVisibility(View.VISIBLE);
-                mBinding.comicNumberSpinner.setVisibility(View.VISIBLE);
-                mBinding.archiveBtn.setVisibility(View.GONE);
             }
         });
     }
@@ -321,30 +302,6 @@ public class ComicFragment extends Fragment implements ComicNavigator {
 
     @Override
     public void onFullscreen() {
-        if (!mIsFullscreen){
-            mBinding.appBarLayout.setVisibility(View.GONE);
-            mBinding.moreBtn.setVisibility(View.GONE);
-            mBinding.randomFloatingBtn.setVisibility(View.GONE);
-            mBinding.nextBtn.setVisibility(View.GONE);
-            mBinding.prevBtn.setVisibility(View.GONE);
-            mBinding.comicNumberSpinner.setVisibility(View.GONE);
-            mBinding.comicDetailsView.setVisibility(View.GONE);
-            if (!mHasNetwork){
-                mBinding.archiveBtn.setVisibility(View.GONE);
-            }
-
-            mIsFullscreen = true;
-        }else{
-            mBinding.appBarLayout.setVisibility(View.VISIBLE);
-            mBinding.moreBtn.setVisibility(View.VISIBLE);
-            mBinding.randomFloatingBtn.setVisibility(View.VISIBLE);
-            mBinding.nextBtn.setVisibility(View.VISIBLE);
-            mBinding.prevBtn.setVisibility(View.VISIBLE);
-            mBinding.comicNumberSpinner.setVisibility(View.VISIBLE);
-            if (!mHasNetwork){
-                mBinding.archiveBtn.setVisibility(View.VISIBLE);
-            }
-            mIsFullscreen = false;
-        }
+        mViewModel.fullscreen();
     }
 }

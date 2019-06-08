@@ -23,6 +23,7 @@ public class ComicViewModel extends ViewModel {
 
     /** State*/
     private final MutableLiveData<ComicState> mState = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> mIsFullscreen = new MutableLiveData<>();
 
     /** Data*/
     private final MutableLiveData<Comic> mComicLiveData = new MutableLiveData<>();
@@ -167,6 +168,14 @@ public class ComicViewModel extends ViewModel {
         return range;
     }
 
+    void fullscreen() {
+        if (mIsFullscreen.getValue() != null){
+            mIsFullscreen.setValue(!mIsFullscreen.getValue());
+        }else{
+            mIsFullscreen.setValue(true);
+        }
+    }
+
 
     public LiveData<Comic> getComic(){
         return mComicLiveData;
@@ -179,6 +188,10 @@ public class ComicViewModel extends ViewModel {
     public LiveData<ComicState> getState() { return mState; }
 
     public LiveData<Integer> getRequestComicNumber() { return mRequestComicNumber; }
+
+    public LiveData<Boolean> getIsFullscreen() {
+        return mIsFullscreen;
+    }
 
     @Override
     protected void onCleared() {
