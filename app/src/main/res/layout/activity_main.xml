@@ -29,7 +29,7 @@
                 android:id="@+id/offline_message_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#9E4646"
+                android:background="@color/warning"
                 android:gravity="center"
                 android:text="@string/offline_message"
                 android:textAppearance="@style/TextAppearance.AppCompat.Caption"
