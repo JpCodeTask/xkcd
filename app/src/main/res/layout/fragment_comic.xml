@@ -117,6 +117,7 @@
 
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
+            app:rippleColor="@color/black"
             android:id="@+id/random_floating_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -139,7 +140,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_8"
             android:layout_marginBottom="@dimen/margin_8"
-            android:background="?android:attr/selectableItemBackground"
+            android:background="@drawable/comic_control_btn_ripple"
             android:cropToPadding="true"
             android:visibility="@{!activityviewmodel.network.isConnected() || viewmodel.isFullscreen ? View.GONE : View.VISIBLE}"
             android:onClick="@{()->navigator.onNext()}"
@@ -187,7 +188,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin_8"
             android:layout_marginBottom="@dimen/margin_8"
-            android:background="?android:attr/selectableItemBackground"
+            android:background="@drawable/comic_control_btn_ripple"
             android:cropToPadding="true"
             android:onClick="@{()->navigator.onPrev()}"
             android:src="@drawable/baseline_chevron_right_black_36"
