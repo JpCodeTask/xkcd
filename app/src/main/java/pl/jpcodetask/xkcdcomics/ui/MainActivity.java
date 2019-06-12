@@ -85,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
 
                 case NavigationItem.NAVIGATION_ARCHIVE:
 
+                case NavigationItem.NAVIGATION_SETTINGS:
 
                 default:
                     Toast.makeText(this, "To implement", Toast.LENGTH_SHORT).show();
@@ -118,6 +119,10 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
 
                 case R.id.nav_action_archive:
                     mMainViewModel.navigateTo(NavigationItem.NAVIGATION_ARCHIVE);
+                    break;
+
+                case R.id.nav_action_settings:
+                    mMainViewModel.navigateTo(NavigationItem.NAVIGATION_SETTINGS);
                     break;
 
                 default:
