@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">XKCD comics</string>
+    <string name="app_name">eXKCDplorer</string>
     <string name="app_version">version 1.0</string>
     <string name="item_loading_error">Item not found</string>
     <string name="menu_item_favorite">action favorite</string>
@@ -22,4 +22,12 @@
     <string name="channel_description">Channel resposinble for notifying about new comic arriving.</string>
     <string name="new_comic_notification_text">Click to see</string>
     <string name="nav_item_settings">Settings</string>
+
+
+
+    <string name="preference_category_general_title">General</string>
+    <string name="preference_category_general_key">settings_general</string>
+    <string name="preference_category_general_notify_on_key">notify_on</string>
+    <string name="preference_category_general_notify_on_title">Notification</string>
+    <string name="preference_category_general_notify_on_default">true</string>
 </resources>

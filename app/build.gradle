@@ -60,6 +60,7 @@ dependencies {
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'com.google.android.material:material:1.1.0-alpha04'
     androidTestImplementation 'org.mockito:mockito-core:2.25.0'
+    implementation 'androidx.preference:preference:1.0.0-beta01'
     //dagger
     implementation 'com.google.dagger:dagger:2.17'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.17'

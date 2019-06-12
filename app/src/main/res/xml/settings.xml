@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:key="@string/preference_category_general_key"
+        android:title="@string/preference_category_general_title">
+
+        <SwitchPreference
+            android:defaultValue="@string/preference_category_general_notify_on_default"
+            android:key="@string/preference_category_general_notify_on_key"
+            android:title="@string/preference_category_general_notify_on_title" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

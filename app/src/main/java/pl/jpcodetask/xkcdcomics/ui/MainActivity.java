@@ -24,6 +24,7 @@ import pl.jpcodetask.xkcdcomics.databinding.ActivityMainBinding;
 import pl.jpcodetask.xkcdcomics.ui.common.NavigationItem;
 import pl.jpcodetask.xkcdcomics.ui.explore.ComicFragment;
 import pl.jpcodetask.xkcdcomics.ui.favorites.list.FavoritesFragment;
+import pl.jpcodetask.xkcdcomics.ui.settings.SettingsFragment;
 import pl.jpcodetask.xkcdcomics.utils.UpdateJobService;
 import pl.jpcodetask.xkcdcomics.viewmodel.XkcdViewModelFactory;
 
@@ -84,8 +85,16 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
                     break;
 
                 case NavigationItem.NAVIGATION_ARCHIVE:
+                    Toast.makeText(this, "To implement", Toast.LENGTH_SHORT).show();
+                    break;
 
                 case NavigationItem.NAVIGATION_SETTINGS:
+                    SettingsFragment settingsFragment = SettingsFragment.newInstance();
+                    fragmentManager.beginTransaction()
+                            .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                            .replace(mBinding.fragmentContainerOne.getId(), settingsFragment)
+                            .commit();
+                    break;
 
                 default:
                     Toast.makeText(this, "To implement", Toast.LENGTH_SHORT).show();
@@ -165,7 +174,7 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
         }
 
 
-        if( getSupportFragmentManager().getBackStackEntryCount() > 0|| mBackButtonTimestamp + BACK_BUTTON_EXIT_DELAY_MS > System.currentTimeMillis()){
+        if( getSupportFragmentManager().getBackStackEntryCount() > 0 || mBackButtonTimestamp + BACK_BUTTON_EXIT_DELAY_MS > System.currentTimeMillis()){
             super.onBackPressed();
             return;
         }
