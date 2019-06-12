@@ -21,6 +21,7 @@ import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
 import pl.jpcodetask.xkcdcomics.R;
 import pl.jpcodetask.xkcdcomics.databinding.ActivityMainBinding;
+import pl.jpcodetask.xkcdcomics.ui.archive.ArchiveFragment;
 import pl.jpcodetask.xkcdcomics.ui.common.NavigationItem;
 import pl.jpcodetask.xkcdcomics.ui.explore.ComicFragment;
 import pl.jpcodetask.xkcdcomics.ui.favorites.list.FavoritesFragment;
@@ -85,7 +86,12 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
                     break;
 
                 case NavigationItem.NAVIGATION_ARCHIVE:
-                    Toast.makeText(this, "To implement", Toast.LENGTH_SHORT).show();
+
+                    ArchiveFragment archiveFragment = ArchiveFragment.newInstance();
+                    fragmentManager.beginTransaction()
+                            .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                            .replace(mBinding.fragmentContainerOne.getId(), archiveFragment)
+                            .commit();
                     break;
 
                 case NavigationItem.NAVIGATION_SETTINGS:
