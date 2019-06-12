@@ -96,6 +96,10 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
                             .commit();
                     break;
 
+                //case NavigationItem.NAVIGATION_FEEDBACK:
+
+
+
                 default:
                     Toast.makeText(this, "To implement", Toast.LENGTH_SHORT).show();
             }
@@ -132,6 +136,10 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
 
                 case R.id.nav_action_settings:
                     mMainViewModel.navigateTo(NavigationItem.NAVIGATION_SETTINGS);
+                    break;
+
+                case R.id.nav_action_feedback:
+                    mMainViewModel.navigateTo(NavigationItem.NAVIGATION_FEEDBACK);
                     break;
 
                 default:

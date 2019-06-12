@@ -21,10 +21,16 @@
     </group>
 
     <group android:id="@+id/nav_group2" android:checkableBehavior="single" >
+
         <item
             android:id="@+id/nav_action_settings"
             android:icon="@drawable/baseline_settings_black_24"
             android:title="@string/nav_item_settings" />
+
+        <item
+            android:id="@+id/nav_action_feedback"
+            android:icon="@drawable/baseline_feedback_black_24"
+            android:title="@string/nav_item_feedback" />
     </group>
 
 </menu>

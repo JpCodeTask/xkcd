@@ -24,10 +24,11 @@
     <string name="nav_item_settings">Settings</string>
 
 
-
     <string name="preference_category_general_title">General</string>
     <string name="preference_category_general_key">settings_general</string>
     <string name="preference_category_general_notify_on_key">notify_on</string>
     <string name="preference_category_general_notify_on_title">Notification</string>
     <string name="preference_category_general_notify_on_default">true</string>
+    <string name="nav_item_feedback">Feedback</string>
+
 </resources>
