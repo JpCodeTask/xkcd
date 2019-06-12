@@ -4,30 +4,21 @@ import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.disposables.CompositeDisposable;
-import pl.jpcodetask.xkcdcomics.Event;
 import pl.jpcodetask.xkcdcomics.data.model.Comic;
+import pl.jpcodetask.xkcdcomics.ui.common.BaseItemViewModel;
 import pl.jpcodetask.xkcdcomics.ui.common.ComicState;
+import pl.jpcodetask.xkcdcomics.usecase.BaseUseCase;
 import pl.jpcodetask.xkcdcomics.usecase.ExploreUseCase;
-import pl.jpcodetask.xkcdcomics.utils.Schedulers;
 
-public class ComicViewModel extends ViewModel {
+public class ComicViewModel extends BaseItemViewModel {
 
     private final ExploreUseCase mExploreUseCase;
-    private final CompositeDisposable mCompositeDisposable = new CompositeDisposable();
-
-    /** State*/
-    private final MutableLiveData<ComicState> mState = new MutableLiveData<>();
-    private final MutableLiveData<Boolean> mIsFullscreen = new MutableLiveData<>();
 
     /** Data*/
-    private final MutableLiveData<Comic> mComicLiveData = new MutableLiveData<>();
-    private final MutableLiveData<Event<String>> mMessage = new MutableLiveData<>();
     private final MutableLiveData<Integer> mRequestComicNumber = new MutableLiveData<>();
 
     public ComicViewModel(ExploreUseCase exploreUseCase) {
@@ -134,28 +125,6 @@ public class ComicViewModel extends ViewModel {
         }
     }
 
-    void setComicFavorite(boolean isFavorite){
-
-        if(mComicLiveData.getValue() == null){
-            return;
-        }
-
-        mCompositeDisposable.add(mExploreUseCase.setFavorite(mComicLiveData.getValue().getNum(), isFavorite)
-                .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.mainThread())
-                .doOnComplete(() -> {
-                    if (isFavorite){
-                        mMessage.setValue(new Event<>("Add to favorites"));
-                        mState.setValue(new ComicState.Builder(mState.getValue()).setFavorite(true).build());
-                    }else{
-                        mMessage.setValue(new Event<>("Remove from favorites"));
-                        mState.setValue(new ComicState.Builder(mState.getValue()).setFavorite(false).build());
-
-                    }
-                })
-                .subscribe());
-    }
-
     List<Integer> getComicRange(){
         int latestComicNumber = mExploreUseCase.getLatestComicNumber();
 
@@ -168,34 +137,19 @@ public class ComicViewModel extends ViewModel {
         return range;
     }
 
-    void fullscreen() {
-        if (mIsFullscreen.getValue() != null){
-            mIsFullscreen.setValue(!mIsFullscreen.getValue());
-        }else{
-            mIsFullscreen.setValue(true);
-        }
-    }
-
-
-    public LiveData<Comic> getComic(){
-        return mComicLiveData;
-    }
-
-    public LiveData<Event<String>> getMessage(){
-        return mMessage;
-    }
-
-    public LiveData<ComicState> getState() { return mState; }
-
-    public LiveData<Integer> getRequestComicNumber() { return mRequestComicNumber; }
-
-    public LiveData<Boolean> getIsFullscreen() {
-        return mIsFullscreen;
+    @Override
+    protected BaseUseCase getUseCase() {
+        return mExploreUseCase;
     }
 
     @Override
     protected void onCleared() {
         super.onCleared();
         mCompositeDisposable.clear();
+    }
+
+
+    LiveData<Integer> getRequestComicNumber() {
+        return mRequestComicNumber;
     }
 }

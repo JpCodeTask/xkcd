@@ -1,28 +1,13 @@
 package pl.jpcodetask.xkcdcomics.ui.favorites.item;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
-
-import io.reactivex.disposables.CompositeDisposable;
-import pl.jpcodetask.xkcdcomics.Event;
-import pl.jpcodetask.xkcdcomics.data.model.Comic;
+import pl.jpcodetask.xkcdcomics.ui.common.BaseItemViewModel;
 import pl.jpcodetask.xkcdcomics.ui.common.ComicState;
+import pl.jpcodetask.xkcdcomics.usecase.BaseUseCase;
 import pl.jpcodetask.xkcdcomics.usecase.FavoritesUseCase;
-import pl.jpcodetask.xkcdcomics.utils.Schedulers;
 
-public class FavoritesItemViewModel extends ViewModel {
+public class FavoritesItemViewModel extends BaseItemViewModel {
 
     private final FavoritesUseCase mFavoritesUseCase;
-    private final CompositeDisposable mCompositeDisposable = new CompositeDisposable();
-
-    /** State*/
-    private final MutableLiveData<ComicState> mState = new MutableLiveData<>();
-    private final MutableLiveData<Boolean> mIsFullscreen = new MutableLiveData<>();
-
-    /** Data*/
-    private final MutableLiveData<Comic> mComicLiveData = new MutableLiveData<>();
-    private final MutableLiveData<Event<String>> mMessage = new MutableLiveData<>();
 
     public FavoritesItemViewModel(FavoritesUseCase favoritesUseCase) {
         mFavoritesUseCase = favoritesUseCase;
@@ -78,57 +63,9 @@ public class FavoritesItemViewModel extends ViewModel {
         );
     }
 
-    public void setComicFavorite(boolean isFavorite) {
-
-        if(mComicLiveData.getValue() == null){
-            return;
-        }
-
-        mCompositeDisposable.add(mFavoritesUseCase.setFavorite(mComicLiveData.getValue().getNum(), isFavorite)
-                .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.mainThread())
-                .doOnComplete(() -> {
-                    if (isFavorite){
-                        mMessage.setValue(new Event<>("Add to favorites"));
-                        mState.setValue(new ComicState.Builder(mState.getValue()).setFavorite(true).build());
-                    }else{
-                        mMessage.setValue(new Event<>("Remove from favorites"));
-                        mState.setValue(new ComicState.Builder(mState.getValue()).setFavorite(false).build());
-
-                    }
-                })
-                .subscribe());
-    }
-
-    void fullscreen() {
-        if (mIsFullscreen.getValue() != null){
-            mIsFullscreen.setValue(!mIsFullscreen.getValue());
-        }else{
-            mIsFullscreen.setValue(true);
-        }
-    }
-
-    public LiveData<Comic> getComic() {
-        return mComicLiveData;
-    }
-
-    public LiveData<ComicState> getState() {
-        return mState;
-    }
-
-    public LiveData<Event<String>> getMessage(){
-        return mMessage;
-    }
-
-    public LiveData<Boolean> getIsFullscreen() {
-        return mIsFullscreen;
-    }
-
     @Override
-    protected void onCleared() {
-        super.onCleared();
-        mCompositeDisposable.clear();
+    protected BaseUseCase getUseCase() {
+        return mFavoritesUseCase;
     }
-
 
 }

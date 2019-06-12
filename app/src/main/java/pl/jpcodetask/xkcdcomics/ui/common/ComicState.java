@@ -54,11 +54,13 @@ public class ComicState {
         }
 
         public Builder(ComicState comicState){
-            this.mIsDataLoading = comicState.mIsDataLoading;
-            this.mIsNextAvailable = comicState.mIsNextAvailable;
-            this.mIsPrevAvailable = comicState.mIsPrevAvailable;
-            this.mIsFavorite = comicState.mIsFavorite;
-            this.mIsErrorOccurred = comicState.mIsErrorOccurred;
+            if (comicState != null){
+                this.mIsDataLoading = comicState.mIsDataLoading;
+                this.mIsNextAvailable = comicState.mIsNextAvailable;
+                this.mIsPrevAvailable = comicState.mIsPrevAvailable;
+                this.mIsFavorite = comicState.mIsFavorite;
+                this.mIsErrorOccurred = comicState.mIsErrorOccurred;
+            }
         }
 
 

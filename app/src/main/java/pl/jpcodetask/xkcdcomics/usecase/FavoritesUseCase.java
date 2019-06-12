@@ -7,7 +7,7 @@ import io.reactivex.Maybe;
 import pl.jpcodetask.xkcdcomics.data.model.Comic;
 import pl.jpcodetask.xkcdcomics.data.model.ComicWrapper;
 
-public interface FavoritesUseCase {
+public interface FavoritesUseCase extends BaseUseCase, Likeable {
     Maybe<List<Comic>> loadList();
     Maybe<ComicWrapper> loadComic(int comicNumber);
     Completable setFavorite(int comicNumber, boolean isFavorite);
