@@ -1,4 +1,4 @@
-package pl.jpcodetask.xkcdcomics.ui.item;
+package pl.jpcodetask.xkcdcomics.ui.explore;
 
 import android.content.Context;
 import android.content.Intent;

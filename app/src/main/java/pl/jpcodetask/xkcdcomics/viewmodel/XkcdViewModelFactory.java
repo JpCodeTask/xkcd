@@ -11,9 +11,9 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 
 import pl.jpcodetask.xkcdcomics.ui.MainViewModel;
+import pl.jpcodetask.xkcdcomics.ui.explore.ComicViewModel;
 import pl.jpcodetask.xkcdcomics.ui.favorites.item.FavoritesItemViewModel;
 import pl.jpcodetask.xkcdcomics.ui.favorites.list.FavoritesViewModel;
-import pl.jpcodetask.xkcdcomics.ui.item.ComicViewModel;
 import pl.jpcodetask.xkcdcomics.usecase.ExploreUseCase;
 import pl.jpcodetask.xkcdcomics.usecase.ExploreUseCaseImpl;
 import pl.jpcodetask.xkcdcomics.usecase.FavoritesUseCase;

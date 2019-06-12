@@ -22,8 +22,8 @@ import dagger.android.support.HasSupportFragmentInjector;
 import pl.jpcodetask.xkcdcomics.R;
 import pl.jpcodetask.xkcdcomics.databinding.ActivityMainBinding;
 import pl.jpcodetask.xkcdcomics.ui.common.NavigationItem;
+import pl.jpcodetask.xkcdcomics.ui.explore.ComicFragment;
 import pl.jpcodetask.xkcdcomics.ui.favorites.list.FavoritesFragment;
-import pl.jpcodetask.xkcdcomics.ui.item.ComicFragment;
 import pl.jpcodetask.xkcdcomics.utils.UpdateJobService;
 import pl.jpcodetask.xkcdcomics.viewmodel.XkcdViewModelFactory;
 
