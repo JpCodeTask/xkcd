@@ -26,7 +26,7 @@ import javax.inject.Inject;
 import dagger.android.support.AndroidSupportInjection;
 import pl.jpcodetask.xkcdcomics.R;
 import pl.jpcodetask.xkcdcomics.data.model.Comic;
-import pl.jpcodetask.xkcdcomics.databinding.FragmentComicBinding;
+import pl.jpcodetask.xkcdcomics.databinding.FragmentExploreBinding;
 import pl.jpcodetask.xkcdcomics.ui.MainViewModel;
 import pl.jpcodetask.xkcdcomics.ui.common.ComicNavigator;
 import pl.jpcodetask.xkcdcomics.ui.common.NavigationItem;
@@ -41,7 +41,7 @@ public class ComicFragment extends Fragment implements ComicNavigator {
 
     private ComicViewModel mViewModel;
     private MainViewModel mActivityViewModel;
-    private FragmentComicBinding mBinding;
+    private FragmentExploreBinding mBinding;
 
     private Intent mShareIntent;
 
@@ -70,7 +70,7 @@ public class ComicFragment extends Fragment implements ComicNavigator {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mBinding = FragmentComicBinding.inflate(inflater, container, false);
+        mBinding = FragmentExploreBinding.inflate(inflater, container, false);
 
         setupViewModel();
         setupToolbar();
