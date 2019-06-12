@@ -15,6 +15,7 @@ public class SharedPreferenceProvider {
     private static final String KEY_BOOKMARK_COMIC_NUMBER = "bookmark_comic_number";
     private static final String KEY_FIRST_LAUNCH = "first_launch";
     private static final String KEY_FAVORITES_SORT = "sort_by";
+    private static final String KEY_NOTIFY_ON = "notify_on";
 
     private final SharedPreferences mSharedPreferences;
 
@@ -62,5 +63,9 @@ public class SharedPreferenceProvider {
         mSharedPreferences.edit()
                 .putInt(KEY_FAVORITES_SORT, sortField)
                 .apply();
+    }
+
+    public boolean isNotifyOn() {
+        return mSharedPreferences.getBoolean(KEY_NOTIFY_ON, true);
     }
 }

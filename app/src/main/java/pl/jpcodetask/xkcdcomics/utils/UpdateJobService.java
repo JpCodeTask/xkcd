@@ -89,7 +89,11 @@ public class UpdateJobService extends JobService {
 
                         if (latestComicNumber > sharedPrefLatestComicNumber){
                             mSharedPreferenceProvider.setLatestComicNumber(latestComicNumber);
-                            notifyAboutNewComic(comicWrapper.getComic());
+
+                            if (mSharedPreferenceProvider.isNotifyOn()){
+                                notifyAboutNewComic(comicWrapper.getComic());
+                            }
+
                         }
 
 
