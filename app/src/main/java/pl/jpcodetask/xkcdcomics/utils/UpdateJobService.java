@@ -24,11 +24,13 @@ import pl.jpcodetask.xkcdcomics.data.source.RepositoryImpl;
 
 public class UpdateJobService extends JobService {
 
+    private static final String TAG = UpdateJobService.class.getSimpleName();
 
     private static final int NEW_COMIC_JOB_ID = 111;
     private static final String NEW_COMIC_NOTIFICATION_CHANNEL_ID = "channel1";
     private static final int NEW_COMIC_NOTIFICATION_ID = 11;
     private static final int INVALID_LATEST_COMIC_NUMBER = 0;
+
     @Inject
     SharedPreferenceProvider mSharedPreferenceProvider;
     @Inject
@@ -37,7 +39,7 @@ public class UpdateJobService extends JobService {
 
     public static void schedule(Context context){
         if (isJobServiceOn(context)){
-            Log.wtf("AAA", "running");
+            Log.i(TAG, "Service is running.");
             return;
         }
 
@@ -85,15 +87,15 @@ public class UpdateJobService extends JobService {
                         int sharedPrefLatestComicNumber = mSharedPreferenceProvider.getLatestComicNumber(INVALID_LATEST_COMIC_NUMBER);
                         int latestComicNumber = comicWrapper.getComic().getNum();
 
-                        if (latestComicNumber >= sharedPrefLatestComicNumber){
+                        if (latestComicNumber > sharedPrefLatestComicNumber){
                             mSharedPreferenceProvider.setLatestComicNumber(latestComicNumber);
                             notifyAboutNewComic(comicWrapper.getComic());
                         }
 
-                        jobFinished(params, false);
-                    }else{
-                        jobFinished(params, true);
+
                     }
+
+                    jobFinished(params, false);
                 })
                 .subscribe();
         return true;
