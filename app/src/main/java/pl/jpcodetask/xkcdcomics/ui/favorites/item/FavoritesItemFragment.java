@@ -10,14 +10,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
-
-import com.google.android.material.snackbar.Snackbar;
 
 import javax.inject.Inject;
 
@@ -109,7 +108,7 @@ public class FavoritesItemFragment extends Fragment implements ComicViewer {
         mViewModel.getMessage().observe(this, eventString -> {
             String message = eventString.getEventContentIfNotHandled();
             if (message != null){
-                Snackbar.make(mBinding.getRoot(), message, Snackbar.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
             }
         });
 
