@@ -170,7 +170,7 @@
             android:layout_marginStart="@dimen/margin_16"
             android:layout_marginEnd="@dimen/margin_16"
             android:layout_marginBottom="@dimen/margin_8"
-            android:background="@drawable/round_btn_shape"
+            android:background="@drawable/archive_btn_ripple"
             android:drawableStart="@drawable/baseline_archive_black_24"
             android:padding="2dp"
             android:paddingStart="@dimen/padding_16"
