@@ -133,7 +133,7 @@ public class FavoritesFragment extends Fragment {
                 Integer comicNumber = removeEvent.getEventContentIfNotHandled();
                 if (comicNumber != null){
                     mAdapter.removeByComicNumber(comicNumber);
-                    Snackbar.make(mBinding.getRoot(), "Item removed from favorites", Snackbar.LENGTH_SHORT)
+                    Snackbar.make(mBinding.getRoot(), "Item removed from favorites", Snackbar.LENGTH_LONG)
                             .setAction(getString(R.string.action_undo), v -> {
                                 mViewModel.setComicFavorite(comicNumber, true);
                                 mAdapter.restoreItem();
@@ -160,10 +160,10 @@ public class FavoritesFragment extends Fragment {
             }
         });
 
-        onSwipeItemCallback.setLeftBackground(new ColorDrawable(Color.BLACK));
+        onSwipeItemCallback.setLeftBackground(new ColorDrawable(Color.WHITE));
         onSwipeItemCallback.setRightBackground(new ColorDrawable(Color.BLACK));
-        onSwipeItemCallback.setLeftIcon(getContext().getDrawable(R.drawable.baseline_expand_less_white_36));
-        onSwipeItemCallback.setRightIcon(getContext().getDrawable(R.drawable.baseline_expand_more_white_36));
+        onSwipeItemCallback.setLeftIcon(getContext().getDrawable(R.drawable.baseline_share_black_24));
+        onSwipeItemCallback.setRightIcon(getContext().getDrawable(R.drawable.baseline_favorite_border_white_24));
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(onSwipeItemCallback);
 
