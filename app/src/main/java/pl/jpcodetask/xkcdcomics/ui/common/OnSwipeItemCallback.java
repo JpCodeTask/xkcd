@@ -63,7 +63,7 @@ public class OnSwipeItemCallback extends ItemTouchHelper.SimpleCallback {
     public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
         super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
         View itemView = viewHolder.itemView;
-        int backgroundCornerOffset = 20;
+        int backgroundCornerOffset = 5;
 
         if (dX > 0) { // Swiping to the right
 
@@ -78,6 +78,8 @@ public class OnSwipeItemCallback extends ItemTouchHelper.SimpleCallback {
             mLeftBackground.setBounds(itemView.getLeft(), itemView.getTop(),
                     itemView.getLeft() + ((int) dX) + backgroundCornerOffset,
                     itemView.getBottom());
+            mLeftBackground.draw(c);
+            mLeftIcon.draw(c);
         } else if (dX < 0) { // Swiping to the left
             int iconMargin = (itemView.getHeight() - mRightIcon.getIntrinsicHeight()) / 2;
             int iconTop = itemView.getTop() + (itemView.getHeight() - mRightIcon.getIntrinsicHeight()) / 2;
@@ -89,15 +91,12 @@ public class OnSwipeItemCallback extends ItemTouchHelper.SimpleCallback {
 
             mRightBackground.setBounds(itemView.getRight() + ((int) dX) - backgroundCornerOffset,
                     itemView.getTop(), itemView.getRight(), itemView.getBottom());
+            mRightBackground.draw(c);
+            mRightIcon.draw(c);
         } else { // view is unSwiped
             mLeftBackground.setBounds(0, 0, 0, 0);
             mRightBackground.setBounds(0, 0, 0, 0);
         }
-
-        mRightBackground.draw(c);
-        mLeftBackground.draw(c);
-        mLeftIcon.draw(c);
-        mRightIcon.draw(c);
     }
 
     public interface OnSwipeListener {
