@@ -3,6 +3,8 @@ package pl.jpcodetask.xkcdcomics.ui.favorites.list;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.transition.Fade;
@@ -145,7 +147,7 @@ public class FavoritesFragment extends Fragment {
         mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mBinding.recyclerView.setAdapter(mAdapter);
 
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new OnSwipeItemCallback(new OnSwipeItemCallback.OnSwipeListener() {
+        OnSwipeItemCallback onSwipeItemCallback = new OnSwipeItemCallback(new OnSwipeItemCallback.OnSwipeListener() {
             @Override
             public void onSwipeLeft(int position) {
                 mViewModel.setComicFavorite(mAdapter.getItemAtPosition(position).getNum(), false);
@@ -156,7 +158,14 @@ public class FavoritesFragment extends Fragment {
                 startActivity(Intent.createChooser(ComicUtils.getComicShareIntent(mAdapter.getItemAtPosition(position)), getString(R.string.share_comic_title)));
                 mAdapter.notifyItemChanged(position);
             }
-        }));
+        });
+
+        onSwipeItemCallback.setLeftBackground(new ColorDrawable(Color.BLACK));
+        onSwipeItemCallback.setRightBackground(new ColorDrawable(Color.BLACK));
+        onSwipeItemCallback.setLeftIcon(getContext().getDrawable(R.drawable.baseline_expand_less_white_36));
+        onSwipeItemCallback.setRightIcon(getContext().getDrawable(R.drawable.baseline_expand_more_white_36));
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(onSwipeItemCallback);
 
         itemTouchHelper.attachToRecyclerView(mBinding.recyclerView);
     }
