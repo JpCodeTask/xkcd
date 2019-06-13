@@ -21,8 +21,11 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,8 +39,10 @@ import pl.jpcodetask.xkcdcomics.databinding.FavoritesListItemBinding;
 import pl.jpcodetask.xkcdcomics.databinding.FragmentFavoritesBinding;
 import pl.jpcodetask.xkcdcomics.databinding.FragmentFavoritesBindingImpl;
 import pl.jpcodetask.xkcdcomics.ui.MainViewModel;
+import pl.jpcodetask.xkcdcomics.ui.common.OnSwipeItemCallback;
 import pl.jpcodetask.xkcdcomics.ui.favorites.DetailsTransition;
 import pl.jpcodetask.xkcdcomics.ui.favorites.item.FavoritesItemFragment;
+import pl.jpcodetask.xkcdcomics.utils.ComicUtils;
 import pl.jpcodetask.xkcdcomics.viewmodel.XkcdViewModelFactory;
 
 public class FavoritesFragment extends Fragment {
@@ -116,6 +121,21 @@ public class FavoritesFragment extends Fragment {
     private void setupRecyclerView() {
         mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mBinding.recyclerView.setAdapter(mAdapter);
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new OnSwipeItemCallback(new OnSwipeItemCallback.OnSwipeListener() {
+            @Override
+            public void onSwipeLeft(int position) {
+                mViewModel.setComicFavorite(mAdapter.getItemAtPosition(position).getNum(), false);
+            }
+
+            @Override
+            public void onSwipeRight(int position) {
+                startActivity(Intent.createChooser(ComicUtils.getComicShareIntent(mAdapter.getItemAtPosition(position)), getString(R.string.share_comic_title)));
+                mAdapter.notifyItemChanged(position);
+            }
+        }));
+
+        itemTouchHelper.attachToRecyclerView(mBinding.recyclerView);
     }
 
     private void setupViewModel() {
@@ -127,6 +147,19 @@ public class FavoritesFragment extends Fragment {
             }else{
                 mBinding.emptyListView.setVisibility(View.VISIBLE);
             }
+        });
+
+        mViewModel.getRemoveEvent().observe(this, removeEvent -> {
+                Integer comicNumber = removeEvent.getEventContentIfNotHandled();
+                if (comicNumber != null){
+                    mAdapter.removeByComicNumber(comicNumber);
+                    Snackbar.make(mBinding.getRoot(), "Item removed from favorites", Snackbar.LENGTH_SHORT)
+                            .setAction(getString(R.string.action_undo), v -> {
+                                mViewModel.setComicFavorite(comicNumber, true);
+                                mAdapter.restoreItem();
+                            })
+                            .show();
+                }
         });
     }
 
@@ -214,7 +247,7 @@ public class FavoritesFragment extends Fragment {
         if (requestCode == REQUEST_FAVORITES_ITEM && data != null){
             boolean isUnfavorite = data.getBooleanExtra(FavoritesItemFragment.EXTRA_UNFAVORITE_COMIC, false);
             if (isUnfavorite){
-              mAdapter.removeAtPosition(mLastViewedItemPosition);
+                mAdapter.removeAtPosition(mLastViewedItemPosition);
             }
         }
     }
@@ -231,8 +264,12 @@ public class FavoritesFragment extends Fragment {
 
     private static class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.FavoriteViewHolder>{
 
+        private final static int NO_POSITION = -1;
+
         private List<Comic> mFavoritesList = new ArrayList<>();
         private FavoriteItemClickListener mFavoriteItemClickListener;
+        private int mRemovedItemPosition = NO_POSITION;
+        private Comic mRemovedItem;
 
         FavoritesAdapter(@NonNull FavoriteItemClickListener favoriteItemClickListener){
             mFavoriteItemClickListener = favoriteItemClickListener;
@@ -244,8 +281,41 @@ public class FavoritesFragment extends Fragment {
         }
 
         void removeAtPosition(int position){
+            mRemovedItemPosition = position;
+            mRemovedItem = mFavoritesList.get(position);
+
             mFavoritesList.remove(position);
             notifyItemRemoved(position);
+        }
+
+        void removeByComicNumber(int comicNumber) {
+            int position = getPositionByComicNumber(comicNumber);
+            if (position != NO_POSITION){
+                removeAtPosition(position);
+            }
+        }
+        void restoreItem(){
+            if (mRemovedItemPosition != NO_POSITION){
+                mFavoritesList.add(mRemovedItemPosition, mRemovedItem);
+                notifyItemInserted(mRemovedItemPosition);
+            }
+
+            mRemovedItemPosition = NO_POSITION;
+        }
+
+        private int getPositionByComicNumber(int comicNumber){
+            for (int i = 0; i < getItemCount(); i++ ){
+                if (mFavoritesList.get(i).getNum() == comicNumber){
+                    return i;
+                }
+            }
+
+            return NO_POSITION;
+        }
+
+
+        Comic getItemAtPosition(int position) {
+            return mFavoritesList.get(position);
         }
 
         @NonNull
