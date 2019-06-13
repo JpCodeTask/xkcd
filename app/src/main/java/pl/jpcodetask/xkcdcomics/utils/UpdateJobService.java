@@ -2,6 +2,7 @@ package pl.jpcodetask.xkcdcomics.utils;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.job.JobInfo;
 import android.app.job.JobParameters;
 import android.app.job.JobScheduler;
@@ -21,6 +22,7 @@ import io.reactivex.disposables.Disposable;
 import pl.jpcodetask.xkcdcomics.R;
 import pl.jpcodetask.xkcdcomics.data.model.Comic;
 import pl.jpcodetask.xkcdcomics.data.source.RepositoryImpl;
+import pl.jpcodetask.xkcdcomics.ui.MainActivity;
 
 public class UpdateJobService extends JobService {
 
@@ -28,6 +30,7 @@ public class UpdateJobService extends JobService {
 
     private static final int NEW_COMIC_JOB_ID = 111;
     private static final String NEW_COMIC_NOTIFICATION_CHANNEL_ID = "channel1";
+    private static final int NOTIFICATION_REQUEST_CODE = 4321;
     private static final int NEW_COMIC_NOTIFICATION_ID = 11;
     private static final int INVALID_LATEST_COMIC_NUMBER = 0;
 
@@ -87,7 +90,7 @@ public class UpdateJobService extends JobService {
                         int sharedPrefLatestComicNumber = mSharedPreferenceProvider.getLatestComicNumber(INVALID_LATEST_COMIC_NUMBER);
                         int latestComicNumber = comicWrapper.getComic().getNum();
 
-                        if (latestComicNumber > sharedPrefLatestComicNumber ){
+                        if (latestComicNumber >= sharedPrefLatestComicNumber ){
                             mSharedPreferenceProvider.setLatestComicNumber(latestComicNumber);
 
                             if (mSharedPreferenceProvider.isNotifyOn() && !mSharedPreferenceProvider.isFirstLaunch()){
@@ -120,8 +123,16 @@ public class UpdateJobService extends JobService {
             notificationManager.createNotificationChannel(channel);
         }
 
+        PendingIntent pendingIntent = PendingIntent.getActivity(
+                getApplicationContext(),
+                NOTIFICATION_REQUEST_CODE,
+                MainActivity.newIntent(getBaseContext()),
+                PendingIntent.FLAG_UPDATE_CURRENT,
+                null
+        );
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), NEW_COMIC_NOTIFICATION_CHANNEL_ID)
+                .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
                 .setSmallIcon(R.drawable.baseline_share_black_24)
                 .setContentTitle(getString(R.string.new_comic_notification_title))

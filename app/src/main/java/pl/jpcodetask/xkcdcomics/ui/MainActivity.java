@@ -1,5 +1,7 @@
 package pl.jpcodetask.xkcdcomics.ui;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -42,6 +44,10 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
     private ActivityMainBinding mBinding;
     private MainViewModel mMainViewModel;
     private long mBackButtonTimestamp;
+
+    public static Intent newIntent(Context context) {
+        return new Intent(context, MainActivity.class);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
