@@ -37,6 +37,7 @@
                 android:visibility="@{viewmodel.network.isConnected() ? View.GONE : View.VISIBLE}" />
 
             <FrameLayout
+                android:background="@color/white"
                 android:id="@+id/fragment_container_one"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
