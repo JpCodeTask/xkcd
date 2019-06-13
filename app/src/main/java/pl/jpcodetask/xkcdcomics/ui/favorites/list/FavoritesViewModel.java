@@ -13,9 +13,11 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import io.reactivex.disposables.CompositeDisposable;
+import pl.jpcodetask.xkcdcomics.Event;
 import pl.jpcodetask.xkcdcomics.R;
 import pl.jpcodetask.xkcdcomics.data.model.Comic;
 import pl.jpcodetask.xkcdcomics.usecase.FavoritesUseCase;
+import pl.jpcodetask.xkcdcomics.utils.Schedulers;
 
 public class FavoritesViewModel extends ViewModel {
 
@@ -28,6 +30,7 @@ public class FavoritesViewModel extends ViewModel {
     private final MutableLiveData<List<Comic>> mComicList = new MutableLiveData<>();
     private final MutableLiveData<String> mSearchQuery = new MutableLiveData<>();
     private final MutableLiveData<Integer> mSortField = new MutableLiveData<>();
+    private final MutableLiveData<Event<Integer>> mRemoveEvent = new MutableLiveData<>();
 
     private List<Comic> mOriginalComicList = new ArrayList<>();
 
@@ -100,6 +103,19 @@ public class FavoritesViewModel extends ViewModel {
         Collections.sort(list, mComicComparator);
     }
 
+    public void setComicFavorite(int comicNumber, boolean isFavorite) {
+
+        mCompositeDisposable.add(mFavoritesUseCase.setFavorite(comicNumber, isFavorite)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.mainThread())
+                .doOnComplete(() -> {
+                    if (!isFavorite){
+                        mRemoveEvent.setValue(new Event<>(comicNumber));
+                    }
+                })
+                .subscribe());
+    }
+
     LiveData<List<Comic>> getComicList() {
         return mComicList;
     }
@@ -110,6 +126,10 @@ public class FavoritesViewModel extends ViewModel {
 
     LiveData<String> getSearchQuery() {
         return mSearchQuery;
+    }
+
+    LiveData<Event<Integer>> getRemoveEvent() {
+        return mRemoveEvent;
     }
 
     @Override

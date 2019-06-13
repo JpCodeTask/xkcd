@@ -256,7 +256,7 @@ public class ComicFragment extends Fragment implements ComicNavigator {
 
             case R.id.action_share :
                 if (mShareIntent != null){
-                    startActivity(Intent.createChooser(mShareIntent, "Share comic image"));
+                    startActivity(Intent.createChooser(mShareIntent, getString(R.string.share_comic_title)));
                 }
                 return true;
 

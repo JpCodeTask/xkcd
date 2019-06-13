@@ -30,5 +30,7 @@
     <string name="preference_category_general_notify_on_title">Notification</string>
     <string name="preference_category_general_notify_on_default">true</string>
     <string name="nav_item_feedback">Feedback</string>
+    <string name="action_undo">Undo</string>
+    <string name="share_comic_title">Share comic image</string>
 
 </resources>
