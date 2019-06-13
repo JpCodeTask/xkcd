@@ -38,7 +38,6 @@ import pl.jpcodetask.xkcdcomics.data.model.Comic;
 import pl.jpcodetask.xkcdcomics.databinding.FavoritesListItemBinding;
 import pl.jpcodetask.xkcdcomics.databinding.FragmentFavoritesBinding;
 import pl.jpcodetask.xkcdcomics.databinding.FragmentFavoritesBindingImpl;
-import pl.jpcodetask.xkcdcomics.ui.MainViewModel;
 import pl.jpcodetask.xkcdcomics.ui.common.OnSwipeItemCallback;
 import pl.jpcodetask.xkcdcomics.ui.favorites.DetailsTransition;
 import pl.jpcodetask.xkcdcomics.ui.favorites.item.FavoritesItemFragment;
@@ -59,7 +58,6 @@ public class FavoritesFragment extends Fragment {
     private FavoritesViewModel mViewModel;
     private int mLastViewedItemPosition = 0;
     private SearchView mSearchView;
-    private MainViewModel mMainViewModel;
 
     public FavoritesFragment(){
         //empty
@@ -118,26 +116,6 @@ public class FavoritesFragment extends Fragment {
         return mBinding.getRoot();
     }
 
-    private void setupRecyclerView() {
-        mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mBinding.recyclerView.setAdapter(mAdapter);
-
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new OnSwipeItemCallback(new OnSwipeItemCallback.OnSwipeListener() {
-            @Override
-            public void onSwipeLeft(int position) {
-                mViewModel.setComicFavorite(mAdapter.getItemAtPosition(position).getNum(), false);
-            }
-
-            @Override
-            public void onSwipeRight(int position) {
-                startActivity(Intent.createChooser(ComicUtils.getComicShareIntent(mAdapter.getItemAtPosition(position)), getString(R.string.share_comic_title)));
-                mAdapter.notifyItemChanged(position);
-            }
-        }));
-
-        itemTouchHelper.attachToRecyclerView(mBinding.recyclerView);
-    }
-
     private void setupViewModel() {
         mViewModel = ViewModelProviders.of(this, mXkcdViewModelFactory).get(FavoritesViewModel.class);
         mViewModel.getComicList().observe(this, comics -> {
@@ -161,6 +139,26 @@ public class FavoritesFragment extends Fragment {
                             .show();
                 }
         });
+    }
+
+    private void setupRecyclerView() {
+        mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mBinding.recyclerView.setAdapter(mAdapter);
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new OnSwipeItemCallback(new OnSwipeItemCallback.OnSwipeListener() {
+            @Override
+            public void onSwipeLeft(int position) {
+                mViewModel.setComicFavorite(mAdapter.getItemAtPosition(position).getNum(), false);
+            }
+
+            @Override
+            public void onSwipeRight(int position) {
+                startActivity(Intent.createChooser(ComicUtils.getComicShareIntent(mAdapter.getItemAtPosition(position)), getString(R.string.share_comic_title)));
+                mAdapter.notifyItemChanged(position);
+            }
+        }));
+
+        itemTouchHelper.attachToRecyclerView(mBinding.recyclerView);
     }
 
     private void setupToolbar() {
