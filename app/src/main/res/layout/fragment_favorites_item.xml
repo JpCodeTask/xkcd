@@ -22,7 +22,6 @@
         android:layout_height="match_parent">
 
         <com.google.android.material.appbar.AppBarLayout
-            android:visibility="@{viewmodel.isFullscreen ? View.GONE : View.VISIBLE}"
             android:id="@+id/app_bar_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -111,7 +110,6 @@
             tools:src="@drawable/ic_launcher_background" />
 
         <TextView
-            android:visibility="@{viewmodel.isFullscreen ? View.GONE : View.VISIBLE}"
             android:id="@+id/comic_number_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -128,7 +126,6 @@
             tools:text="2101" />
 
         <ImageButton
-            android:visibility="@{viewmodel.isFullscreen ? View.GONE : View.VISIBLE}"
             android:id="@+id/more_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -142,7 +139,7 @@
             app:layout_constraintStart_toEndOf="parent" />
 
         <LinearLayout
-            android:visibility="@{viewmodel.isFullscreen ? View.GONE : View.GONE}"
+            android:visibility="gone"
             android:id="@+id/comic_details_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
