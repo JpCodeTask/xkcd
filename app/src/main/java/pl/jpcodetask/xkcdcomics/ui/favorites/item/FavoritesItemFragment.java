@@ -30,6 +30,7 @@ import pl.jpcodetask.xkcdcomics.data.model.Comic;
 import pl.jpcodetask.xkcdcomics.databinding.FragmentFavoritesItemBinding;
 import pl.jpcodetask.xkcdcomics.ui.MainViewModel;
 import pl.jpcodetask.xkcdcomics.ui.common.ComicViewer;
+import pl.jpcodetask.xkcdcomics.ui.common.SwipeContract;
 import pl.jpcodetask.xkcdcomics.utils.ComicUtils;
 import pl.jpcodetask.xkcdcomics.utils.GlideApp;
 import pl.jpcodetask.xkcdcomics.viewmodel.XkcdViewModelFactory;
@@ -196,7 +197,12 @@ public class FavoritesItemFragment extends Fragment implements ComicViewer {
         });
 
         mBinding.imageView.setOnSingleFlingListener((e1, e2, velocityX, velocityY) -> {
-            if (e1.getY() - e2.getY() < 0 && velocityY > 150 ){
+            final float dx = Math.abs(e1.getX() - e2.getX());
+
+            if (dx > SwipeContract.MAX_DX){
+                return true;
+            }
+            if (e1.getY() - e2.getY() < 0 && velocityY > SwipeContract.MIN_VELOCITY_Y ){
                 getActivity().getSupportFragmentManager().popBackStack();
             }
 

@@ -34,6 +34,7 @@ import pl.jpcodetask.xkcdcomics.databinding.FragmentExploreBinding;
 import pl.jpcodetask.xkcdcomics.ui.MainViewModel;
 import pl.jpcodetask.xkcdcomics.ui.common.ComicNavigator;
 import pl.jpcodetask.xkcdcomics.ui.common.NavigationItem;
+import pl.jpcodetask.xkcdcomics.ui.common.SwipeContract;
 import pl.jpcodetask.xkcdcomics.utils.ComicUtils;
 import pl.jpcodetask.xkcdcomics.utils.GlideApp;
 import pl.jpcodetask.xkcdcomics.viewmodel.XkcdViewModelFactory;
@@ -294,11 +295,15 @@ public class ComicFragment extends Fragment implements ComicNavigator {
         });
 
         mBinding.imageView.setOnSingleFlingListener((e1, e2, velocityX, velocityY) -> {
-            final int MIN_VELOCITY_X = 100;
+            final float dy = Math.abs(e1.getY() - e2.getY());
 
-            if (e1.getX() - e2.getX() > 0 && velocityX < -100 && mSwipePrevAvailable){
+            if (dy > SwipeContract.MAX_DY){
+                return true;
+            }
+
+            if (e1.getX() - e2.getX() > 0 && velocityX < -SwipeContract.MIN_VELOCITY_X && mSwipePrevAvailable){
                 onPrev();
-            }else if(e1.getX() - e2.getX() < 0 && velocityX > 100 && mSwipeNextAvailable){
+            }else if(e1.getX() - e2.getX() < 0 && velocityX > SwipeContract.MIN_VELOCITY_X && mSwipeNextAvailable){
                 onNext();
             }
 
