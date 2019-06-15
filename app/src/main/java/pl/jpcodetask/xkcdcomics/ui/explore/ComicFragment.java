@@ -39,7 +39,8 @@ import pl.jpcodetask.xkcdcomics.utils.GlideApp;
 import pl.jpcodetask.xkcdcomics.viewmodel.XkcdViewModelFactory;
 
 public class ComicFragment extends Fragment implements ComicNavigator {
-    
+
+    private static final String TAG = ComicFragment.class.getSimpleName();
     @Inject
     XkcdViewModelFactory mViewModelFactory;
 
@@ -52,6 +53,8 @@ public class ComicFragment extends Fragment implements ComicNavigator {
     private boolean mExecuteSpinnerSelected = false;
     private boolean mComicDetailsVisible = false;
     private boolean mComicIsFavorite = false;
+    private boolean mSwipeNextAvailable = false;
+    private boolean mSwipePrevAvailable = false;
 
     private ArrayAdapter<Integer> mArrayAdapter;
 
@@ -90,7 +93,6 @@ public class ComicFragment extends Fragment implements ComicNavigator {
 
         return mBinding.getRoot();
     }
-
 
 
     private void setupViewModel(){
@@ -140,14 +142,18 @@ public class ComicFragment extends Fragment implements ComicNavigator {
         mViewModel.getState().observe(this, comicState -> {
 
             if (comicState.isNextAvailable()){
+                mSwipeNextAvailable = true;
                 mBinding.nextBtn.setEnabled(true);
             }else{
+                mSwipeNextAvailable = false;
                 mBinding.nextBtn.setEnabled(false);
             }
 
             if (comicState.isPrevAvailable()){
+                mSwipePrevAvailable = true;
                 mBinding.prevBtn.setEnabled(true);
             }else{
+                mSwipePrevAvailable = false;
                 mBinding.prevBtn.setEnabled(false);
             }
 
@@ -178,56 +184,71 @@ public class ComicFragment extends Fragment implements ComicNavigator {
         });
 
         mViewModel.getIsFullscreen().observe(this, isFullscreen ->{
-
             if (isFullscreen){
-                TransitionManager.beginDelayedTransition((ViewGroup) mBinding.getRoot(), new ChangeBounds());
-                ConstraintSet set  = new ConstraintSet();
-                set.clone((ConstraintLayout) mBinding.getRoot());
-
-                set.clear(mBinding.imageView.getId(), ConstraintSet.TOP);
-                set.clear(mBinding.imageView.getId(), ConstraintSet.BOTTOM);
-                set.connect(mBinding.imageView.getId(), ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP);
-                set.connect(mBinding.imageView.getId(), ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM);
-
-                //visibility
-                set.setVisibility(mBinding.appBarLayout.getId(), ConstraintSet.GONE);
-                set.setVisibility(mBinding.moreBtn.getId(), ConstraintSet.GONE);
-                set.setVisibility(mBinding.archiveBtn.getId(), ConstraintSet.GONE);
-                set.setVisibility(mBinding.prevBtn.getId(), ConstraintSet.GONE);
-                set.setVisibility(mBinding.nextBtn.getId(), ConstraintSet.GONE);
-                set.setVisibility(mBinding.comicNumberSpinner.getId(), ConstraintSet.GONE);
-                set.setVisibility(mBinding.randomFloatingBtn.getId(), ConstraintSet.GONE);
-                set.setVisibility(mBinding.comicDetailsView.getId(), ConstraintSet.GONE);
-                
-                set.applyTo((ConstraintLayout) mBinding.getRoot());
+                animateOnFullscreenOn();
             }else{
-                TransitionManager.beginDelayedTransition((ViewGroup) mBinding.getRoot(), new ChangeBounds());
-                ConstraintSet set  = new ConstraintSet();
-                set.clone((ConstraintLayout) mBinding.getRoot());
-
-                //visibility
-                set.setVisibility(mBinding.appBarLayout.getId(), ConstraintSet.VISIBLE);
-                set.setVisibility(mBinding.moreBtn.getId(), ConstraintSet.VISIBLE);
-                set.setVisibility(mBinding.prevBtn.getId(), ConstraintSet.VISIBLE);
-                set.setVisibility(mBinding.nextBtn.getId(), ConstraintSet.VISIBLE);
-                set.setVisibility(mBinding.comicNumberSpinner.getId(), ConstraintSet.VISIBLE);
-                set.setVisibility(mBinding.randomFloatingBtn.getId(), ConstraintSet.VISIBLE);
-                if (!mActivityViewModel.getNetwork().getValue().isConnected()){
-                    set.setVisibility(mBinding.archiveBtn.getId(), ConstraintSet.VISIBLE);
-                }
-
-                set.connect(mBinding.imageView.getId(), ConstraintSet.BOTTOM, mBinding.moreBtn.getId(), ConstraintSet.TOP);
-                set.connect(mBinding.imageView.getId(), ConstraintSet.TOP, mBinding.appBarLayout.getId(), ConstraintSet.BOTTOM);
-
-                set.applyTo((ConstraintLayout) mBinding.getRoot());
+                animateOnFullscreenOff();
             }
         });
+    }
+
+    private void animateOnFullscreenOn(){
+        TransitionManager.beginDelayedTransition((ViewGroup) mBinding.getRoot(), new ChangeBounds());
+        ConstraintSet set  = new ConstraintSet();
+        set.clone((ConstraintLayout) mBinding.getRoot());
+
+        set.clear(mBinding.imageView.getId(), ConstraintSet.TOP);
+        set.clear(mBinding.imageView.getId(), ConstraintSet.BOTTOM);
+        set.connect(mBinding.imageView.getId(), ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP);
+        set.connect(mBinding.imageView.getId(), ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM);
+
+        //visibility
+        set.setVisibility(mBinding.appBarLayout.getId(), ConstraintSet.GONE);
+        set.setVisibility(mBinding.moreBtn.getId(), ConstraintSet.GONE);
+        set.setVisibility(mBinding.archiveBtn.getId(), ConstraintSet.GONE);
+        set.setVisibility(mBinding.prevBtn.getId(), ConstraintSet.GONE);
+        set.setVisibility(mBinding.nextBtn.getId(), ConstraintSet.GONE);
+        set.setVisibility(mBinding.comicNumberSpinner.getId(), ConstraintSet.GONE);
+        set.setVisibility(mBinding.randomFloatingBtn.getId(), ConstraintSet.GONE);
+        set.setVisibility(mBinding.comicDetailsView.getId(), ConstraintSet.GONE);
+
+        set.applyTo((ConstraintLayout) mBinding.getRoot());
+    }
+
+    private void animateOnFullscreenOff(){
+        TransitionManager.beginDelayedTransition((ViewGroup) mBinding.getRoot(), new ChangeBounds());
+        ConstraintSet set  = new ConstraintSet();
+        set.clone((ConstraintLayout) mBinding.getRoot());
+
+        //visibility
+        set.setVisibility(mBinding.appBarLayout.getId(), ConstraintSet.VISIBLE);
+        set.setVisibility(mBinding.moreBtn.getId(), ConstraintSet.VISIBLE);
+        set.setVisibility(mBinding.prevBtn.getId(), ConstraintSet.VISIBLE);
+        set.setVisibility(mBinding.nextBtn.getId(), ConstraintSet.VISIBLE);
+        set.setVisibility(mBinding.comicNumberSpinner.getId(), ConstraintSet.VISIBLE);
+        set.setVisibility(mBinding.randomFloatingBtn.getId(), ConstraintSet.VISIBLE);
+        if (!mActivityViewModel.getNetwork().getValue().isConnected()){
+            set.setVisibility(mBinding.archiveBtn.getId(), ConstraintSet.VISIBLE);
+        }
+
+        set.connect(mBinding.imageView.getId(), ConstraintSet.BOTTOM, mBinding.moreBtn.getId(), ConstraintSet.TOP);
+        set.connect(mBinding.imageView.getId(), ConstraintSet.TOP, mBinding.appBarLayout.getId(), ConstraintSet.BOTTOM);
+
+        set.applyTo((ConstraintLayout) mBinding.getRoot());
     }
 
     private void observeDataState(){
        mActivityViewModel.getNetwork().observe(this, network -> {
             if (network.isConnected() && mViewModel.getState().getValue().isErrorOccurred()){
                 onReload();
+            }
+
+            if (!network.isConnected()){
+                mSwipeNextAvailable = false;
+                mSwipePrevAvailable = false;
+            }else{
+                mSwipePrevAvailable = true;
+                mSwipeNextAvailable = true;
             }
         });
 
@@ -264,12 +285,24 @@ public class ComicFragment extends Fragment implements ComicNavigator {
     private void setupArchiveBtn() {
         mBinding.archiveBtn.setOnClickListener(view -> {
             mActivityViewModel.navigateTo(NavigationItem.NAVIGATION_ARCHIVE);
-            });
+        });
     }
 
     private void setupImageListener() {
         mBinding.imageView.setOnPhotoTapListener((view, x, y) -> {
             onFullscreen();
+        });
+
+        mBinding.imageView.setOnSingleFlingListener((e1, e2, velocityX, velocityY) -> {
+            final int MIN_VELOCITY_X = 100;
+
+            if (e1.getX() - e2.getX() > 0 && velocityX < -100 && mSwipePrevAvailable){
+                onPrev();
+            }else if(e1.getX() - e2.getX() < 0 && velocityX > 100 && mSwipeNextAvailable){
+                onNext();
+            }
+
+            return true;
         });
     }
 
