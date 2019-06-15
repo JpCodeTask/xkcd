@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -187,6 +188,15 @@ public class FavoritesItemFragment extends Fragment implements ComicViewer {
     private void setupImageListener() {
         mBinding.imageView.setOnPhotoTapListener((view, x, y) -> {
             onFullscreen();
+        });
+
+        mBinding.imageView.setOnSingleFlingListener((e1, e2, velocityX, velocityY) -> {
+            Log.d("AAA", "velocity" + velocityY);
+            if (e1.getY() - e2.getY() < 0 && velocityY > 150 ){
+                getActivity().getSupportFragmentManager().popBackStack();
+            }
+
+            return true;
         });
     }
 
