@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -119,7 +118,6 @@ public class FavoritesItemFragment extends Fragment implements ComicViewer {
 
         mViewModel.getState().observe(this, comicState -> {
 
-
             if (comicState.isDataLoading()){
                 mBinding.moreBtn.setEnabled(false);
             }else{
@@ -143,41 +141,48 @@ public class FavoritesItemFragment extends Fragment implements ComicViewer {
         });
 
         mViewModel.getIsFullscreen().observe(this, isFullscreen ->{
-
             if (isFullscreen){
-                TransitionManager.beginDelayedTransition((ViewGroup) mBinding.getRoot(), new ChangeBounds());
-                ConstraintSet set  = new ConstraintSet();
-                set.clone((ConstraintLayout) mBinding.getRoot());
-
-                set.clear(mBinding.imageView.getId(), ConstraintSet.TOP);
-                set.clear(mBinding.imageView.getId(), ConstraintSet.BOTTOM);
-                set.connect(mBinding.imageView.getId(), ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP);
-                set.connect(mBinding.imageView.getId(), ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM);
-
-                //visibility
-                set.setVisibility(mBinding.appBarLayout.getId(), ConstraintSet.GONE);
-                set.setVisibility(mBinding.moreBtn.getId(), ConstraintSet.GONE);
-                set.setVisibility(mBinding.comicNumberTv.getId(), ConstraintSet.GONE);
-                set.setVisibility(mBinding.comicDetailsView.getId(), ConstraintSet.GONE);
-
-                set.applyTo((ConstraintLayout) mBinding.getRoot());
+               animateOnFullscreenOn();
             }else{
-                TransitionManager.beginDelayedTransition((ViewGroup) mBinding.getRoot(), new ChangeBounds());
-                ConstraintSet set  = new ConstraintSet();
-                set.clone((ConstraintLayout) mBinding.getRoot());
-
-                //visibility
-                set.setVisibility(mBinding.appBarLayout.getId(), ConstraintSet.VISIBLE);
-                set.setVisibility(mBinding.moreBtn.getId(), ConstraintSet.VISIBLE);
-                set.setVisibility(mBinding.comicNumberTv.getId(), ConstraintSet.VISIBLE);
-
-
-                set.connect(mBinding.imageView.getId(), ConstraintSet.BOTTOM, mBinding.moreBtn.getId(), ConstraintSet.TOP);
-                set.connect(mBinding.imageView.getId(), ConstraintSet.TOP, mBinding.appBarLayout.getId(), ConstraintSet.BOTTOM);
-
-                set.applyTo((ConstraintLayout) mBinding.getRoot());
+               animateOnFullscreenOff();
             }
         });
+    }
+
+    private void animateOnFullscreenOn(){
+        TransitionManager.beginDelayedTransition((ViewGroup) mBinding.getRoot(), new ChangeBounds());
+        ConstraintSet set  = new ConstraintSet();
+        set.clone((ConstraintLayout) mBinding.getRoot());
+
+        set.clear(mBinding.imageView.getId(), ConstraintSet.TOP);
+        set.clear(mBinding.imageView.getId(), ConstraintSet.BOTTOM);
+        set.connect(mBinding.imageView.getId(), ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP);
+        set.connect(mBinding.imageView.getId(), ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM);
+
+        //visibility
+        set.setVisibility(mBinding.appBarLayout.getId(), ConstraintSet.GONE);
+        set.setVisibility(mBinding.moreBtn.getId(), ConstraintSet.GONE);
+        set.setVisibility(mBinding.comicNumberTv.getId(), ConstraintSet.GONE);
+        set.setVisibility(mBinding.comicDetailsView.getId(), ConstraintSet.GONE);
+
+        set.applyTo((ConstraintLayout) mBinding.getRoot());
+    }
+
+    private void animateOnFullscreenOff(){
+        TransitionManager.beginDelayedTransition((ViewGroup) mBinding.getRoot(), new ChangeBounds());
+        ConstraintSet set  = new ConstraintSet();
+        set.clone((ConstraintLayout) mBinding.getRoot());
+
+        //visibility
+        set.setVisibility(mBinding.appBarLayout.getId(), ConstraintSet.VISIBLE);
+        set.setVisibility(mBinding.moreBtn.getId(), ConstraintSet.VISIBLE);
+        set.setVisibility(mBinding.comicNumberTv.getId(), ConstraintSet.VISIBLE);
+
+
+        set.connect(mBinding.imageView.getId(), ConstraintSet.BOTTOM, mBinding.moreBtn.getId(), ConstraintSet.TOP);
+        set.connect(mBinding.imageView.getId(), ConstraintSet.TOP, mBinding.appBarLayout.getId(), ConstraintSet.BOTTOM);
+
+        set.applyTo((ConstraintLayout) mBinding.getRoot());
     }
 
 
@@ -191,7 +196,6 @@ public class FavoritesItemFragment extends Fragment implements ComicViewer {
         });
 
         mBinding.imageView.setOnSingleFlingListener((e1, e2, velocityX, velocityY) -> {
-            Log.d("AAA", "velocity" + velocityY);
             if (e1.getY() - e2.getY() < 0 && velocityY > 150 ){
                 getActivity().getSupportFragmentManager().popBackStack();
             }
