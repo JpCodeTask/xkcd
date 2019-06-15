@@ -96,11 +96,24 @@ public class FavoritesItemFragment extends Fragment implements ComicViewer {
     }
 
     private void setupViewmodel() {
+        setupActivityViewModel();
+        initViewModel();
+        observeComic();
+        observeMessages();
+        observeState();
+        observeFullscreen();
+    }
+
+    private void setupActivityViewModel(){
         mActivityViewModel = ViewModelProviders.of(getActivity(), mViewModelFactory).get(MainViewModel.class);
         mActivityViewModel.disableNavigationDrawer();
+    }
 
+    private void initViewModel(){
         mViewModel = ViewModelProviders.of(this, mViewModelFactory).get(FavoritesItemViewModel.class);
+    }
 
+    private void observeComic() {
         mViewModel.getComic().observe(this, comic -> {
             ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(comic.getTitle());
             GlideApp.with(this)
@@ -109,14 +122,19 @@ public class FavoritesItemFragment extends Fragment implements ComicViewer {
                     .into(mBinding.imageView);
             setupShareIntent(comic);
         });
+    }
 
+
+    private void observeMessages() {
         mViewModel.getMessage().observe(this, eventString -> {
             String message = eventString.getEventContentIfNotHandled();
             if (message != null){
                 Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
             }
         });
+    }
 
+    private void observeState(){
         mViewModel.getState().observe(this, comicState -> {
 
             if (comicState.isDataLoading()){
@@ -140,12 +158,14 @@ public class FavoritesItemFragment extends Fragment implements ComicViewer {
             }
 
         });
+    }
 
+    private void observeFullscreen(){
         mViewModel.getIsFullscreen().observe(this, isFullscreen ->{
             if (isFullscreen){
-               animateOnFullscreenOn();
+                animateOnFullscreenOn();
             }else{
-               animateOnFullscreenOff();
+                animateOnFullscreenOff();
             }
         });
     }
