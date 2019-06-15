@@ -16,8 +16,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.transition.ChangeBounds;
+import androidx.transition.TransitionManager;
 
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
@@ -171,6 +175,52 @@ public class ComicFragment extends Fragment implements ComicNavigator {
                 getActivity().invalidateOptionsMenu();
             }
 
+        });
+
+        mViewModel.getIsFullscreen().observe(this, isFullscreen ->{
+
+            if (isFullscreen){
+                TransitionManager.beginDelayedTransition((ViewGroup) mBinding.getRoot(), new ChangeBounds());
+                ConstraintSet set  = new ConstraintSet();
+                set.clone((ConstraintLayout) mBinding.getRoot());
+
+                set.clear(mBinding.imageView.getId(), ConstraintSet.TOP);
+                set.clear(mBinding.imageView.getId(), ConstraintSet.BOTTOM);
+                set.connect(mBinding.imageView.getId(), ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP);
+                set.connect(mBinding.imageView.getId(), ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM);
+
+                //visibility
+                set.setVisibility(mBinding.appBarLayout.getId(), ConstraintSet.GONE);
+                set.setVisibility(mBinding.moreBtn.getId(), ConstraintSet.GONE);
+                set.setVisibility(mBinding.archiveBtn.getId(), ConstraintSet.GONE);
+                set.setVisibility(mBinding.prevBtn.getId(), ConstraintSet.GONE);
+                set.setVisibility(mBinding.nextBtn.getId(), ConstraintSet.GONE);
+                set.setVisibility(mBinding.comicNumberSpinner.getId(), ConstraintSet.GONE);
+                set.setVisibility(mBinding.randomFloatingBtn.getId(), ConstraintSet.GONE);
+                set.setVisibility(mBinding.comicDetailsView.getId(), ConstraintSet.GONE);
+                
+                set.applyTo((ConstraintLayout) mBinding.getRoot());
+            }else{
+                TransitionManager.beginDelayedTransition((ViewGroup) mBinding.getRoot(), new ChangeBounds());
+                ConstraintSet set  = new ConstraintSet();
+                set.clone((ConstraintLayout) mBinding.getRoot());
+
+                //visibility
+                set.setVisibility(mBinding.appBarLayout.getId(), ConstraintSet.VISIBLE);
+                set.setVisibility(mBinding.moreBtn.getId(), ConstraintSet.VISIBLE);
+                set.setVisibility(mBinding.prevBtn.getId(), ConstraintSet.VISIBLE);
+                set.setVisibility(mBinding.nextBtn.getId(), ConstraintSet.VISIBLE);
+                set.setVisibility(mBinding.comicNumberSpinner.getId(), ConstraintSet.VISIBLE);
+                set.setVisibility(mBinding.randomFloatingBtn.getId(), ConstraintSet.VISIBLE);
+                if (!mActivityViewModel.getNetwork().getValue().isConnected()){
+                    set.setVisibility(mBinding.archiveBtn.getId(), ConstraintSet.VISIBLE);
+                }
+
+                set.connect(mBinding.imageView.getId(), ConstraintSet.BOTTOM, mBinding.moreBtn.getId(), ConstraintSet.TOP);
+                set.connect(mBinding.imageView.getId(), ConstraintSet.TOP, mBinding.appBarLayout.getId(), ConstraintSet.BOTTOM);
+
+                set.applyTo((ConstraintLayout) mBinding.getRoot());
+            }
         });
     }
 

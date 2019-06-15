@@ -28,7 +28,6 @@
         android:animateLayoutChanges="true">
 
         <com.google.android.material.appbar.AppBarLayout
-            android:visibility="@{viewmodel.isFullscreen ? View.GONE : View.VISIBLE}"
             android:id="@+id/app_bar_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -125,7 +124,7 @@
             android:layout_marginEnd="@dimen/margin_16"
             android:layout_marginBottom="@dimen/margin_16"
             android:elevation="0dp"
-            android:visibility="@{!activityviewmodel.network.isConnected() || viewmodel.isFullscreen ? View.GONE : View.VISIBLE}"
+            android:visibility="@{!activityviewmodel.network.isConnected()  ? View.GONE : View.VISIBLE}"
             android:onClick="@{()->navigator.onRandom()}"
             android:src="@drawable/ic_dice_multiple_white_24dp"
             app:fabSize="normal"
@@ -142,7 +141,7 @@
             android:layout_marginBottom="@dimen/margin_8"
             android:background="@drawable/comic_control_btn_ripple"
             android:cropToPadding="true"
-            android:visibility="@{!activityviewmodel.network.isConnected() || viewmodel.isFullscreen ? View.GONE : View.VISIBLE}"
+            android:visibility="@{!activityviewmodel.network.isConnected() ? View.GONE : View.VISIBLE}"
             android:onClick="@{()->navigator.onNext()}"
             android:src="@drawable/baseline_chevron_left_black_36"
             android:tint="@color/comic_navigation_arrow_btn_tint"
@@ -150,7 +149,7 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <Spinner
-            android:visibility="@{!activityviewmodel.network.isConnected() || viewmodel.isFullscreen ? View.GONE : View.VISIBLE}"
+            android:visibility="@{!activityviewmodel.network.isConnected() ? View.GONE : View.VISIBLE}"
             android:id="@+id/comic_number_spinner"
             style="@style/ComicNumberSpinnerStyle"
             android:layout_width="0dp"
@@ -163,7 +162,7 @@
             app:layout_constraintStart_toEndOf="@id/next_btn" />
 
         <Button
-            android:visibility="@{activityviewmodel.network.isConnected() || viewmodel.isFullscreen ? View.GONE : View.VISIBLE}"
+            android:visibility="@{activityviewmodel.network.isConnected() ? View.GONE : View.VISIBLE}"
             android:id="@+id/archive_btn"
             android:layout_width="0dp"
             android:layout_height="@dimen/rounded_btn_height"
@@ -182,7 +181,7 @@
             tools:visibility="gone" />
 
         <ImageButton
-            android:visibility="@{!activityviewmodel.network.isConnected() || viewmodel.isFullscreen ? View.GONE : View.VISIBLE}"
+            android:visibility="@{!activityviewmodel.network.isConnected() ? View.GONE : View.VISIBLE}"
             android:id="@+id/prev_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -200,7 +199,6 @@
 
 
         <ImageButton
-            android:visibility="@{viewmodel.isFullscreen ? View.GONE : View.VISIBLE}"
             android:id="@+id/more_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -214,8 +212,8 @@
             app:layout_constraintStart_toEndOf="parent" />
 
         <LinearLayout
+            android:visibility="gone"
             android:background="@android:color/transparent"
-            android:visibility="@{viewmodel.isFullscreen ? View.GONE : View.GONE}"
             android:id="@+id/comic_details_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
