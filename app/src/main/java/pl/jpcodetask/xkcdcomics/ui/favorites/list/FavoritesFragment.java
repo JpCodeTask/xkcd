@@ -40,7 +40,7 @@ import pl.jpcodetask.xkcdcomics.data.model.Comic;
 import pl.jpcodetask.xkcdcomics.databinding.FavoritesListItemBinding;
 import pl.jpcodetask.xkcdcomics.databinding.FragmentFavoritesBinding;
 import pl.jpcodetask.xkcdcomics.databinding.FragmentFavoritesBindingImpl;
-import pl.jpcodetask.xkcdcomics.ui.common.OnSwipeItemCallback;
+import pl.jpcodetask.xkcdcomics.ui.common.OnSwipeListItemCallback;
 import pl.jpcodetask.xkcdcomics.ui.favorites.DetailsTransition;
 import pl.jpcodetask.xkcdcomics.ui.favorites.item.FavoritesItemFragment;
 import pl.jpcodetask.xkcdcomics.utils.ComicUtils;
@@ -147,7 +147,7 @@ public class FavoritesFragment extends Fragment {
         mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mBinding.recyclerView.setAdapter(mAdapter);
 
-        OnSwipeItemCallback onSwipeItemCallback = new OnSwipeItemCallback(new OnSwipeItemCallback.OnSwipeListener() {
+        OnSwipeListItemCallback onSwipeItemCallback = new OnSwipeListItemCallback(new OnSwipeListItemCallback.OnSwipeListener() {
             @Override
             public void onSwipeLeft(int position) {
                 mViewModel.setComicFavorite(mAdapter.getItemAtPosition(position).getNum(), false);
