@@ -97,15 +97,25 @@ public class ComicFragment extends Fragment implements ComicNavigator {
 
 
     private void setupViewModel(){
-        mViewModel = ViewModelProviders.of(this, mViewModelFactory).get(ComicViewModel.class);
-        mActivityViewModel = ViewModelProviders.of(getActivity(), mViewModelFactory).get(MainViewModel.class);
-
-        observeData();
-        observeViewState();
+        setupActivityViewModel();
+        initViewModel();
+        observeComic();
+        observeMessages();
+        observeState();
+        observeFullscreen();
+        observeState();
         observeDataState();
     }
 
-    private void observeData(){
+    private void setupActivityViewModel(){
+        mActivityViewModel = ViewModelProviders.of(getActivity(), mViewModelFactory).get(MainViewModel.class);
+    }
+
+    private void initViewModel(){
+        mViewModel = ViewModelProviders.of(this, mViewModelFactory).get(ComicViewModel.class);
+    }
+
+    private void observeComic(){
         mViewModel.getComic().observe(this, comic -> {
             ((AppCompatActivity) getActivity()).getSupportActionBar().setSubtitle(comic.getTitle());
             GlideApp.with(this)
@@ -115,6 +125,9 @@ public class ComicFragment extends Fragment implements ComicNavigator {
             setupShareIntent(comic);
         });
 
+    }
+
+    private void observeMessages(){
         mViewModel.getMessage().observe(this, eventString -> {
             String message = eventString.getEventContentIfNotHandled();
             if (message != null){
@@ -139,7 +152,7 @@ public class ComicFragment extends Fragment implements ComicNavigator {
         mBinding.comicNumberSpinner.setSelection(comicNumber - 1);
     }
 
-    private void observeViewState(){
+    private void observeState(){
         mViewModel.getState().observe(this, comicState -> {
 
             if (comicState.isNextAvailable()){
@@ -183,7 +196,9 @@ public class ComicFragment extends Fragment implements ComicNavigator {
             }
 
         });
+    }
 
+    private void observeFullscreen(){
         mViewModel.getIsFullscreen().observe(this, isFullscreen ->{
             if (isFullscreen){
                 animateOnFullscreenOn();
