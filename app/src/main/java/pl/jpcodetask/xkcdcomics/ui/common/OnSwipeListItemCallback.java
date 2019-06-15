@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-public class OnSwipeItemCallback extends ItemTouchHelper.SimpleCallback {
+public class OnSwipeListItemCallback extends ItemTouchHelper.SimpleCallback {
 
     private final OnSwipeListener mSwipeListener;
     private ColorDrawable mLeftBackground;
@@ -18,7 +18,7 @@ public class OnSwipeItemCallback extends ItemTouchHelper.SimpleCallback {
     private Drawable mLeftIcon;
     private Drawable mRightIcon;
 
-    public OnSwipeItemCallback(OnSwipeListener swipeListener) {
+    public OnSwipeListItemCallback(OnSwipeListener swipeListener) {
         super(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
         mSwipeListener = swipeListener;
     }
