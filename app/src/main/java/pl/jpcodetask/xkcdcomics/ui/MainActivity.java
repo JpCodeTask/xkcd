@@ -95,9 +95,7 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
                     Toast.makeText(this, "To implement", Toast.LENGTH_SHORT).show();
             }
 
-            if(item != NavigationItem.NAVIGATION_FEEDBACK){
-                mBinding.navView.getMenu().getItem(item).setChecked(true);
-            }
+            mBinding.navView.getMenu().getItem(item).setChecked(true);
         });
 
         mMainViewModel.getNavigationDrawerAvailable().observe(this, isAvailable -> {
