@@ -29,6 +29,7 @@ import pl.jpcodetask.xkcdcomics.ui.explore.ComicFragment;
 import pl.jpcodetask.xkcdcomics.ui.favorites.list.FavoritesFragment;
 import pl.jpcodetask.xkcdcomics.ui.settings.SettingsFragment;
 import pl.jpcodetask.xkcdcomics.utils.UpdateJobService;
+import pl.jpcodetask.xkcdcomics.utils.Utils;
 import pl.jpcodetask.xkcdcomics.viewmodel.XkcdViewModelFactory;
 
 public class MainActivity extends AppCompatActivity implements HasSupportFragmentInjector {
@@ -108,15 +109,18 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
                             .commit();
                     break;
 
-                //case NavigationItem.NAVIGATION_FEEDBACK:
-
+                case NavigationItem.NAVIGATION_FEEDBACK:
+                    startActivity(Intent.createChooser(Utils.getFeedbackIntent(getApplicationContext()), getString(R.string.send_feedback)));
+                    break;
 
 
                 default:
                     Toast.makeText(this, "To implement", Toast.LENGTH_SHORT).show();
             }
 
-            mBinding.navView.getMenu().getItem(item).setChecked(true);
+            if(item != NavigationItem.NAVIGATION_FEEDBACK){
+                mBinding.navView.getMenu().getItem(item).setChecked(true);
+            }
         });
 
         mMainViewModel.getNavigationDrawerAvailable().observe(this, isAvailable -> {

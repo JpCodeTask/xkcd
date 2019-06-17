@@ -32,5 +32,8 @@
     <string name="nav_item_feedback">Feedback</string>
     <string name="action_undo">Undo</string>
     <string name="share_comic_title">Share comic image</string>
+    <string name="feedback_email">jpcodetask@gmail.com</string>
+    <string name="feedback_subject">App feedback</string>
+    <string name="send_feedback">Send feedback</string>
 
 </resources>

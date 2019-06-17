@@ -20,4 +20,20 @@ public class Utils {
 
         return shareIntent;
     }
+
+    public static Intent getFeedbackIntent(Context context){
+        Uri uri = getFeedbackUri(context);
+
+        Intent feedbackIntent = new Intent(Intent.ACTION_SENDTO);
+        feedbackIntent.setData(uri);
+
+        return feedbackIntent;
+    }
+
+    private static Uri getFeedbackUri(Context context) {
+        String stringBuilder = "mailto:" + context.getString(R.string.feedback_email) +
+                "?subject=" + context.getString(R.string.feedback_subject);
+
+        return Uri.parse(stringBuilder);
+    }
 }
