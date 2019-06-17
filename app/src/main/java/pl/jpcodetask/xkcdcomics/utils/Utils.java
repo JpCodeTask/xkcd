@@ -1,12 +1,15 @@
 package pl.jpcodetask.xkcdcomics.utils;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 
+import pl.jpcodetask.xkcdcomics.R;
 import pl.jpcodetask.xkcdcomics.data.model.Comic;
 
-public class ComicUtils {
+public class Utils {
 
-    private ComicUtils(){
+    private Utils(){
         //empty
     }
 

@@ -34,8 +34,8 @@ import pl.jpcodetask.xkcdcomics.databinding.FragmentExploreBinding;
 import pl.jpcodetask.xkcdcomics.ui.MainViewModel;
 import pl.jpcodetask.xkcdcomics.ui.common.ComicNavigator;
 import pl.jpcodetask.xkcdcomics.ui.common.NavigationItem;
-import pl.jpcodetask.xkcdcomics.utils.ComicUtils;
 import pl.jpcodetask.xkcdcomics.utils.GlideApp;
+import pl.jpcodetask.xkcdcomics.utils.Utils;
 import pl.jpcodetask.xkcdcomics.viewmodel.XkcdViewModelFactory;
 
 public class ComicFragment extends Fragment implements ComicNavigator {
@@ -123,7 +123,7 @@ public class ComicFragment extends Fragment implements ComicNavigator {
     }
 
     private void setupShareIntent(Comic comic) {
-        mShareIntent = ComicUtils.getComicShareIntent(comic);
+        mShareIntent = Utils.getComicShareIntent(comic);
     }
 
     private void setSpinnerSelectionWithoutCallback(int comicNumber){

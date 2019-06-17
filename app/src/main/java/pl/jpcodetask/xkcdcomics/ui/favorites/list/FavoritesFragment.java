@@ -43,7 +43,7 @@ import pl.jpcodetask.xkcdcomics.databinding.FragmentFavoritesBindingImpl;
 import pl.jpcodetask.xkcdcomics.ui.common.OnSwipeItemCallback;
 import pl.jpcodetask.xkcdcomics.ui.favorites.DetailsTransition;
 import pl.jpcodetask.xkcdcomics.ui.favorites.item.FavoritesItemFragment;
-import pl.jpcodetask.xkcdcomics.utils.ComicUtils;
+import pl.jpcodetask.xkcdcomics.utils.Utils;
 import pl.jpcodetask.xkcdcomics.viewmodel.XkcdViewModelFactory;
 
 public class FavoritesFragment extends Fragment {
@@ -155,7 +155,7 @@ public class FavoritesFragment extends Fragment {
 
             @Override
             public void onSwipeRight(int position) {
-                startActivity(Intent.createChooser(ComicUtils.getComicShareIntent(mAdapter.getItemAtPosition(position)), getString(R.string.share_comic_title)));
+                startActivity(Intent.createChooser(Utils.getComicShareIntent(mAdapter.getItemAtPosition(position)), getString(R.string.share_comic_title)));
                 mAdapter.notifyItemChanged(position);
             }
         });

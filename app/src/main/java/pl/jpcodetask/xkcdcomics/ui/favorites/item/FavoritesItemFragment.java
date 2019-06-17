@@ -31,8 +31,8 @@ import pl.jpcodetask.xkcdcomics.data.model.Comic;
 import pl.jpcodetask.xkcdcomics.databinding.FragmentFavoritesItemBinding;
 import pl.jpcodetask.xkcdcomics.ui.MainViewModel;
 import pl.jpcodetask.xkcdcomics.ui.common.ComicViewer;
-import pl.jpcodetask.xkcdcomics.utils.ComicUtils;
 import pl.jpcodetask.xkcdcomics.utils.GlideApp;
+import pl.jpcodetask.xkcdcomics.utils.Utils;
 import pl.jpcodetask.xkcdcomics.viewmodel.XkcdViewModelFactory;
 
 public class FavoritesItemFragment extends Fragment implements ComicViewer {
@@ -182,7 +182,7 @@ public class FavoritesItemFragment extends Fragment implements ComicViewer {
 
 
     private void setupShareIntent(Comic comic) {
-        mShareIntent = ComicUtils.getComicShareIntent(comic);
+        mShareIntent = Utils.getComicShareIntent(comic);
     }
 
     private void setupImageListener() {
