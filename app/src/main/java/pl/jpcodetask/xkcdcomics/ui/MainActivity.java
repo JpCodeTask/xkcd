@@ -65,9 +65,9 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
         mMainViewModel = ViewModelProviders.of(this, mXkcdViewModelFactory).get(MainViewModel.class);
         mMainViewModel.getNavigationItem().observe(this, item -> {
 
-            if(getSupportFragmentManager().getBackStackEntryCount() > 0){
+            /*if(getSupportFragmentManager().getBackStackEntryCount() > 0){
                 return;
-            }
+            }*/
 
             switch (item){
                 case NavigationItem.NAVIGATION_EXPLORE:
