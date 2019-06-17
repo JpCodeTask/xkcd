@@ -12,7 +12,6 @@ import androidx.core.view.GravityCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
 import javax.inject.Inject;
@@ -65,48 +64,26 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
     private void setupViewModel() {
         mMainViewModel = ViewModelProviders.of(this, mXkcdViewModelFactory).get(MainViewModel.class);
         mMainViewModel.getNavigationItem().observe(this, item -> {
-            FragmentManager fragmentManager = getSupportFragmentManager();
 
-            if(fragmentManager.getBackStackEntryCount() > 0){
+            if(getSupportFragmentManager().getBackStackEntryCount() > 0){
                 return;
             }
 
             switch (item){
                 case NavigationItem.NAVIGATION_EXPLORE:
-
-                    ComicFragment comicFragment = ComicFragment.newInstance();
-                    fragmentManager.beginTransaction()
-                            .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
-                            .replace(mBinding.fragmentContainerOne.getId(), comicFragment)
-                            .commit();
-
+                    replaceFragment(ComicFragment.newInstance());
                     break;
 
-
                 case NavigationItem.NAVIGATION_FAVORITES:
-                    FavoritesFragment favoritesFragment = FavoritesFragment.newInstance();
-                    fragmentManager.beginTransaction()
-                            .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
-                            .replace(mBinding.fragmentContainerOne.getId(), favoritesFragment)
-                            .commit();
-
+                    replaceFragment(FavoritesFragment.newInstance());
                     break;
 
                 case NavigationItem.NAVIGATION_ARCHIVE:
-
-                    ArchiveFragment archiveFragment = ArchiveFragment.newInstance();
-                    fragmentManager.beginTransaction()
-                            .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
-                            .replace(mBinding.fragmentContainerOne.getId(), archiveFragment)
-                            .commit();
+                    replaceFragment(ArchiveFragment.newInstance());
                     break;
 
                 case NavigationItem.NAVIGATION_SETTINGS:
-                    SettingsFragment settingsFragment = SettingsFragment.newInstance();
-                    fragmentManager.beginTransaction()
-                            .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
-                            .replace(mBinding.fragmentContainerOne.getId(), settingsFragment)
-                            .commit();
+                    replaceFragment(SettingsFragment.newInstance());
                     break;
 
                 case NavigationItem.NAVIGATION_FEEDBACK:
@@ -133,6 +110,13 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
 
         mBinding.setViewmodel(mMainViewModel);
         mBinding.setLifecycleOwner(this);
+    }
+
+    private void replaceFragment(Fragment fragment){
+        getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                .replace(mBinding.fragmentContainerOne.getId(), fragment)
+                .commit();
     }
 
     private void setupNavigationDrawer() {
