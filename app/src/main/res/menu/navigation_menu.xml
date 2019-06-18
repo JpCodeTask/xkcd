@@ -28,6 +28,7 @@
             android:title="@string/nav_item_settings" />
 
         <item
+            android:checkable="false"
             android:id="@+id/nav_action_feedback"
             android:icon="@drawable/baseline_feedback_black_24"
             android:title="@string/nav_item_feedback" />

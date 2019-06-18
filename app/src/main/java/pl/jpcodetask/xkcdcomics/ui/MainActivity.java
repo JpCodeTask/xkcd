@@ -12,7 +12,6 @@ import androidx.core.view.GravityCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
 import javax.inject.Inject;
@@ -29,6 +28,7 @@ import pl.jpcodetask.xkcdcomics.ui.explore.ComicFragment;
 import pl.jpcodetask.xkcdcomics.ui.favorites.list.FavoritesFragment;
 import pl.jpcodetask.xkcdcomics.ui.settings.SettingsFragment;
 import pl.jpcodetask.xkcdcomics.utils.UpdateJobService;
+import pl.jpcodetask.xkcdcomics.utils.Utils;
 import pl.jpcodetask.xkcdcomics.viewmodel.XkcdViewModelFactory;
 
 public class MainActivity extends AppCompatActivity implements HasSupportFragmentInjector {
@@ -64,57 +64,32 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
     private void setupViewModel() {
         mMainViewModel = ViewModelProviders.of(this, mXkcdViewModelFactory).get(MainViewModel.class);
         mMainViewModel.getNavigationItem().observe(this, item -> {
-            FragmentManager fragmentManager = getSupportFragmentManager();
 
-            if(fragmentManager.getBackStackEntryCount() > 0){
+            /*if(getSupportFragmentManager().getBackStackEntryCount() > 0){
                 return;
-            }
+            }*/
 
             switch (item){
                 case NavigationItem.NAVIGATION_EXPLORE:
-
-                    ComicFragment comicFragment = ComicFragment.newInstance();
-                    fragmentManager.beginTransaction()
-                            .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
-                            .replace(mBinding.fragmentContainerOne.getId(), comicFragment)
-                            .commit();
-
+                    replaceFragment(ComicFragment.newInstance());
                     break;
 
-
                 case NavigationItem.NAVIGATION_FAVORITES:
-                    FavoritesFragment favoritesFragment = FavoritesFragment.newInstance();
-                    fragmentManager.beginTransaction()
-                            .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
-                            .replace(mBinding.fragmentContainerOne.getId(), favoritesFragment)
-                            .commit();
-
+                    replaceFragment(FavoritesFragment.newInstance());
                     break;
 
                 case NavigationItem.NAVIGATION_ARCHIVE:
-
-                    ArchiveFragment archiveFragment = ArchiveFragment.newInstance();
-                    fragmentManager.beginTransaction()
-                            .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
-                            .replace(mBinding.fragmentContainerOne.getId(), archiveFragment)
-                            .commit();
+                    replaceFragment(ArchiveFragment.newInstance());
                     break;
 
                 case NavigationItem.NAVIGATION_SETTINGS:
-                    SettingsFragment settingsFragment = SettingsFragment.newInstance();
-                    fragmentManager.beginTransaction()
-                            .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
-                            .replace(mBinding.fragmentContainerOne.getId(), settingsFragment)
-                            .commit();
+                    replaceFragment(SettingsFragment.newInstance());
                     break;
-
-                //case NavigationItem.NAVIGATION_FEEDBACK:
-
-
 
                 default:
                     Toast.makeText(this, "To implement", Toast.LENGTH_SHORT).show();
             }
+
 
             mBinding.navView.getMenu().getItem(item).setChecked(true);
         });
@@ -129,6 +104,13 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
 
         mBinding.setViewmodel(mMainViewModel);
         mBinding.setLifecycleOwner(this);
+    }
+
+    private void replaceFragment(Fragment fragment){
+        getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                .replace(mBinding.fragmentContainerOne.getId(), fragment)
+                .commit();
     }
 
     private void setupNavigationDrawer() {
@@ -151,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
                     break;
 
                 case R.id.nav_action_feedback:
-                    mMainViewModel.navigateTo(NavigationItem.NAVIGATION_FEEDBACK);
+                    startActivity(Intent.createChooser(Utils.getFeedbackIntent(getApplicationContext()), getString(R.string.send_feedback)));
                     break;
 
                 default:
