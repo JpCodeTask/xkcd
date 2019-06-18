@@ -86,14 +86,10 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
                     replaceFragment(SettingsFragment.newInstance());
                     break;
 
-                case NavigationItem.NAVIGATION_FEEDBACK:
-                    startActivity(Intent.createChooser(Utils.getFeedbackIntent(getApplicationContext()), getString(R.string.send_feedback)));
-                    break;
-
-
                 default:
                     Toast.makeText(this, "To implement", Toast.LENGTH_SHORT).show();
             }
+
 
             mBinding.navView.getMenu().getItem(item).setChecked(true);
         });
@@ -137,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
                     break;
 
                 case R.id.nav_action_feedback:
-                    mMainViewModel.navigateTo(NavigationItem.NAVIGATION_FEEDBACK);
+                    startActivity(Intent.createChooser(Utils.getFeedbackIntent(getApplicationContext()), getString(R.string.send_feedback)));
                     break;
 
                 default:
