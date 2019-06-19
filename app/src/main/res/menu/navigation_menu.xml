@@ -14,10 +14,10 @@
             android:icon="@drawable/baseline_favorite_black_24"/>
 
 
-        <item
+        <!--<item
             android:id="@+id/nav_action_archive"
             android:icon="@drawable/baseline_archive_black_24"
-            android:title="@string/nav_item_archive"/>
+            android:title="@string/nav_item_archive"/>-->
     </group>
 
     <group android:id="@+id/nav_group2" android:checkableBehavior="single" >

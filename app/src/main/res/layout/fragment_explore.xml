@@ -173,7 +173,7 @@
             android:drawableStart="@drawable/baseline_archive_black_24"
             android:padding="2dp"
             android:paddingStart="@dimen/padding_16"
-            android:text="@string/browse_archive"
+            android:text="@string/browse_favorites"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/more_btn"

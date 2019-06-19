@@ -301,7 +301,7 @@ public class ComicFragment extends Fragment implements ComicNavigator {
 
     private void setupArchiveBtn() {
         mBinding.archiveBtn.setOnClickListener(view -> {
-            mActivityViewModel.navigateTo(NavigationItem.NAVIGATION_ARCHIVE);
+            mActivityViewModel.navigateTo(NavigationItem.NAVIGATION_FAVORITES);
         });
     }
 

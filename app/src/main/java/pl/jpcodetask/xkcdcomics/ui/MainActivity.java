@@ -124,9 +124,9 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
                     mMainViewModel.navigateTo(NavigationItem.NAVIGATION_FAVORITES);
                     break;
 
-                case R.id.nav_action_archive:
+               /* case R.id.nav_action_archive:
                     mMainViewModel.navigateTo(NavigationItem.NAVIGATION_ARCHIVE);
-                    break;
+                    break;*/
 
                 case R.id.nav_action_settings:
                     mMainViewModel.navigateTo(NavigationItem.NAVIGATION_SETTINGS);
