@@ -185,4 +185,9 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
         mBackButtonTimestamp = System.currentTimeMillis();
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        mMainViewModel.navigateTo(NavigationItem.NAVIGATION_EXPLORE);
+    }
 }
