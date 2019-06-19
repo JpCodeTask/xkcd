@@ -155,18 +155,29 @@ public class ComicFragment extends Fragment implements ComicNavigator {
         mViewModel.getState().observe(this, comicState -> {
 
             if (comicState.isNextAvailable()){
-                mSwipeNextAvailable = true;
+                if (mActivityViewModel.getNetwork().getValue() == null || mActivityViewModel.getNetwork().getValue().isConnected()){
+                    mSwipeNextAvailable = true;
+                }
+
                 mBinding.nextBtn.setEnabled(true);
             }else{
-                mSwipeNextAvailable = false;
+                if (mActivityViewModel.getNetwork().getValue() == null || mActivityViewModel.getNetwork().getValue().isConnected()) {
+                    mSwipeNextAvailable = false;
+                }
+
                 mBinding.nextBtn.setEnabled(false);
             }
 
             if (comicState.isPrevAvailable()){
-                mSwipePrevAvailable = true;
+                if (mActivityViewModel.getNetwork().getValue() == null || mActivityViewModel.getNetwork().getValue().isConnected()) {
+                    mSwipePrevAvailable = true;
+                }
+
                 mBinding.prevBtn.setEnabled(true);
             }else{
-                mSwipePrevAvailable = false;
+                if (mActivityViewModel.getNetwork().getValue() == null || mActivityViewModel.getNetwork().getValue().isConnected()){
+                    mSwipePrevAvailable = false;
+                }
                 mBinding.prevBtn.setEnabled(false);
             }
 
