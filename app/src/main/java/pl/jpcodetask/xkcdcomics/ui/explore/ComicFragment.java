@@ -237,15 +237,17 @@ public class ComicFragment extends Fragment implements ComicNavigator {
         set.clone((ConstraintLayout) mBinding.getRoot());
 
         //visibility
-        set.setVisibility(mBinding.appBarLayout.getId(), ConstraintSet.VISIBLE);
-        set.setVisibility(mBinding.moreBtn.getId(), ConstraintSet.VISIBLE);
-        set.setVisibility(mBinding.prevBtn.getId(), ConstraintSet.VISIBLE);
-        set.setVisibility(mBinding.nextBtn.getId(), ConstraintSet.VISIBLE);
-        set.setVisibility(mBinding.comicNumberSpinner.getId(), ConstraintSet.VISIBLE);
-        set.setVisibility(mBinding.randomFloatingBtn.getId(), ConstraintSet.VISIBLE);
         if (!mActivityViewModel.getNetwork().getValue().isConnected()){
             set.setVisibility(mBinding.archiveBtn.getId(), ConstraintSet.VISIBLE);
+        }else{
+            set.setVisibility(mBinding.prevBtn.getId(), ConstraintSet.VISIBLE);
+            set.setVisibility(mBinding.nextBtn.getId(), ConstraintSet.VISIBLE);
+            set.setVisibility(mBinding.comicNumberSpinner.getId(), ConstraintSet.VISIBLE);
+            set.setVisibility(mBinding.randomFloatingBtn.getId(), ConstraintSet.VISIBLE);
         }
+
+        set.setVisibility(mBinding.appBarLayout.getId(), ConstraintSet.VISIBLE);
+        set.setVisibility(mBinding.moreBtn.getId(), ConstraintSet.VISIBLE);
 
         set.connect(mBinding.imageView.getId(), ConstraintSet.BOTTOM, mBinding.moreBtn.getId(), ConstraintSet.TOP);
         set.connect(mBinding.imageView.getId(), ConstraintSet.TOP, mBinding.appBarLayout.getId(), ConstraintSet.BOTTOM);
