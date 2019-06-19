@@ -103,7 +103,6 @@ public class ComicFragment extends Fragment implements ComicNavigator {
         observeMessages();
         observeState();
         observeFullscreen();
-        observeState();
         observeDataState();
     }
 

@@ -141,14 +141,7 @@ public class ComicViewModel extends BaseItemViewModel {
     protected BaseUseCase getUseCase() {
         return mExploreUseCase;
     }
-
-    @Override
-    protected void onCleared() {
-        super.onCleared();
-        mCompositeDisposable.clear();
-    }
-
-
+    
     LiveData<Integer> getRequestComicNumber() {
         return mRequestComicNumber;
     }
