@@ -23,6 +23,7 @@
 
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
+        android:onClick="@{()->navigator.onFullscreen()}"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:animateLayoutChanges="true">
@@ -69,16 +70,16 @@
             android:layout_marginStart="@dimen/margin_8"
             android:layout_marginTop="@dimen/margin_8"
             android:layout_marginEnd="@dimen/margin_8"
-            android:layout_marginBottom="@dimen/margin_8"
+            android:layout_marginBottom="8dp"
             android:gravity="center"
             android:text="@string/something_went_wrong"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
             android:visibility="@{viewmodel.state.isErrorOccurred() ? View.VISIBLE : View.GONE}"
-            app:layout_constraintBottom_toTopOf="@+id/more_btn"
+            app:layout_constraintBottom_toTopOf="@+id/imageView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/app_bar_layout"
-            app:layout_constraintVertical_bias="0.42000002" />
+            app:layout_constraintVertical_bias="1.0" />
 
         <ImageButton
             android:id="@+id/reload_btn"
@@ -96,7 +97,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/error_text_view"
-            app:layout_constraintVertical_bias="0.1" />
+            app:layout_constraintVertical_bias="0.0" />
 
 
         <com.github.chrisbanes.photoview.PhotoView
