@@ -100,6 +100,15 @@ public class FavoritesFragment extends Fragment {
                     .replace(R.id.fragment_container_one, favoritesItemFragment)
                     .addToBackStack(null)
                     .commit();
+        }, (listSize)->{
+            if(listSize == 0){
+                mBinding.emptyListView.setVisibility(View.VISIBLE); 
+                mBinding.recyclerView.setVisibility(View.INVISIBLE);
+            }else{
+                mBinding.emptyListView.setVisibility(View.GONE);
+                mBinding.recyclerView.setVisibility(View.VISIBLE);
+            }
+
         });
     }
 
@@ -266,7 +275,11 @@ public class FavoritesFragment extends Fragment {
     }
 
     private interface FavoriteItemClickListener {
-        void OnFavoriteItemClick(View view, Comic comic, int position);
+        void onFavoriteItemClick(View view, Comic comic, int position);
+    }
+
+    private interface FavoritesListObserver {
+        void onListSizeChange(int size);
     }
 
     private static class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.FavoriteViewHolder>{
@@ -274,16 +287,19 @@ public class FavoritesFragment extends Fragment {
         private final static int NO_POSITION = -1;
 
         private List<Comic> mFavoritesList = new ArrayList<>();
-        private FavoriteItemClickListener mFavoriteItemClickListener;
+        private final FavoriteItemClickListener mFavoriteItemClickListener;
+        private final FavoritesListObserver mListObserver;
         private int mRemovedItemPosition = NO_POSITION;
         private Comic mRemovedItem;
 
-        FavoritesAdapter(@NonNull FavoriteItemClickListener favoriteItemClickListener){
+        FavoritesAdapter(@NonNull FavoriteItemClickListener favoriteItemClickListener, FavoritesListObserver listObserver){
             mFavoriteItemClickListener = favoriteItemClickListener;
+            mListObserver = listObserver;
         }
 
         void setFavoritesList(@NonNull List<Comic> favoritesList){
             mFavoritesList = favoritesList;
+            mListObserver.onListSizeChange(mFavoritesList.size());
             notifyDataSetChanged();
         }
 
@@ -292,6 +308,9 @@ public class FavoritesFragment extends Fragment {
             mRemovedItem = mFavoritesList.get(position);
 
             mFavoritesList.remove(position);
+            mListObserver.onListSizeChange(mFavoritesList.size());
+
+
             notifyItemRemoved(position);
         }
 
@@ -304,6 +323,7 @@ public class FavoritesFragment extends Fragment {
         void restoreItem(){
             if (mRemovedItemPosition != NO_POSITION){
                 mFavoritesList.add(mRemovedItemPosition, mRemovedItem);
+                mListObserver.onListSizeChange(mFavoritesList.size());
                 notifyItemInserted(mRemovedItemPosition);
             }
 
@@ -358,7 +378,7 @@ public class FavoritesFragment extends Fragment {
                 mBinding.setItem(comic);
                 mBinding.getRoot().setTransitionName(comic.getTitle() + "_" + comic.getNum());
                 mBinding.getRoot().setOnClickListener(v -> {
-                    favoriteItemClickListener.OnFavoriteItemClick(v, comic, getAdapterPosition());
+                    favoriteItemClickListener.onFavoriteItemClick(v, comic, getAdapterPosition());
                 });
                 mBinding.executePendingBindings();
             }
