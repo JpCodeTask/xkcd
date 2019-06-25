@@ -3,6 +3,7 @@ package pl.jpcodetask.xkcdcomics.ui.favorites.item;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,11 +23,15 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.transition.ChangeBounds;
 import androidx.transition.TransitionManager;
 
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
+
 import javax.inject.Inject;
 
 import dagger.android.support.AndroidSupportInjection;
 import pl.jpcodetask.xkcdcomics.R;
-import pl.jpcodetask.xkcdcomics.data.model.Comic;
 import pl.jpcodetask.xkcdcomics.databinding.FragmentFavoritesItemBinding;
 import pl.jpcodetask.xkcdcomics.ui.MainViewModel;
 import pl.jpcodetask.xkcdcomics.ui.common.ComicViewer;
@@ -117,10 +122,22 @@ public class FavoritesItemFragment extends Fragment implements ComicViewer {
         mViewModel.getComic().observe(this, comic -> {
             ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(comic.getTitle());
             GlideApp.with(this)
+                    .asBitmap()
                     .load(comic.getImgUrl())
                     .onlyRetrieveFromCache(true)
+                    .listener(new RequestListener<Bitmap>() {
+                        @Override
+                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onResourceReady(Bitmap resource, Object model, Target<Bitmap> target, DataSource dataSource, boolean isFirstResource) {
+                            setupShareIntent(resource);
+                            return false;
+                        }
+                    })
                     .into(mBinding.imageView);
-            setupShareIntent(comic);
         });
     }
 
@@ -207,8 +224,8 @@ public class FavoritesItemFragment extends Fragment implements ComicViewer {
     }
 
 
-    private void setupShareIntent(Comic comic) {
-        mShareIntent = Utils.getComicShareIntent(comic);
+    private void setupShareIntent(Bitmap res) {
+        mShareIntent = Utils.getComicShareIntent(getContext(), res);
     }
 
     private void setupImageListener() {
