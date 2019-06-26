@@ -52,6 +52,7 @@ public class FavoritesItemFragment extends Fragment implements ComicViewer {
     private FavoritesItemViewModel mViewModel;
     private MainViewModel mActivityViewModel;
     private Intent mShareIntent;
+    private Bitmap mBitmapToShare;
 
     public FavoritesItemFragment(){
 
@@ -132,7 +133,7 @@ public class FavoritesItemFragment extends Fragment implements ComicViewer {
 
                         @Override
                         public boolean onResourceReady(Bitmap resource, Object model, Target<Bitmap> target, DataSource dataSource, boolean isFirstResource) {
-                            setupShareIntent(resource);
+                            mBitmapToShare = resource;
                             return false;
                         }
                     })
@@ -223,8 +224,8 @@ public class FavoritesItemFragment extends Fragment implements ComicViewer {
     }
 
 
-    private void setupShareIntent(Bitmap res) {
-        mShareIntent = Utils.getComicShareIntent(getContext(), res);
+    private void setupShareIntent() {
+        mShareIntent = Utils.getComicShareIntent(getContext(), mBitmapToShare);
     }
 
     private void setupImageListener() {
@@ -275,7 +276,8 @@ public class FavoritesItemFragment extends Fragment implements ComicViewer {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.action_share:
-                if (mShareIntent != null){
+                if (mBitmapToShare != null){
+                    setupShareIntent();
                     startActivity(Intent.createChooser(mShareIntent, getString(R.string.share_comic_title)));
                 }
                 return true;

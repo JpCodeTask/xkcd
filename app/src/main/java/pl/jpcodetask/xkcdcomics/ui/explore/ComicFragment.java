@@ -54,6 +54,7 @@ public class ComicFragment extends Fragment implements ComicNavigator {
     private FragmentExploreBinding mBinding;
 
     private Intent mShareIntent;
+    private Bitmap mBitmapToShare;
 
     private boolean mExecuteSpinnerSelected = false;
     private boolean mComicDetailsVisible = false;
@@ -133,7 +134,7 @@ public class ComicFragment extends Fragment implements ComicNavigator {
 
                         @Override
                         public boolean onResourceReady(Bitmap resource, Object model, Target<Bitmap> target, DataSource dataSource, boolean isFirstResource) {
-                            setupShareIntent(resource);
+                            mBitmapToShare = resource;
                             return false;
                         }
                     })
@@ -152,8 +153,8 @@ public class ComicFragment extends Fragment implements ComicNavigator {
         });
     }
 
-    private void setupShareIntent(Bitmap res) {
-        mShareIntent = Utils.getComicShareIntent(getContext(), res);
+    private void setupShareIntent() {
+        mShareIntent = Utils.getComicShareIntent(getContext(), mBitmapToShare);
     }
 
     private void setSpinnerSelectionWithoutCallback(int comicNumber){
@@ -387,7 +388,8 @@ public class ComicFragment extends Fragment implements ComicNavigator {
                 return true;
 
             case R.id.action_share :
-                if (mShareIntent != null){
+                if (mBitmapToShare != null){
+                    setupShareIntent();
                     startActivity(Intent.createChooser(mShareIntent, getString(R.string.share_comic_title)));
                 }
                 return true;
