@@ -52,7 +52,6 @@ public class FavoritesItemFragment extends Fragment implements ComicViewer {
     private FavoritesItemViewModel mViewModel;
     private MainViewModel mActivityViewModel;
     private Intent mShareIntent;
-    private boolean mIsFullscreen = false;
 
     public FavoritesItemFragment(){
 
