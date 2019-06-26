@@ -11,4 +11,5 @@
     <dimen name="margin_64">64dp</dimen>
     <dimen name="navigation_width">180dp</dimen>
     <dimen name="rounded_btn_height">36dp</dimen>
+    <dimen name="padding_32">32dp</dimen>
 </resources>

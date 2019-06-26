@@ -134,7 +134,7 @@ public class UpdateJobService extends JobService {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), NEW_COMIC_NOTIFICATION_CHANNEL_ID)
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
-                .setSmallIcon(R.drawable.baseline_share_black_24)
+                .setSmallIcon(R.drawable.ic_stat_name)
                 .setContentTitle(getString(R.string.new_comic_notification_title))
                 .setContentText(getString(R.string.new_comic_notification_text));
 
