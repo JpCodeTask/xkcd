@@ -87,4 +87,6 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
     //photoview
     implementation 'com.github.chrisbanes:PhotoView:2.3.0'
+    //gson
+    implementation 'com.google.code.gson:gson:2.8.2'
 }
