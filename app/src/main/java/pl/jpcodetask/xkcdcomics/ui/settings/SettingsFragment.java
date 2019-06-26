@@ -46,7 +46,7 @@ public class SettingsFragment extends Fragment {
 
 
 
-    private static class PreferencesFragment extends PreferenceFragmentCompat{
+    public static class PreferencesFragment extends PreferenceFragmentCompat{
 
 
         static PreferencesFragment newInstance() {
