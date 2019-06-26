@@ -7,7 +7,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:paddingStart="@dimen/padding_8"
-        android:paddingTop="@dimen/padding_16"
+        android:paddingTop="@dimen/padding_32"
         android:paddingEnd="@dimen/padding_16"
         android:src="@mipmap/ic_launcher"
         android:layout_height="wrap_content" />
