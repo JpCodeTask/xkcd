@@ -23,7 +23,9 @@ import dagger.android.support.HasSupportFragmentInjector;
 import pl.jpcodetask.xkcdcomics.R;
 import pl.jpcodetask.xkcdcomics.databinding.ActivityMainBinding;
 import pl.jpcodetask.xkcdcomics.ui.archive.ArchiveFragment;
+import pl.jpcodetask.xkcdcomics.ui.common.BackPressedHandler;
 import pl.jpcodetask.xkcdcomics.ui.common.NavigationItem;
+import pl.jpcodetask.xkcdcomics.ui.common.OnBackPressedCallback;
 import pl.jpcodetask.xkcdcomics.ui.explore.ComicFragment;
 import pl.jpcodetask.xkcdcomics.ui.favorites.list.FavoritesFragment;
 import pl.jpcodetask.xkcdcomics.ui.settings.SettingsFragment;
@@ -31,7 +33,7 @@ import pl.jpcodetask.xkcdcomics.utils.UpdateJobService;
 import pl.jpcodetask.xkcdcomics.utils.Utils;
 import pl.jpcodetask.xkcdcomics.viewmodel.XkcdViewModelFactory;
 
-public class MainActivity extends AppCompatActivity implements HasSupportFragmentInjector {
+public class MainActivity extends AppCompatActivity implements HasSupportFragmentInjector, BackPressedHandler {
 
     @Inject
     DispatchingAndroidInjector<Fragment> mFragmentDispatchingAndroidInjector;
@@ -44,6 +46,24 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
     private ActivityMainBinding mBinding;
     private MainViewModel mMainViewModel;
     private long mBackButtonTimestamp;
+
+    private OnBackPressedCallback mDefaultOnBackPressedCallback = () -> {
+        if(mBinding.drawer.isDrawerOpen(GravityCompat.START)){
+            mBinding.drawer.closeDrawers();
+            return;
+        }
+
+
+        if( getSupportFragmentManager().getBackStackEntryCount() > 0 || mBackButtonTimestamp + BACK_BUTTON_EXIT_DELAY_MS > System.currentTimeMillis()){
+            super.onBackPressed();
+            return;
+        }
+
+        Toast.makeText(this, getString(R.string.back_btn_twice_message), Toast.LENGTH_SHORT).show();
+        mBackButtonTimestamp = System.currentTimeMillis();
+    };
+
+    private OnBackPressedCallback mOnBackPressedCallback = mDefaultOnBackPressedCallback;
 
     public static Intent newIntent(Context context) {
         return new Intent(context, MainActivity.class);
@@ -170,25 +190,22 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
 
     @Override
     public void onBackPressed() {
-
-        if(mBinding.drawer.isDrawerOpen(GravityCompat.START)){
-            mBinding.drawer.closeDrawers();
-            return;
-        }
-
-
-        if( getSupportFragmentManager().getBackStackEntryCount() > 0 || mBackButtonTimestamp + BACK_BUTTON_EXIT_DELAY_MS > System.currentTimeMillis()){
-            super.onBackPressed();
-            return;
-        }
-
-        Toast.makeText(this, getString(R.string.back_btn_twice_message), Toast.LENGTH_SHORT).show();
-        mBackButtonTimestamp = System.currentTimeMillis();
+        mOnBackPressedCallback.onBackPressed();
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         mMainViewModel.navigateTo(NavigationItem.NAVIGATION_EXPLORE);
+    }
+
+    @Override
+    public void setOnBackPressedCallbackDefault() {
+        mOnBackPressedCallback = mDefaultOnBackPressedCallback;
+    }
+
+    @Override
+    public void setOnBackPressedCallback(OnBackPressedCallback callback) {
+        mOnBackPressedCallback = callback;
     }
 }

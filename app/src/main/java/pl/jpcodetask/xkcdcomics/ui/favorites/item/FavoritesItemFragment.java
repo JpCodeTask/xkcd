@@ -34,6 +34,7 @@ import dagger.android.support.AndroidSupportInjection;
 import pl.jpcodetask.xkcdcomics.R;
 import pl.jpcodetask.xkcdcomics.databinding.FragmentFavoritesItemBinding;
 import pl.jpcodetask.xkcdcomics.ui.MainViewModel;
+import pl.jpcodetask.xkcdcomics.ui.common.BackPressedHandler;
 import pl.jpcodetask.xkcdcomics.ui.common.ComicViewer;
 import pl.jpcodetask.xkcdcomics.ui.common.SwipeContract;
 import pl.jpcodetask.xkcdcomics.utils.GlideApp;
@@ -179,8 +180,10 @@ public class FavoritesItemFragment extends Fragment implements ComicViewer {
     private void observeFullscreen(){
         mViewModel.getIsFullscreen().observe(this, isFullscreen ->{
             if (isFullscreen){
+                ((BackPressedHandler) getActivity()).setOnBackPressedCallback(this::onFullscreen);
                 animateOnFullscreenOn();
             }else{
+                ((BackPressedHandler) getActivity()).setOnBackPressedCallbackDefault();
                 animateOnFullscreenOff();
             }
         });
