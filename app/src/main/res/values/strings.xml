@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">eXKCDplorer</string>
+    <string name="app_name">XKCD explorer</string>
     <string name="app_version">version 1.0</string>
     <string name="item_loading_error">Item not found</string>
     <string name="menu_item_favorite">action favorite</string>
