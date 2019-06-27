@@ -131,7 +131,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:background="@drawable/comic_details_btn_shape"
-            android:onClick="@{()->viewer.onComicDetails()}"
+
             android:paddingBottom="@dimen/padding_4"
             android:src="@drawable/baseline_expand_less_white_36"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -139,6 +139,7 @@
             app:layout_constraintStart_toEndOf="parent" />
 
         <LinearLayout
+            android:onClick="@{()->viewer.onComicDetails()}"
             android:visibility="gone"
             android:id="@+id/comic_details_view"
             android:layout_width="match_parent"
@@ -154,7 +155,6 @@
             app:layout_constraintVertical_bias="1.0">
 
             <ImageButton
-                android:onClick="@{()->viewer.onComicDetails()}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/comic_details_btn_shape"
