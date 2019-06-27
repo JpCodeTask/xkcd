@@ -121,7 +121,7 @@ public class ComicFragment extends Fragment implements ComicNavigator {
 
     private void observeComic(){
         mViewModel.getComic().observe(this, comic -> {
-            ((AppCompatActivity) getActivity()).getSupportActionBar().setSubtitle(comic.getTitle());
+            setActionBarSubtitle(comic.getTitle());
             GlideApp.with(this)
                     .asBitmap()
                     .load(comic.getImgUrl())
@@ -142,6 +142,10 @@ public class ComicFragment extends Fragment implements ComicNavigator {
 
         });
 
+    }
+
+    private void setActionBarSubtitle(String text){
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setSubtitle(text);
     }
 
     private void observeMessages(){
@@ -196,6 +200,7 @@ public class ComicFragment extends Fragment implements ComicNavigator {
             }
 
             if (comicState.isDataLoading()){
+                setActionBarSubtitle(getString(R.string.loading));
                 mBinding.moreBtn.setEnabled(false);
                 mBinding.randomFloatingBtn.setEnabled(false);
                 mBinding.comicNumberSpinner.setEnabled(false);

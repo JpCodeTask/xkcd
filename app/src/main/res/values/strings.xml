@@ -36,5 +36,6 @@
     <string name="feedback_subject">App feedback</string>
     <string name="send_feedback">Send feedback</string>
     <string name="browse_favorites">Browse favorites</string>
+    <string name="loading">Loading...</string>
 
 </resources>
