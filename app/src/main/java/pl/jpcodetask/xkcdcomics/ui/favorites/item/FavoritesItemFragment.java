@@ -51,7 +51,6 @@ public class FavoritesItemFragment extends Fragment implements ComicViewer {
     private boolean mComicIsFavorite = false;
     private FavoritesItemViewModel mViewModel;
     private MainViewModel mActivityViewModel;
-    private Intent mShareIntent;
     private Bitmap mBitmapToShare;
 
     public FavoritesItemFragment(){
@@ -223,11 +222,6 @@ public class FavoritesItemFragment extends Fragment implements ComicViewer {
         set.applyTo((ConstraintLayout) mBinding.getRoot());
     }
 
-
-    private void setupShareIntent() {
-        mShareIntent = Utils.getComicShareIntent(getContext(), mBitmapToShare);
-    }
-
     private void setupImageListener() {
         mBinding.imageView.setOnPhotoTapListener((view, x, y) -> {
             onFullscreen();
@@ -277,8 +271,7 @@ public class FavoritesItemFragment extends Fragment implements ComicViewer {
         switch (item.getItemId()){
             case R.id.action_share:
                 if (mBitmapToShare != null){
-                    setupShareIntent();
-                    startActivity(Intent.createChooser(mShareIntent, getString(R.string.share_comic_title)));
+                    startActivity(Intent.createChooser(Utils.getComicShareIntent(getContext(), mBitmapToShare), getString(R.string.share_comic_title)));
                 }
                 return true;
 

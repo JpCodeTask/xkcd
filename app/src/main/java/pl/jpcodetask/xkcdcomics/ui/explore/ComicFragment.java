@@ -53,7 +53,6 @@ public class ComicFragment extends Fragment implements ComicNavigator {
     private MainViewModel mActivityViewModel;
     private FragmentExploreBinding mBinding;
 
-    private Intent mShareIntent;
     private Bitmap mBitmapToShare;
 
     private boolean mExecuteSpinnerSelected = false;
@@ -151,10 +150,6 @@ public class ComicFragment extends Fragment implements ComicNavigator {
                 Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    private void setupShareIntent() {
-        mShareIntent = Utils.getComicShareIntent(getContext(), mBitmapToShare);
     }
 
     private void setSpinnerSelectionWithoutCallback(int comicNumber){
@@ -389,8 +384,7 @@ public class ComicFragment extends Fragment implements ComicNavigator {
 
             case R.id.action_share :
                 if (mBitmapToShare != null){
-                    setupShareIntent();
-                    startActivity(Intent.createChooser(mShareIntent, getString(R.string.share_comic_title)));
+                    startActivity(Intent.createChooser(Utils.getComicShareIntent(getContext(), mBitmapToShare), getString(R.string.share_comic_title)));
                 }
                 return true;
 

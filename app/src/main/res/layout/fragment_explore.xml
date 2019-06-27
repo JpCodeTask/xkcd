@@ -23,7 +23,6 @@
 
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
-        android:onClick="@{()->navigator.onFullscreen()}"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:animateLayoutChanges="true">
@@ -213,6 +212,7 @@
             app:layout_constraintStart_toEndOf="parent" />
 
         <LinearLayout
+            android:onClick="@{()->navigator.onComicDetails()}"
             android:visibility="gone"
             android:background="@android:color/transparent"
             android:id="@+id/comic_details_view"
