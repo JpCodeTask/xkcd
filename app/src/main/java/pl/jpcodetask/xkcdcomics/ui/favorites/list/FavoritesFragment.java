@@ -8,6 +8,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.transition.Fade;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -187,6 +188,7 @@ public class FavoritesFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        Log.wtf("EEE", "AAA");
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.favorites_menu, menu);
 
@@ -266,12 +268,6 @@ public class FavoritesFragment extends Fragment {
                 mAdapter.removeAtPosition(mLastViewedItemPosition);
             }
         }
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        mSearchView.clearFocus();
     }
 
     private interface FavoriteItemClickListener {
