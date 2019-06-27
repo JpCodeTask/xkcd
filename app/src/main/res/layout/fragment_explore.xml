@@ -46,6 +46,20 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
+        <FrameLayout
+            android:id="@+id/fullscreen_listener_view"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/margin_8"
+            android:layout_marginTop="@dimen/margin_8"
+            android:layout_marginEnd="@dimen/margin_8"
+            android:layout_marginBottom="@dimen/margin_8"
+            android:onClick="@{()->navigator.onFullscreen()}"
+            app:layout_constraintBottom_toTopOf="@id/more_btn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/app_bar_layout" />
+
         <ProgressBar
             android:id="@+id/progress_bar"
             style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
@@ -97,6 +111,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/error_text_view"
             app:layout_constraintVertical_bias="0.0" />
+
 
 
         <com.github.chrisbanes.photoview.PhotoView
